@@ -104,7 +104,7 @@ const Navbar = () => {
       scale: 1.03,
       backgroundColor: "rgba(255, 197, 89, 0.9)",
       color: "#000",
-      transition: { duration: 0.3 }
+      transition: { duration: 0.15 } // Faster transition on hover
     }
   };
 
@@ -289,7 +289,7 @@ const Navbar = () => {
                 </div>
 
                 <motion.button
-                  className="border border-yellow text-yellow hover:text-black px-14 py-3 rounded-full font-medium hover:bg-yellow-dark transition-colors"
+                  className="border border-yellow text-yellow px-14 py-3 rounded-full font-medium"
                   variants={ctaVariants}
                   initial="hidden"
                   animate="visible"
