@@ -153,7 +153,7 @@ const Navbar = () => {
           >
             {/* Left Side - Yellow Background (60%) */}
             <motion.div
-              className="w-3/5 bg-yellow flex flex-col justify-between overflow-hidden py-12 px-10"
+              className="w-3/5 bg-yellow flex flex-col justify-between overflow-hidden py-12 px-16"
               initial={{ x: -100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
@@ -176,7 +176,7 @@ const Navbar = () => {
 
               {/* Navigation Links - Vertically centered but left aligned */}
               <nav className="flex-grow flex flex-col justify-center">
-                <ul className="space-y-14">
+                <ul className="space-y-10">
                   {navLinks.map((link, i) => (
                     <motion.li
                       key={link.name}
@@ -188,7 +188,7 @@ const Navbar = () => {
                     >
                       <Link
                         to={link.path}
-                        className="text-6xl font-medium text-black hover:opacity-70 transition-opacity block"
+                        className="text-4xl font-medium text-black hover:opacity-70 transition-opacity block"
                         onClick={toggleMenu}
                       >
                         {link.name}
