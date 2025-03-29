@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { navLinks, socialLinks } from '../../data/navigationLinks';
+import { navLinks, socialLinks, footerLinks } from '../../data/navigationLinks';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,14 +55,14 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="flex-grow">
-            <ul className="space-y-6">
+          {/* Navigation Links - Vertically centered but left aligned */}
+          <nav className="flex-grow flex flex-col justify-center">
+            <ul className="space-y-14">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-4xl font-medium text-black hover:opacity-70 transition-opacity"
+                    className="text-6xl font-medium text-black hover:opacity-70 transition-opacity block"
                     onClick={toggleMenu}
                   >
                     {link.name}
@@ -122,8 +122,15 @@ const Navbar = () => {
 
           {/* Footer Links */}
           <div className="flex gap-8">
-            <Link to="/terms" className="text-yellow hover:underline">Terms and Conditions</Link>
-            <Link to="/privacy" className="text-yellow hover:underline">Privacy Policy</Link>
+            {footerLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="text-yellow hover:underline"
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
@@ -131,8 +138,18 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`fixed inset-0 z-40 block md:hidden transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="bg-yellow h-full flex flex-col">
-          {/* Mobile Close Button */}
-          <div className="flex justify-end p-6">
+          {/* Mobile Header */}
+          <div className="flex items-center justify-between p-6 border-b border-black/10">
+            {/* Mobile Logo */}
+            <Link to="/" className="block">
+              <img
+                src="/logo-dark.jpg"
+                alt="PPTPRO Logo"
+                className="h-12"
+              />
+            </Link>
+            
+            {/* Mobile Close Button */}
             <button
               onClick={toggleMobileMenu}
               className="p-2"
@@ -143,62 +160,67 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Logo */}
-          <div className="px-6 mb-8">
-            <Link to="/" className="block">
-              <img
-                src="/logo-dark.jpg"
-                alt="PPTPRO Logo"
-                className="h-10"
-              />
-            </Link>
+          {/* Mobile Content Area */}
+          <div className="flex-grow overflow-y-auto py-8">
+            {/* Mobile Nav Links - Centered vertically */}
+            <nav className="flex-grow flex flex-col justify-center h-full">
+              <ul className="space-y-6 px-8">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.path}
+                      className="text-3xl font-medium text-black hover:opacity-70 transition-opacity block"
+                      onClick={toggleMobileMenu}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
-
-          {/* Mobile Nav Links */}
-          <div className="flex-grow px-6 overflow-y-auto">
-            <ul className="space-y-4">
-              {navLinks.map((link) => (
-                <li key={link.name}>
+          
+          {/* Mobile Footer with CTA */}
+          <div className="p-6 border-t border-black/10 bg-black text-yellow">
+            <div className="flex flex-col space-y-6">
+              {/* CTA */}
+              <div className="flex justify-between items-center">
+                <h3 className="text-md font-bold">
+                  Got an Idea? <br />
+                  Let's Craft Brilliant Together!
+                </h3>
+                <button className="bg-yellow text-black px-4 py-2 rounded-full font-medium whitespace-nowrap">
+                  Get in Touch
+                </button>
+              </div>
+              
+              {/* Social Links */}
+              <div className="flex flex-wrap justify-center gap-4">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    className="text-sm text-yellow/80 hover:text-yellow"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.name}
+                  </a>
+                ))}
+              </div>
+              
+              {/* Footer Links */}
+              <div className="flex justify-between text-xs text-yellow/70">
+                {footerLinks.map((link) => (
                   <Link
+                    key={link.name}
                     to={link.path}
-                    className="text-2xl font-medium text-black hover:opacity-70 transition-opacity"
-                    onClick={toggleMobileMenu}
+                    className="hover:text-yellow"
                   >
                     {link.name}
                   </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Mobile CTA */}
-            <div className="mt-10 bg-black p-6 rounded-lg text-center">
-              <h3 className="text-yellow text-2xl font-bold mb-4">
-                Got an Idea? Let's Craft brilliant together!
-              </h3>
-              <button className="bg-yellow text-black px-6 py-2 rounded-full font-medium">
-                Get in Touch
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Footer */}
-          <div className="p-6 border-t border-black/10">
-            <div className="flex flex-wrap gap-4 mb-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  className="text-sm text-black hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {social.name}
-                </a>
-              ))}
-            </div>
-            <div className="flex justify-between text-xs text-black/70">
-              <Link to="/terms">Terms and Conditions</Link>
-              <Link to="/privacy">Privacy Policy</Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

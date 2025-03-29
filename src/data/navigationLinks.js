@@ -14,3 +14,8 @@ export const socialLinks = [
   { name: 'Dribbble', url: 'https://dribbble.com/' },
   { name: 'Behance', url: 'https://behance.net/' }
 ];
+
+export const footerLinks = [
+  { name: 'Terms and Conditions', path: '/terms' },
+  { name: 'Privacy Policy', path: '/privacy' }
+];
