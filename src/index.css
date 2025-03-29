@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme{
+  /* Primary Brand Colors */
+  --color-yellow: #ffc559;
+  --color-yellow-dark: #d6a03a;
+  --color-black: #000000;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-yellow);
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-yellow-dark);
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color:var(--color-yellow) var(--color-black);
+}
