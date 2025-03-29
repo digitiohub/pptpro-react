@@ -94,12 +94,27 @@ const Footer = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-yellow/70 hover:text-yellow transition-colors text-xs"
+                className="text-yellow hover:text-yellow transition-colors text-xs"
               >
                 {link.name}
               </Link>
             ))}
           </div>
+        </div>
+
+        {/* Developed By - Shown on all screen sizes */}
+        <div className="text-center pt-6 mt-4 border-t border-yellow/10">
+          <span className="text-white/60 text-xs">
+            Developed by{" "}
+            <a
+              href="https://digitiohub.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/80 hover:text-yellow transition-colors inline-block"
+            >
+              DigitioHub
+            </a>
+          </span>
         </div>
       </div>
     </footer>
