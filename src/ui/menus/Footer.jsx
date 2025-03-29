@@ -13,20 +13,20 @@ const Footer = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="block">
-              <img 
-                src="/logo-light.jpg" 
-                alt="PPTPRO Logo" 
-                className="h-12" 
+              <img
+                src="/logo-light.jpg"
+                alt="PPTPRO Logo"
+                className="h-12"
               />
             </Link>
           </div>
-          
+
           {/* Navigation Links */}
           <nav className="flex-grow mx-8">
             <ul className="flex flex-wrap justify-center gap-8">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <Link 
+                  <Link
                     to={link.path}
                     className="text-yellow hover:text-yellow/70 transition-colors text-base"
                   >
@@ -36,7 +36,7 @@ const Footer = () => {
               ))}
               {footerLinks.map((link) => (
                 <li key={link.name}>
-                  <Link 
+                  <Link
                     to={link.path}
                     className="text-yellow hover:text-yellow/70 transition-colors text-base"
                   >
@@ -46,51 +46,55 @@ const Footer = () => {
               ))}
             </ul>
           </nav>
-          
+
           {/* Copyright */}
           <div className="text-yellow/50 text-sm whitespace-nowrap">
             © {currentYear} PPTPRO
           </div>
         </div>
-        
+
         {/* Mobile Layout */}
         <div className="md:hidden">
           {/* Top section with logo and copyright */}
           <div className="flex justify-between items-center mb-6">
             {/* Logo */}
             <Link to="/" className="block">
-              <img 
-                src="/logo-light.jpg" 
-                alt="PPTPRO Logo" 
-                className="h-10" 
+              <img
+                src="/logo-light.jpg"
+                alt="PPTPRO Logo"
+                className="h-10"
               />
             </Link>
-            
+
             {/* Copyright */}
             <div className="text-yellow/50 text-xs">
               © {currentYear} PPTPRO
             </div>
           </div>
-          
-          {/* Navigation Grid - 2 columns */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-            {/* First put the main nav links */}
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name}
-                to={link.path}
-                className="text-yellow hover:text-yellow/70 transition-colors text-sm"
-              >
-                {link.name}
-              </Link>
-            ))}
-            
-            {/* Then add the footer links */}
+
+          {/* Navigation Grid - Main nav in 3 columns */}
+          <div className="mb-6">
+            <div className="grid grid-cols-3 gap-x-4 gap-y-5">
+              {/* Main nav links in a 3-column grid */}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="text-yellow hover:text-yellow/70 transition-colors text-sm text-center"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Footer links - Centered */}
+          <div className="flex justify-center space-x-4 border-t border-yellow/20 pt-5">
             {footerLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.name}
                 to={link.path}
-                className="text-yellow hover:text-yellow/70 transition-colors text-sm"
+                className="text-yellow/70 hover:text-yellow transition-colors text-xs"
               >
                 {link.name}
               </Link>

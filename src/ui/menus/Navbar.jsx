@@ -113,7 +113,7 @@ const Navbar = () => {
       {/* Desktop Hamburger Button - Only visible on desktop and when menu is closed */}
       <motion.button
         onClick={toggleMenu}
-        className="fixed top-6 right-6 z-50 p-2 hidden md:block md:visible"
+        className="fixed top-6 right-6 z-50 p-2 hidden md:block md:visible cursor-pointer"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -130,7 +130,7 @@ const Navbar = () => {
       {/* Mobile Hamburger Button - Only visible on mobile and when menu is closed */}
       <motion.button
         onClick={toggleMobileMenu}
-        className="fixed top-6 right-6 z-50 p-2 block md:hidden"
+        className="fixed top-6 right-6 z-50 p-2 block md:hidden cursor-pointer"
         style={{ display: isMobileMenuOpen ? 'none' : '' }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
