@@ -388,7 +388,7 @@ const Navbar = () => {
                       >
                         <Link
                           to={link.path}
-                          className="text-4xl font-medium text-black hover:opacity-70 transition-opacity block"
+                          className="text-3xl font-medium text-black hover:opacity-70 transition-opacity block"
                           onClick={toggleMobileMenu}
                         >
                           {link.name}
