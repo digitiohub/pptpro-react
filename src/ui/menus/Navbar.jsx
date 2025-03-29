@@ -167,7 +167,7 @@ const Navbar = () => {
               >
                 <Link to="/" className="block">
                   <img
-                    src="/logo-dark.jpg"
+                    src="/logos/logo-dark.jpg"
                     alt="PPTPRO Logo"
                     className="h-20"
                   />
@@ -354,7 +354,7 @@ const Navbar = () => {
                 {/* Mobile Logo */}
                 <Link to="/" className="block">
                   <img
-                    src="/logo-dark.jpg"
+                    src="/logos/logo-dark.jpg"
                     alt="PPTPRO Logo"
                     className="h-12"
                   />

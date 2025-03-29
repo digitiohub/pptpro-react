@@ -14,7 +14,7 @@ const Footer = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="block">
               <img
-                src="/logo-light.jpg"
+                src="/logos/logo-light.jpg"
                 alt="PPTPRO Logo"
                 className="h-12"
               />
@@ -60,7 +60,7 @@ const Footer = () => {
             {/* Logo */}
             <Link to="/" className="block">
               <img
-                src="/logo-light.jpg"
+                src="/logos/logo-light.jpg"
                 alt="PPTPRO Logo"
                 className="h-10"
               />
