@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c3f19691-2f1a-445b-a159-331430355440/deploy-status)](https://app.netlify.com/sites/pptpro-react/deploys)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
