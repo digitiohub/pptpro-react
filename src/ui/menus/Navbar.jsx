@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navLinks, socialLinks, footerLinks } from '../../data/navigationLinks';
@@ -6,6 +6,21 @@ import { navLinks, socialLinks, footerLinks } from '../../data/navigationLinks';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Add effect to handle body scrolling when menu is open
+  useEffect(() => {
+    // Add a CSS class to the body when any menu is open
+    if (isMenuOpen || isMobileMenuOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // Cleanup function to ensure we remove the class when component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isMenuOpen, isMobileMenuOpen]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
