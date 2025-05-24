@@ -136,14 +136,17 @@ export default function ThreeDMarqueeDemo() {
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 {/* "PPTPro" text - appears over the visible content */}
                 <motion.h1 
-                  className="text-5xl md:text-9xl font-bold text-white mb-4 drop-shadow-lg"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: animationStep >= 3 ? 1 : 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {typedTextPPTPro}
-                  {animationStep === 3 && <span className="animate-pulse text-white">|</span>}
-                </motion.h1>
+  className="text-5xl md:text-8xl xl:text-[8.5rem] font-bold text-white mb-4"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: animationStep >= 3 ? 1 : 0 }}
+  transition={{ duration: 0.5 }}
+  style={{
+    textShadow: "0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.3)"
+  }}
+>
+  {typedTextPPTPro}
+  {animationStep === 3 && <span className="animate-pulse text-white">|</span>}
+</motion.h1>
                 
                 {/* "The Language of Business" tagline - always rendered but initially invisible */}
                 <motion.p
