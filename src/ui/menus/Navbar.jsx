@@ -23,17 +23,25 @@ const Navbar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  // Add effect to detect scroll for navbar styling
+  // Add effect to detect scroll for navbar styling with optimized performance
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 50) {
+            setScrolled(true);
+          } else {
+            setScrolled(false);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -48,6 +56,46 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Animation variants using transform3d
+  const buttonHoverVariants = {
+    initial: {},
+    hover: {
+      transform: "translate3d(0px, 0px, 0px) scale(1.05)",
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 10,
+      },
+    },
+    tap: {
+      transform: "translate3d(0px, 0px, 0px) scale(0.95)",
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 10,
+      },
+    },
+  };
+
+  const hamburgerVariants = {
+    hover: {
+      transform: "translate3d(0px, 0px, 0px) scale(1.1)",
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 10,
+      },
+    },
+    tap: {
+      transform: "translate3d(0px, 0px, 0px) scale(0.95)",
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 10,
+      },
+    },
+  };
+
   return (
     <>
       {/* Desktop Navbar */}
@@ -55,6 +103,7 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled ? "bg-black shadow-lg" : "bg-transparent"
         }`}
+        style={{ willChange: "background-color, box-shadow" }}
       >
         <div className="container mx-auto px-4 lg:px-8">
           <div className="hidden md:flex items-center justify-between py-4">
@@ -74,16 +123,22 @@ const Navbar = () => {
               <ul className="flex items-center justify-center space-x-8">
                 {navLinks.map((link) => (
                   <li key={link.name}>
-                    <Link
-                      to={link.path}
-                      className={`text-base font-medium transition-colors ${
-                        scrolled
-                          ? "text-yellow hover:text-white"
-                          : "text-black hover:text-yellow"
-                      }`}
+                    <motion.div
+                      whileHover={{
+                        color: scrolled ? "#FFFFFF" : "#FFC559",
+                        transition: { duration: 0.2 },
+                      }}
+                      style={{ willChange: "color" }}
                     >
-                      {link.name}
-                    </Link>
+                      <Link
+                        to={link.path}
+                        className={`text-base font-medium transition-colors ${
+                          scrolled ? "text-yellow" : "text-black"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
                   </li>
                 ))}
               </ul>
@@ -96,8 +151,10 @@ const Navbar = () => {
                   ? "bg-yellow text-black hover:bg-white"
                   : "bg-black text-yellow hover:bg-yellow hover:text-black"
               }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              variants={buttonHoverVariants}
+              whileHover="hover"
+              whileTap="tap"
+              style={{ willChange: "transform" }}
             >
               Get in Touch
             </motion.button>
@@ -120,9 +177,13 @@ const Navbar = () => {
             <motion.button
               onClick={toggleMobileMenu}
               className="z-50 p-2 cursor-pointer"
-              style={{ display: isMobileMenuOpen ? "none" : "" }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              style={{
+                display: isMobileMenuOpen ? "none" : "",
+                willChange: "transform",
+              }}
+              variants={hamburgerVariants}
+              whileHover="hover"
+              whileTap="tap"
               aria-label="Toggle mobile menu"
             >
               <div

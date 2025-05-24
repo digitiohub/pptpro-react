@@ -5,7 +5,6 @@ import Footer from '../ui/menus/Footer'
 const MainLayout = () => {
   return (
     <>
-    <Navbar/>
     <Outlet/>
     <Footer/>
     </>

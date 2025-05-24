@@ -4,23 +4,111 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navLinks, socialLinks, footerLinks } from "../../data/navigationLinks";
 
 const MobileMenu = ({ isOpen, onClose }) => {
-  // Animation variants for mobile menu
+  // Animation variants for mobile menu using transform3d for better performance
   const mobileMenuVariants = {
-    hidden: { y: "-100%", opacity: 0 },
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0px, -100%, 0px)",
+    },
     visible: {
-      y: 0,
       opacity: 1,
+      transform: "translate3d(0px, 0%, 0px)",
       transition: {
         duration: 0.5,
         ease: [0.6, 0.05, 0.01, 0.9],
       },
     },
     exit: {
-      y: "-100%",
       opacity: 0,
+      transform: "translate3d(0px, -100%, 0px)",
       transition: {
         duration: 0.5,
         ease: [0.6, 0.05, 0.01, 0.9],
+      },
+    },
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const navItemVariants = {
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(-30px, 0px, 0px)",
+    },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+    hover: {
+      transform: "translate3d(5px, 0px, 0px)",
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 20,
+      },
+    },
+  };
+
+  const headerVariants = {
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0px, -20px, 0px)",
+    },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        delay: 0.2,
+        duration: 0.4,
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+  };
+
+  const footerVariants = {
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0px, 50px, 0px)",
+    },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        delay: 0.5,
+        duration: 0.5,
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+  };
+
+  const ctaVariants = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.7,
+        duration: 0.5,
       },
     },
   };
@@ -36,28 +124,71 @@ const MobileMenu = ({ isOpen, onClose }) => {
     },
   };
 
+  const socialItemVariants = {
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0px, 10px, 0px)",
+    },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+    hover: {
+      scale: 1.1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 10,
+      },
+    },
+  };
+
+  const footerLinksVariants = {
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0px, 10px, 0px)",
+    },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        delay: 1,
+        duration: 0.5,
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      },
+    },
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
           className="fixed inset-0 z-50 block md:hidden"
-          variants={mobileMenuVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
+          variants={mobileMenuVariants}
+          style={{
+            willChange: "transform, opacity",
+          }}
         >
           <motion.div
             className="bg-yellow h-full flex flex-col"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
+            variants={contentVariants}
+            style={{ willChange: "opacity" }}
           >
             {/* Mobile Header */}
             <motion.div
               className="flex items-center justify-between p-6 border-b border-black/10"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
+              variants={headerVariants}
+              style={{ willChange: "transform, opacity" }}
             >
               {/* Mobile Logo */}
               <Link to="/" className="block">
@@ -75,6 +206,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Close mobile menu"
+                style={{ willChange: "transform" }}
               >
                 <div className="w-6 h-0.5 bg-black rotate-45 absolute rounded-full"></div>
                 <div className="w-6 h-0.5 bg-black -rotate-45 rounded-full"></div>
@@ -89,10 +221,9 @@ const MobileMenu = ({ isOpen, onClose }) => {
                   {navLinks.map((link, i) => (
                     <motion.li
                       key={link.name}
-                      initial={{ x: -30, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                      whileHover={{ x: 5 }}
+                      variants={navItemVariants}
+                      whileHover="hover"
+                      style={{ willChange: "transform, opacity" }}
                     >
                       <Link
                         to={link.path}
@@ -110,17 +241,15 @@ const MobileMenu = ({ isOpen, onClose }) => {
             {/* Mobile Footer with CTA */}
             <motion.div
               className="p-6 border-t border-black/10 bg-black text-yellow"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
+              variants={footerVariants}
+              style={{ willChange: "transform, opacity" }}
             >
               <div className="flex flex-col space-y-6">
                 {/* CTA */}
                 <motion.div
                   className="flex flex-col justify-between items-center gap-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
+                  variants={ctaVariants}
+                  style={{ willChange: "opacity" }}
                 >
                   <h3 className="text-xl font-bold text-center">
                     Got an Idea? <br />
@@ -128,8 +257,16 @@ const MobileMenu = ({ isOpen, onClose }) => {
                   </h3>
                   <motion.button
                     className="bg-yellow text-black px-6 py-3 rounded-full font-medium whitespace-nowrap w-full"
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{
+                      scale: 1.05,
+                      transition: {
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 10,
+                      },
+                    }}
                     whileTap={{ scale: 0.95 }}
+                    style={{ willChange: "transform" }}
                   >
                     Get in Touch
                   </motion.button>
@@ -139,20 +276,18 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 <motion.div
                   className="flex flex-wrap justify-center gap-5"
                   variants={socialVariants}
-                  initial="hidden"
-                  animate="visible"
+                  style={{ willChange: "opacity" }}
                 >
-                  {socialLinks.map((social, i) => (
+                  {socialLinks.map((social) => (
                     <motion.a
                       key={social.name}
                       href={social.url}
                       className="text-sm text-yellow/80 hover:text-yellow"
                       target="_blank"
                       rel="noopener noreferrer"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 + i * 0.1 }}
-                      whileHover={{ scale: 1.1 }}
+                      variants={socialItemVariants}
+                      whileHover="hover"
+                      style={{ willChange: "transform, opacity" }}
                     >
                       {social.name}
                     </motion.a>
@@ -162,14 +297,22 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 {/* Footer Links */}
                 <motion.div
                   className="flex justify-around text-xs text-yellow/70"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1, duration: 0.5 }}
+                  variants={footerLinksVariants}
+                  style={{ willChange: "transform, opacity" }}
                 >
                   {footerLinks.map((link) => (
                     <motion.div
                       key={link.name}
-                      whileHover={{ scale: 1.1, color: "#ffc559" }}
+                      whileHover={{
+                        scale: 1.1,
+                        color: "#ffc559",
+                        transition: {
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 10,
+                        },
+                      }}
+                      style={{ willChange: "transform, color" }}
                     >
                       <Link to={link.path} className="hover:text-yellow">
                         {link.name}
