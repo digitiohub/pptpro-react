@@ -19,7 +19,7 @@ const StarBorder = ({
 
   if (variant === "yellow") {
     buttonStyle =
-      "relative z-1 bg-gradient-to-b from-[#121212] to-yellow-600 text-white font-medium";
+      "relative z-1 bg-yellow-700  text-white font-medium";
   }
 
   // Handle touch/mouse events for smooth scaling

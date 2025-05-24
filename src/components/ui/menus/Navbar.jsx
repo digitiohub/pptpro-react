@@ -9,7 +9,10 @@ import StarBorder from "../../../ui/StarBorder/StarBorder";
 const navbarVariants = {
   visible: (scrolled) => ({
     transform: "translate3d(0px, 0px, 0px)",
-    backgroundColor: "rgba(0, 0, 0, 0.8)", // Always black background regardless of scroll position
+    // Use gradient when at top of page, solid when scrolled
+    background: scrolled
+      ? "rgba(0, 0, 0, 0.8)"
+      : "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0) 100%)",
     boxShadow: scrolled ? "0 4px 6px -1px rgba(0, 0, 0, 0.3)" : "none",
     transition: {
       type: "tween",
@@ -194,6 +197,11 @@ const Navbar = () => {
           color: black;
           font-weight: 500;
         }
+        
+        /* Add padding to ensure content doesn't peek through transparent gradient */
+        .gradient-nav-padding {
+          padding-bottom: 20px;
+        }
       `}</style>
 
       <motion.header
@@ -202,9 +210,13 @@ const Navbar = () => {
         animate={visible || isMobileMenuOpen ? "visible" : "hidden"}
         custom={scrolled}
         variants={navbarVariants}
-        style={{ willChange: "transform, background-color, box-shadow" }}
+        style={{ willChange: "transform, background, box-shadow" }}
       >
-        <div className="container mx-auto px-4 lg:px-8">
+        <div
+          className={`container mx-auto px-4 lg:px-8 ${
+            !scrolled ? "gradient-nav-padding" : ""
+          }`}
+        >
           <div className="flex items-center justify-between py-4">
             {/* Logo - Always use light logo at the top */}
             <motion.div
@@ -236,7 +248,7 @@ const Navbar = () => {
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className={`nav-link text-base font-medium transition-colors text-yellow ${
+                      className={`nav-link text-base uppercase font-medium transition-colors text-white ${
                         location.pathname === link.path ? "active" : ""
                       }`}
                     >
@@ -298,7 +310,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </>
-  );  
+  );
 };
 
 export default Navbar;

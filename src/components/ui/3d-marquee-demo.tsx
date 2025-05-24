@@ -17,7 +17,7 @@ export default function ThreeDMarqueeDemo() {
   const [showContent, setShowContent] = useState(false);
   
   const welcomeText = "Welcome to:";
-  const pptProText = "PPTPro";
+  const pptProText = "PPT PRO";
   const taglineText = "The Language of Business";
 
   // Animation sequence control
@@ -136,7 +136,7 @@ export default function ThreeDMarqueeDemo() {
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 {/* "PPTPro" text - appears over the visible content */}
                 <motion.h1 
-                  className="text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg"
+                  className="text-5xl md:text-9xl font-bold text-white mb-4 drop-shadow-lg"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: animationStep >= 3 ? 1 : 0 }}
                   transition={{ duration: 0.5 }}
@@ -145,14 +145,14 @@ export default function ThreeDMarqueeDemo() {
                   {animationStep === 3 && <span className="animate-pulse text-white">|</span>}
                 </motion.h1>
                 
-                {/* "The Language of Business" tagline */}
+                {/* "The Language of Business" tagline - always rendered but initially invisible */}
                 <motion.p
-                  className="text-xl md:text-2xl text-white italic drop-shadow-lg"
+                  className="text-xl md:text-2xl text-white italic drop-shadow-lg h-8 md:h-10"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: showTagline ? 1 : 0 }}
                   transition={{ duration: 1 }}
                 >
-                  {showTagline && taglineText}
+                  {taglineText}
                 </motion.p>
               </div>
             )}
