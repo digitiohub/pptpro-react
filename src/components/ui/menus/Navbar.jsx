@@ -12,7 +12,7 @@ const navbarVariants = {
     // Use gradient when at top of page, solid when scrolled
     background: scrolled
       ? "rgba(0, 0, 0, 0.8)"
-      : "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0) 100%)",
+      : "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 65%, rgba(0, 0, 0, 0) 100%)",
     boxShadow: scrolled ? "0 4px 6px -1px rgba(0, 0, 0, 0.3)" : "none",
     transition: {
       type: "tween",
