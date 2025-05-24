@@ -63,12 +63,12 @@ const HomeHero = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url("/images/hero-bg.jpg")',
+          backgroundImage: 'url("/backgrounds/BG.png")',
           willChange: "transform",
         }}
       >
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
       {/* Navbar */}
