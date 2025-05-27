@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-  import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ExternalLink, ChevronDown } from "lucide-react";
 
@@ -8,8 +8,9 @@ const HomeAccordion = () => {
   const sectionRef = useRef(null);
 
   // Use inView to detect when section enters viewport
+  // Changed 'once' to false so we can detect when the component enters/leaves viewport
   const isInView = useInView(sectionRef, {
-    once: true,
+    once: false, // Changed from true to false to detect every time it enters viewport
     amount: 0.2,
     margin: "-100px 0px",
   });
@@ -115,7 +116,7 @@ const HomeAccordion = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Setup auto-cycling effect - only on larger screens
+  // Setup auto-cycling effect - only on larger screens and when in view
   useEffect(() => {
     if (isMobile) {
       // Don't auto-cycle on mobile
@@ -126,17 +127,26 @@ const HomeAccordion = () => {
       return;
     }
 
-    // Function to cycle to next accordion item
-    const cycleToNextItem = () => {
-      if (!autoCyclingPaused) {
-        setActiveIndex((prevIndex) =>
-          prevIndex === accordionData.length - 1 ? 0 : prevIndex + 1
-        );
-      }
-    };
+    // Only start auto-cycling when component is in view
+    if (isInView && !autoCyclingPaused) {
+      // Function to cycle to next accordion item
+      const cycleToNextItem = () => {
+        if (!autoCyclingPaused) {
+          setActiveIndex((prevIndex) =>
+            prevIndex === accordionData.length - 1 ? 0 : prevIndex + 1
+          );
+        }
+      };
 
-    // Start the interval for auto-cycling (every 8 seconds)
-    cycleIntervalRef.current = setInterval(cycleToNextItem, 8000);
+      // Start the interval for auto-cycling (every 8 seconds)
+      cycleIntervalRef.current = setInterval(cycleToNextItem, 8000);
+    } else {
+      // Clear interval when component is not in view
+      if (cycleIntervalRef.current) {
+        clearInterval(cycleIntervalRef.current);
+        cycleIntervalRef.current = null;
+      }
+    }
 
     // Cleanup on component unmount
     return () => {
@@ -147,7 +157,7 @@ const HomeAccordion = () => {
         clearTimeout(pauseTimerRef.current);
       }
     };
-  }, [autoCyclingPaused, accordionData.length, isMobile]);
+  }, [autoCyclingPaused, accordionData.length, isMobile, isInView]); // Added isInView to dependencies
 
   // Toggle accordion item with manual click handling
   const toggleAccordion = (index) => {
@@ -246,7 +256,7 @@ const HomeAccordion = () => {
     const textArray = new Array(15).fill(
       <>
         <span className={numberStyleClass}>{formatNumber(index + 1)}</span>
-        <span className="text-black tracking-tighter">
+        <span className="text-gray-900 tracking-tighter">
           {item.title.firstPart}{" "}
         </span>
         -
@@ -355,7 +365,7 @@ const HomeAccordion = () => {
   return (
     <div
       ref={sectionRef}
-      className="py-8 md:py-20 bg-white w-full relative overflow-hidden"
+      className="py-12 md:pt-20 bg-white w-full relative overflow-hidden"
       style={{
         transform: "translateZ(0)", // Force GPU rendering
         backfaceVisibility: "hidden",
@@ -363,7 +373,7 @@ const HomeAccordion = () => {
     >
       {/* Decorative hexagon pattern on the right side - hidden on small screens */}
       <div
-        className="absolute right-0 top-0 w-1/2 h-full pointer-events-none "
+        className="absolute right-0 top-10 w-1/2 h-full pointer-events-none "
         style={{
           backgroundImage: "url('/backgrounds/hexa3.svg')",
           backgroundSize: "cover",
@@ -389,7 +399,7 @@ const HomeAccordion = () => {
           }}
         >
           <h2
-            className="text-3xl md:text-4xl lg:text-5xl font-medium uppercase text-black"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium uppercase text-gray-900"
             style={{ transform: "translate3d(0, 0, 0)" }} // Force GPU rendering
           >
             Our Services
@@ -433,7 +443,7 @@ const HomeAccordion = () => {
             {categories.map((category, index) => (
               <motion.span
                 key={index}
-                className="px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gray-100 text-black border border-gray-200 mb-2"
+                className="px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gray-100 text-gray-900 border border-gray-200 mb-2"
                 initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
                 animate={
                   isInView
@@ -485,7 +495,7 @@ const HomeAccordion = () => {
                       <span className={numberStyleClass}>
                         {formatNumber(index + 1)}
                       </span>
-                      <span className="text-black mr-1">
+                      <span className="text-gray-900 mr-1">
                         {item.title.firstPart}{" "}
                       </span>
                       <span className="text-yellow-500">
@@ -576,7 +586,7 @@ const HomeAccordion = () => {
                       {/* Responsive grid: single column on mobile, two columns on desktop */}
                       <div className="p-4 sm:p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         <div>
-                          <p className="text-black text-base md:text-lg mb-6">
+                          <p className="text-gray-900 text-base md:text-lg mb-6">
                             {item.description}
                           </p>
                           <button
@@ -604,14 +614,14 @@ const HomeAccordion = () => {
 
                         {/* Features section with responsive styling */}
                         <div className="md:border-l border-gray-200 md:pl-8 mt-8 md:mt-0 pt-6 md:pt-0 border-t md:border-t-0">
-                          <h4 className="text-black font-medium mb-4 text-base md:text-lg">
+                          <h4 className="text-gray-900 font-medium mb-4 text-base md:text-lg">
                             Key features:
                           </h4>
                           <ul className="space-y-2 md:space-y-3">
                             {item.details.map((detail, i) => (
                               <motion.li
                                 key={i}
-                                className="flex items-start text-black text-sm md:text-base"
+                                className="flex items-start text-gray-900 text-sm md:text-base"
                                 initial={{
                                   opacity: 0,
                                   transform: "translate3d(-10px, 0, 0)",
