@@ -145,6 +145,23 @@ const HomeCards = () => {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
   const cardsRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check for mobile viewport on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkMobile();
+
+    // Add resize listener
+    window.addEventListener("resize", checkMobile);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Use inView to detect when elements enter viewport
   const isInView = useInView(sectionRef, {
@@ -172,20 +189,27 @@ const HomeCards = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="pt-8 md:pt-20 pb-12 overflow-hidden relative">
-      <div className="container mx-auto">
+    <section
+      ref={sectionRef}
+      className="pt-8 md:pt-20 pb-12 overflow-hidden relative"
+    >
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Intro text section */}
         <motion.div
           ref={textRef}
-          className="max-w-4xl mx-auto text-center mb-4"
+          className="max-w-4xl mx-auto text-center mb-8 md:mb-12"
           variants={introTextAnim}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          
           <p
-            className="text-gray-600 dark:text-gray-300 text-2xl text-justify tracking-wide"
-            style={{ textAlignLast: "center" }}
+            className="text-gray-600 dark:text-gray-300 text-lg sm:text-xl md:text-2xl px-4"
+            style={{
+              textAlign: "justify",
+              textAlignLast: "center",
+              hyphens: "auto",
+              wordSpacing: "-0.05em",
+            }}
           >
             At PPT Pro, we believe that presentations are more than just slides
             – they're powerful tools for communication and persuasion. We help
@@ -196,7 +220,7 @@ const HomeCards = () => {
 
         {/* Top Marquee - Absolute position */}
         <div
-          className="absolute top-70 left-0 right-0 w-full overflow-hidden"
+          className="absolute top-70 left-0 right-0 w-full overflow-hidden hidden md:block"
           style={{ zIndex: 0 }}
         >
           <motion.div
@@ -220,16 +244,18 @@ const HomeCards = () => {
         {/* Cards section with separated overlay background */}
         <div ref={cardsRef} className="relative" style={{ zIndex: 10 }}>
           {/* Cards container */}
-          <div className="relative p-6 md:p-12 rounded-lg">
+          <div className="relative p-4 sm:p-6 md:p-12 rounded-lg">
             {/* Cards grid with staggered animation */}
-            <div className="flex flex-wrap justify-center gap-8">
+            <div className="flex flex-col md:flex-row md:flex-wrap justify-center gap-6 md:gap-8">
               {cards.map((card, index) => (
                 <motion.div
                   key={card.title}
-                  className="bg-black text-white rounded-xl p-8 shadow-lg relative overflow-hidden cursor-pointer"
+                  className="bg-black text-white rounded-xl p-5 sm:p-6 md:p-8 shadow-lg relative overflow-hidden cursor-pointer mx-auto md:mx-0"
                   style={{
-                    width: "420px",
-                    height: "475px",
+                    width: "100%",
+                    maxWidth: "420px",
+                    height: "auto",
+                    minHeight: isMobile ? "280px" : "450px",
                     display: "flex",
                     flexDirection: "column",
                     willChange: "transform, opacity, box-shadow",
@@ -256,12 +282,30 @@ const HomeCards = () => {
                     style={{ zIndex: -1 }}
                   />
 
+                  {/* Individual SVG overlay for mobile - individual for each card */}
+                  {isMobile && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        zIndex: 5,
+                        mixBlendMode: "lighten",
+                      }}
+                    >
+                      <img
+                        src="/backgrounds/hexa2.svg"
+                        alt="Background Pattern"
+                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] max-w-none"
+                        style={{ opacity: 0.7 }} // Slightly reduced opacity
+                      />
+                    </div>
+                  )}
+
                   {/* Card content */}
-                  <div className="relative flex flex-col pt-16 h-full">
+                  <div className="relative flex flex-col pt-4 sm:pt-8 md:pt-16 h-full z-10">
                     {/* Title - removed typewriter effect */}
-                    <div className="mb-6">
+                    <div className="mb-2 sm:mb-4 md:mb-6">
                       <motion.h3
-                        className="md:text-6xl font-light"
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light"
                         variants={titleVariants}
                         initial="hidden"
                         animate="visible"
@@ -272,16 +316,25 @@ const HomeCards = () => {
                         custom={index}
                         style={{
                           lineHeight: "1.1",
-                          paddingBottom: "10px", // Keep padding for descenders
+                          paddingBottom: isMobile ? "5px" : "10px",
                         }}
                       >
                         {card.title}
                       </motion.h3>
                     </div>
 
-                    {/* Description fades in along with title */}
+                    {/* Description with improved justification */}
                     <motion.p
-                      className="text-gray-300 text-justify tracking-wide text-lg flex-grow"
+                      className="text-gray-300 text-sm sm:text-base md:text-lg flex-grow"
+                      style={{
+                        textAlign: "justify",
+                        hyphens: "auto",
+                        wordBreak: "break-word",
+                        wordSpacing: "-0.05em",
+                        WebkitHyphens: "auto",
+                        MozHyphens: "auto",
+                        msHyphens: "auto",
+                      }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.5, delay: 0.7 + index * 0.15 }}
@@ -307,7 +360,7 @@ const HomeCards = () => {
                       <img
                         src="/graphics/halfArrowRight.svg"
                         alt="Arrow"
-                        className="w-12 h-12"
+                        className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
                       />
                     </motion.div>
                   </div>
@@ -316,26 +369,28 @@ const HomeCards = () => {
             </div>
           </div>
 
-          {/* SVG overlay - completely separate from cards container */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              zIndex: 20,
-              mixBlendMode: "lighten",
-            }}
-          >
-            <img
-              src="/backgrounds/hexa2.svg"
-              alt="Background Pattern"
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] max-w-none"
-              style={{ opacity: 0.8 }}
-            />
-          </div>
+          {/* SVG overlay for desktop - shared across all cards */}
+          {!isMobile && (
+            <div
+              className="absolute inset-0 pointer-events-none hidden md:block"
+              style={{
+                zIndex: 20,
+                mixBlendMode: "lighten",
+              }}
+            >
+              <img
+                src="/backgrounds/hexa2.svg"
+                alt="Background Pattern"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] max-w-none"
+                style={{ opacity: 0.8 }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Bottom Marquee - Absolute position */}
         <div
-          className="absolute bottom-5 left-0 right-0 w-full overflow-hidden"
+          className="absolute bottom-5 left-0 right-0 w-full overflow-hidden hidden md:block"
           style={{ zIndex: 0 }}
         >
           <motion.div

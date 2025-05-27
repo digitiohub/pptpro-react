@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+  import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, ChevronDown } from "lucide-react";
 
 const HomeAccordion = () => {
+  // Create ref for animation section
+  const sectionRef = useRef(null);
+
+  // Use inView to detect when section enters viewport
+  const isInView = useInView(sectionRef, {
+    once: true,
+    amount: 0.2,
+    margin: "-100px 0px",
+  });
+
   // Data for accordion items with updated titles
   const accordionData = [
     {
@@ -84,11 +94,38 @@ const HomeAccordion = () => {
   const cycleIntervalRef = useRef(null);
   // Ref to store the pause timer
   const pauseTimerRef = useRef(null);
+  // State to track screen size
+  const [isMobile, setIsMobile] = useState(false);
 
   const navigate = useNavigate();
 
-  // Setup auto-cycling effect
+  // Effect to check window size and set isMobile state
   useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkScreenSize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Setup auto-cycling effect - only on larger screens
+  useEffect(() => {
+    if (isMobile) {
+      // Don't auto-cycle on mobile
+      if (cycleIntervalRef.current) {
+        clearInterval(cycleIntervalRef.current);
+        cycleIntervalRef.current = null;
+      }
+      return;
+    }
+
     // Function to cycle to next accordion item
     const cycleToNextItem = () => {
       if (!autoCyclingPaused) {
@@ -103,12 +140,14 @@ const HomeAccordion = () => {
 
     // Cleanup on component unmount
     return () => {
-      clearInterval(cycleIntervalRef.current);
+      if (cycleIntervalRef.current) {
+        clearInterval(cycleIntervalRef.current);
+      }
       if (pauseTimerRef.current) {
         clearTimeout(pauseTimerRef.current);
       }
     };
-  }, [autoCyclingPaused, accordionData.length]);
+  }, [autoCyclingPaused, accordionData.length, isMobile]);
 
   // Toggle accordion item with manual click handling
   const toggleAccordion = (index) => {
@@ -123,10 +162,12 @@ const HomeAccordion = () => {
       clearTimeout(pauseTimerRef.current);
     }
 
-    // Resume auto-cycling after 20 seconds
-    pauseTimerRef.current = setTimeout(() => {
-      setAutoCyclingPaused(false);
-    }, 20000);
+    // Resume auto-cycling after 20 seconds (only on non-mobile)
+    if (!isMobile) {
+      pauseTimerRef.current = setTimeout(() => {
+        setAutoCyclingPaused(false);
+      }, 20000);
+    }
   };
 
   // Navigate to service page
@@ -198,9 +239,9 @@ const HomeAccordion = () => {
   };
 
   // Common number styling class
-  const numberStyleClass = "text-gray-400 mr-4 font-mono";
+  const numberStyleClass = "text-gray-400 mr-2 md:mr-4 font-mono";
 
-  // Marquee animation for the title
+  // Marquee animation for the title (desktop only)
   const createMarqueeText = (item, index) => {
     const textArray = new Array(15).fill(
       <>
@@ -234,7 +275,7 @@ const HomeAccordion = () => {
           </span>,
           <span
             key="dev"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 ml-2"
           >
             Design
           </span>,
@@ -249,7 +290,7 @@ const HomeAccordion = () => {
           </span>,
           <span
             key="animation"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-200 text-yellow-800"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-yellow-200 text-yellow-800 ml-2"
           >
             Animation
           </span>,
@@ -264,7 +305,7 @@ const HomeAccordion = () => {
           </span>,
           <span
             key="skills"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 ml-2"
           >
             Skills
           </span>,
@@ -275,11 +316,11 @@ const HomeAccordion = () => {
             key="consult"
             className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
           >
-            Consultation
+            Consult
           </span>,
           <span
             key="strategy"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 ml-2"
           >
             Strategy
           </span>,
@@ -290,11 +331,11 @@ const HomeAccordion = () => {
             key="finance"
             className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-400 text-yellow-900"
           >
-            Financial
+            Finance
           </span>,
           <span
             key="data"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 ml-2"
           >
             Data
           </span>,
@@ -313,34 +354,34 @@ const HomeAccordion = () => {
 
   return (
     <div
-      className="py-12 md:py-20 bg-white w-full relative"
+      ref={sectionRef}
+      className="py-8 md:py-20 bg-white w-full relative overflow-hidden"
       style={{
         transform: "translateZ(0)", // Force GPU rendering
         backfaceVisibility: "hidden",
       }}
     >
-      {/* Decorative hexagon pattern on the right side */}
+      {/* Decorative hexagon pattern on the right side - hidden on small screens */}
       <div
-        className="absolute right-0 top-0 w-1/2 h-full pointer-events-none"
+        className="absolute right-0 top-0 w-1/2 h-full pointer-events-none "
         style={{
           backgroundImage: "url('/backgrounds/hexa3.svg')",
           backgroundSize: "cover",
           backgroundPosition: "right center",
-          
           transform: "translate3d(0, 0, 0)", // Force GPU rendering
         }}
       ></div>
 
       {/* Header section with constrained width */}
       <div
-        className="mx-auto max-w-6xl px-4 md:px-6 mb-12 relative z-10"
+        className="mx-auto max-w-6xl px-4 md:px-6 mb-8 md:mb-12 relative z-10"
         style={{ willChange: "transform, opacity" }}
       >
         {/* Regular title without typewriter effect */}
         <motion.div
           className="text-center mb-3"
           initial="hidden"
-          animate="visible"
+          animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}
           style={{
             perspective: 1000,
@@ -348,7 +389,7 @@ const HomeAccordion = () => {
           }}
         >
           <h2
-            className="text-4xl md:text-5xl font-medium uppercase text-black"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium uppercase text-black"
             style={{ transform: "translate3d(0, 0, 0)" }} // Force GPU rendering
           >
             Our Services
@@ -357,39 +398,48 @@ const HomeAccordion = () => {
 
         {/* Justified subtitle text */}
         <motion.p
-          className="text-lg text-gray-600 text-justify mb-8 max-w-2xl mx-auto"
+          className="text-base md:text-lg text-gray-600 text-center md:text-justify mb-6 md:mb-8 max-w-2xl mx-auto px-4"
           style={{
             textAlignLast: "center",
             transform: "translate3d(0, 0, 0)", // Force GPU rendering
             willChange: "opacity",
           }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={isInView ? { opacity: 1 } : {}}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
           We offer presentation solutions to elevate your message, engage your
           audience, and deliver results across various business contexts.
         </motion.p>
 
-        {/* Horizontal divider */}
+        {/* Horizontal divider - optimized for mobile */}
         <motion.div
-          className="flex items-center mb-12"
+          className="flex flex-wrap items-center mb-8 md:mb-12"
           initial={{ opacity: 0, transform: "scale3d(0, 1, 1)" }}
-          animate={{ opacity: 1, transform: "scale3d(1, 1, 1)" }}
+          animate={
+            isInView ? { opacity: 1, transform: "scale3d(1, 1, 1)" } : {}
+          }
           transition={{ delay: 0.8, duration: 0.6 }}
           style={{
             transformOrigin: "center",
             willChange: "transform, opacity",
           }}
         >
-          <div className="flex-grow h-px bg-gray-200"></div>
-          <div className="flex-shrink-0 px-4 flex space-x-3 flex-wrap justify-center">
+          {/* Line visible only on larger screens */}
+          <div className="hidden md:block flex-grow h-px bg-gray-200"></div>
+
+          {/* Category pills - centered on mobile, in line on desktop */}
+          <div className="w-full md:w-auto md:flex-shrink-0 px-0 md:px-4 flex flex-wrap justify-center gap-2 md:space-x-3">
             {categories.map((category, index) => (
               <motion.span
                 key={index}
-                className="px-4 py-1 rounded-full text-sm font-medium bg-gray-100 text-black border border-gray-200 mb-2"
+                className="px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gray-100 text-black border border-gray-200 mb-2"
                 initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-                animate={{ opacity: 1, transform: "translate3d(0, 0, 0)" }}
+                animate={
+                  isInView
+                    ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
+                    : {}
+                }
                 transition={{ delay: 1.0 + index * 0.1, duration: 0.4 }}
                 style={{ willChange: "transform, opacity" }}
               >
@@ -397,7 +447,9 @@ const HomeAccordion = () => {
               </motion.span>
             ))}
           </div>
-          <div className="flex-grow h-px bg-gray-200"></div>
+
+          {/* Line visible only on larger screens */}
+          <div className="hidden md:block flex-grow h-px bg-gray-200"></div>
         </motion.div>
       </div>
 
@@ -427,12 +479,13 @@ const HomeAccordion = () => {
               >
                 {/* Normal state - full width with container for content */}
                 <div className="max-w-6xl mx-auto w-full">
-                  <div className="flex justify-between items-center py-6 md:py-8 px-4 md:px-6">
-                    <h3 className="text-xl md:text-3xl lg:text-4xl font-medium text-left flex items-center">
+                  <div className="flex justify-between items-center py-4 md:py-6 lg:py-8 px-4 md:px-6">
+                    {/* Title with responsive sizing */}
+                    <h3 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-medium text-left flex items-center flex-wrap">
                       <span className={numberStyleClass}>
                         {formatNumber(index + 1)}
                       </span>
-                      <span className="text-black">
+                      <span className="text-black mr-1">
                         {item.title.firstPart}{" "}
                       </span>
                       <span className="text-yellow-500">
@@ -440,17 +493,35 @@ const HomeAccordion = () => {
                       </span>
                     </h3>
 
-                    {/* Pills based on service type - only yellow and gray shades */}
-                    <div className="flex items-center space-x-2">
-                      {getPillsForService(index)}
+                    {/* Right side: Pills on larger screens, Chevron on mobile */}
+                    <div className="flex items-center">
+                      {/* Pills based on service type */}
+                      <div className="hidden sm:flex items-center space-x-0">
+                        {getPillsForService(index)}
+                      </div>
+
+                      {/* Chevron indicator for mobile - rotates when active */}
+                      <motion.div
+                        className="ml-3 sm:ml-4 text-gray-400"
+                        animate={{
+                          transform:
+                            activeIndex === index
+                              ? "rotate3d(0, 0, 1, 180deg)"
+                              : "rotate3d(0, 0, 1, 0deg)",
+                        }}
+                        transition={{ duration: 0.3 }}
+                        style={{ transformOrigin: "center" }}
+                      >
+                        <ChevronDown size={isMobile ? 18 : 24} />
+                      </motion.div>
                     </div>
                   </div>
                 </div>
 
-                {/* Hover state with scrolling text - without hexagon pattern */}
-                {activeIndex !== index && (
+                {/* Hover state with scrolling text - desktop only */}
+                {!isMobile && activeIndex !== index && (
                   <div className="absolute top-0 left-0 w-full h-full flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
-                    {/* Background fill animation - plain background without pattern */}
+                    {/* Background fill animation */}
                     <div
                       className="absolute inset-0 bg-gray-50 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom"
                       style={{ willChange: "transform" }}
@@ -502,9 +573,10 @@ const HomeAccordion = () => {
                       className="max-w-6xl mx-auto relative z-10"
                       style={{ transform: "translate3d(0, 0, 0)" }}
                     >
-                      <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
+                      {/* Responsive grid: single column on mobile, two columns on desktop */}
+                      <div className="p-4 sm:p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         <div>
-                          <p className="text-black text-lg mb-6">
+                          <p className="text-black text-base md:text-lg mb-6">
                             {item.description}
                           </p>
                           <button
@@ -525,19 +597,21 @@ const HomeAccordion = () => {
                               }}
                               style={{ willChange: "transform" }}
                             >
-                              <ExternalLink size={18} />
+                              <ExternalLink size={isMobile ? 16 : 18} />
                             </motion.div>
                           </button>
                         </div>
-                        <div className="border-l border-gray-200 pl-8">
-                          <h4 className="text-black font-medium mb-4 text-lg">
+
+                        {/* Features section with responsive styling */}
+                        <div className="md:border-l border-gray-200 md:pl-8 mt-8 md:mt-0 pt-6 md:pt-0 border-t md:border-t-0">
+                          <h4 className="text-black font-medium mb-4 text-base md:text-lg">
                             Key features:
                           </h4>
-                          <ul className="space-y-3">
+                          <ul className="space-y-2 md:space-y-3">
                             {item.details.map((detail, i) => (
                               <motion.li
                                 key={i}
-                                className="flex items-start text-black"
+                                className="flex items-start text-black text-sm md:text-base"
                                 initial={{
                                   opacity: 0,
                                   transform: "translate3d(-10px, 0, 0)",
@@ -550,8 +624,8 @@ const HomeAccordion = () => {
                                 style={{ willChange: "transform, opacity" }}
                               >
                                 <ArrowRight
-                                  size={16}
-                                  className="text-yellow-500 mt-1 mr-3 flex-shrink-0"
+                                  size={isMobile ? 14 : 16}
+                                  className="text-yellow-500 mt-1 mr-2 md:mr-3 flex-shrink-0"
                                 />
                                 <span>{detail}</span>
                               </motion.li>
