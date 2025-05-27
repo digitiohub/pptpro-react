@@ -193,7 +193,7 @@ const HomeCards = () => {
               : {}
           }
         >
-          <p className="text-gray-600 dark:text-gray-300 text-2xl text-justify tracking-wide">
+          <p className="text-gray-600 dark:text-gray-300 text-2xl text-justify tracking-wide" style={{ textAlignLast: "center" }}>
             At PPT Pro, we believe that presentations are more than just slides
             – they're powerful tools for communication and persuasion. We help
             businesses and professionals craft compelling visual stories that

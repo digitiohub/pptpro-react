@@ -3,6 +3,7 @@ import HomeIntro from "../components/Home/HomeIntro";
 import ThreeDMarqueeDemo from "../components/ui/3d-marquee-demo";
 import HomeMarquee from "../components/Home/HomeMarquee";
 import HomeCards from "../components/Home/HomeCards";
+import HomeAccordion from "../components/Home/HomeAccordion";
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <HomeIntro />
       <HomeMarquee />
       <HomeCards />
+      <HomeAccordion />
     </div>
   );
 };
