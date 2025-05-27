@@ -134,46 +134,61 @@ const HomeAccordion = () => {
     navigate(link);
   };
 
-  // Animation variants
+  // Optimized animation variants using transform3d
   const contentVariants = {
     hidden: {
       height: 0,
       opacity: 0,
+      transform: "translate3d(0, -10px, 0)",
       transition: {
         height: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
         opacity: { duration: 0.2 },
+        transform: { duration: 0.2 },
       },
     },
     visible: {
       height: "auto",
       opacity: 1,
+      transform: "translate3d(0, 0, 0)",
       transition: {
         height: { duration: 0.4, ease: [0.33, 1, 0.68, 1] },
         opacity: { duration: 0.4, delay: 0.1 },
+        transform: { duration: 0.4, delay: 0.1 },
       },
     },
   };
 
-  // Typewriter animation variants
-  const typewriterVariants = {
-    hidden: { width: "0%" },
-    visible: {
-      width: "100%",
-      transition: {
-        duration: 1.5,
-        ease: "easeInOut",
-        delay: 0.3,
-      },
-    },
-  };
-
-  // Title animation variants
+  // Optimized title animation variants with transform3d
   const titleVariants = {
-    hidden: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0, 30px, 0)",
+      transformStyle: "preserve-3d",
+      willChange: "transform, opacity",
+    },
     visible: {
       opacity: 1,
       transform: "translate3d(0, 0, 0)",
-      transition: { type: "spring", stiffness: 200, damping: 18, delay: 0.1 },
+      transformStyle: "preserve-3d",
+      willChange: "transform, opacity",
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 18,
+      },
+    },
+  };
+
+  // Optimized marquee animation with transform3d
+  const marqueeVariants = {
+    animate: {
+      transform: "translate3d(-50%, 0, 0)",
+      transition: {
+        duration: 20,
+        ease: "linear",
+        repeat: Infinity,
+        repeatType: "loop",
+      },
     },
   };
 
@@ -297,7 +312,13 @@ const HomeAccordion = () => {
   };
 
   return (
-    <div className="py-12 md:py-20 bg-white w-full relative">
+    <div
+      className="py-12 md:py-20 bg-white w-full relative"
+      style={{
+        transform: "translateZ(0)", // Force GPU rendering
+        backfaceVisibility: "hidden",
+      }}
+    >
       {/* Decorative hexagon pattern on the right side */}
       <div
         className="absolute right-0 top-0 w-1/2 h-full pointer-events-none"
@@ -305,42 +326,46 @@ const HomeAccordion = () => {
           backgroundImage: "url('/backgrounds/hexa3.svg')",
           backgroundSize: "cover",
           backgroundPosition: "right center",
+          
+          transform: "translate3d(0, 0, 0)", // Force GPU rendering
         }}
       ></div>
 
       {/* Header section with constrained width */}
-      <div className="mx-auto max-w-6xl px-4 md:px-6 mb-12 relative z-10">
-        {/* Title with typewriter effect */}
+      <div
+        className="mx-auto max-w-6xl px-4 md:px-6 mb-12 relative z-10"
+        style={{ willChange: "transform, opacity" }}
+      >
+        {/* Regular title without typewriter effect */}
         <motion.div
-          className="overflow-hidden text-center mb-3"
+          className="text-center mb-3"
           initial="hidden"
           animate="visible"
           variants={titleVariants}
+          style={{
+            perspective: 1000,
+            backfaceVisibility: "hidden",
+          }}
         >
-          <h2 className="text-4xl md:text-5xl font-medium uppercase text-black inline-block">
-            <motion.span
-              className="inline-block"
-              initial="hidden"
-              animate="visible"
-              variants={typewriterVariants}
-              style={{
-                display: "inline-block",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-              }}
-            >
-              Our Services
-            </motion.span>
+          <h2
+            className="text-4xl md:text-5xl font-medium uppercase text-black"
+            style={{ transform: "translate3d(0, 0, 0)" }} // Force GPU rendering
+          >
+            Our Services
           </h2>
         </motion.div>
 
         {/* Justified subtitle text */}
         <motion.p
           className="text-lg text-gray-600 text-justify mb-8 max-w-2xl mx-auto"
-          style={{ textAlignLast: "center" }}
+          style={{
+            textAlignLast: "center",
+            transform: "translate3d(0, 0, 0)", // Force GPU rendering
+            willChange: "opacity",
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
         >
           We offer presentation solutions to elevate your message, engage your
           audience, and deliver results across various business contexts.
@@ -349,9 +374,13 @@ const HomeAccordion = () => {
         {/* Horizontal divider */}
         <motion.div
           className="flex items-center mb-12"
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ delay: 2, duration: 0.6 }}
+          initial={{ opacity: 0, transform: "scale3d(0, 1, 1)" }}
+          animate={{ opacity: 1, transform: "scale3d(1, 1, 1)" }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          style={{
+            transformOrigin: "center",
+            willChange: "transform, opacity",
+          }}
         >
           <div className="flex-grow h-px bg-gray-200"></div>
           <div className="flex-shrink-0 px-4 flex space-x-3 flex-wrap justify-center">
@@ -359,9 +388,10 @@ const HomeAccordion = () => {
               <motion.span
                 key={index}
                 className="px-4 py-1 rounded-full text-sm font-medium bg-gray-100 text-black border border-gray-200 mb-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2.2 + index * 0.1, duration: 0.4 }}
+                initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
+                animate={{ opacity: 1, transform: "translate3d(0, 0, 0)" }}
+                transition={{ delay: 1.0 + index * 0.1, duration: 0.4 }}
+                style={{ willChange: "transform, opacity" }}
               >
                 {category}
               </motion.span>
@@ -372,10 +402,20 @@ const HomeAccordion = () => {
       </div>
 
       {/* Full-width accordion section */}
-      <div className="w-full relative z-10">
+      <div
+        className="w-full relative z-10"
+        style={{
+          perspective: 1000,
+          transform: "translate3d(0, 0, 0)", // Force GPU rendering
+        }}
+      >
         <div className="space-y-0">
           {accordionData.map((item, index) => (
-            <div key={item.id} className="border-b border-gray-200 w-full">
+            <div
+              key={item.id}
+              className="border-b border-gray-200 w-full"
+              style={{ willChange: "auto" }}
+            >
               {/* Accordion header - full width */}
               <motion.div
                 className={`relative group cursor-pointer overflow-hidden w-full ${
@@ -383,6 +423,7 @@ const HomeAccordion = () => {
                 }`}
                 onClick={() => toggleAccordion(index)}
                 initial={false}
+                style={{ willChange: "transform" }}
               >
                 {/* Normal state - full width with container for content */}
                 <div className="max-w-6xl mx-auto w-full">
@@ -410,20 +451,30 @@ const HomeAccordion = () => {
                 {activeIndex !== index && (
                   <div className="absolute top-0 left-0 w-full h-full flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
                     {/* Background fill animation - plain background without pattern */}
-                    <div className="absolute inset-0 bg-gray-50 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom"></div>
+                    <div
+                      className="absolute inset-0 bg-gray-50 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom"
+                      style={{ willChange: "transform" }}
+                    ></div>
 
-                    {/* Scrolling text animation */}
+                    {/* Scrolling text animation - optimized with transform3d */}
                     <motion.div
                       className="flex items-center text-lg md:text-3xl lg:text-4xl font-medium pl-6 relative z-10 whitespace-nowrap"
-                      animate={{ x: ["0%", "-50%"] }}
-                      transition={{
-                        duration: 20,
-                        ease: "linear",
-                        repeat: Infinity,
+                      variants={marqueeVariants}
+                      initial={{ transform: "translate3d(0%, 0, 0)" }}
+                      animate="animate"
+                      style={{
+                        willChange: "transform",
+                        backfaceVisibility: "hidden",
+                        perspective: 1000,
+                        transformStyle: "preserve-3d",
                       }}
                     >
                       {createMarqueeText(item, index).map((text, i) => (
-                        <div key={i} className="flex items-center mr-12">
+                        <div
+                          key={i}
+                          className="flex items-center mr-12"
+                          style={{ transform: "translate3d(0, 0, 0)" }}
+                        >
                           {text}
                         </div>
                       ))}
@@ -442,8 +493,15 @@ const HomeAccordion = () => {
                     exit="hidden"
                     variants={contentVariants}
                     className="overflow-hidden bg-gray-50 w-full relative"
+                    style={{
+                      willChange: "height, opacity, transform",
+                      transformStyle: "preserve-3d",
+                    }}
                   >
-                    <div className="max-w-6xl mx-auto relative z-10">
+                    <div
+                      className="max-w-6xl mx-auto relative z-10"
+                      style={{ transform: "translate3d(0, 0, 0)" }}
+                    >
                       <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
                         <div>
                           <p className="text-black text-lg mb-6">
@@ -455,14 +513,17 @@ const HomeAccordion = () => {
                           >
                             <span className="mr-2 font-medium">Learn more</span>
                             <motion.div
-                              initial={{ x: 0 }}
-                              animate={{ x: [0, 5, 0] }}
+                              initial={{ transform: "translate3d(0, 0, 0)" }}
+                              animate={{ transform: "translate3d(5px, 0, 0)" }}
                               transition={{
-                                duration: 1,
-                                repeat: Infinity,
-                                repeatType: "loop",
-                                ease: "easeInOut",
+                                transform: {
+                                  duration: 1,
+                                  repeat: Infinity,
+                                  repeatType: "reverse",
+                                  ease: "easeInOut",
+                                },
                               }}
+                              style={{ willChange: "transform" }}
                             >
                               <ExternalLink size={18} />
                             </motion.div>
@@ -477,9 +538,16 @@ const HomeAccordion = () => {
                               <motion.li
                                 key={i}
                                 className="flex items-start text-black"
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
+                                initial={{
+                                  opacity: 0,
+                                  transform: "translate3d(-10px, 0, 0)",
+                                }}
+                                animate={{
+                                  opacity: 1,
+                                  transform: "translate3d(0, 0, 0)",
+                                }}
                                 transition={{ delay: 0.1 + i * 0.1 }}
+                                style={{ willChange: "transform, opacity" }}
                               >
                                 <ArrowRight
                                   size={16}

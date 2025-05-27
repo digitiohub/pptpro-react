@@ -14,24 +14,24 @@ const introTextAnim = {
 const marqueeTopAnim = {
   initial: { transform: "translate3d(0%, 0, 0)" },
   animate: {
-    transform: "translate3d(-50%, 0, 0)",
+    transform: "translate3d(-1000%, 0, 0)",
     transition: {
       repeat: Infinity,
       repeatType: "loop",
-      duration: 20,
+      duration: 200,
       ease: "linear",
     },
   },
 };
 
 const marqueeBottomAnim = {
-  initial: { transform: "translate3d(-50%, 0, 0)" },
+  initial: { transform: "translate3d(-600%, 0, 0)" },
   animate: {
-    transform: "translate3d(0%, 0, 0)",
+    transform: "translate3d(400%, 0, 0)",
     transition: {
       repeat: Infinity,
       repeatType: "loop",
-      duration: 20,
+      duration: 200,
       ease: "linear",
     },
   },
@@ -123,39 +123,19 @@ const glowVariants = {
   },
 };
 
-// Card title typewriter variants with custom delay per card
-const cardTitleTypewriterVariants = {
-  hidden: {
-    width: "0%",
-    borderRight: "0.15em solid #f4e04c",
+// Title color variants with explicit transitions
+const titleVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.5, delay: 0.2 },
   },
-  visible: (index) => ({
-    width: "100%",
-    borderRight: "0.15em solid #f4e04c",
-    transition: {
-      width: {
-        duration: 0.8,
-        delay: 1.2 + index * 0.5, // Staggered delay after cards appear
-        ease: "easeInOut",
-      },
-    },
-  }),
-  completed: (index) => ({
-    width: "100%",
-    borderRight: "0.15em solid transparent",
-    transition: {
-      delay: 1.2 + index * 0.5 + 0.8, // Start after typing finishes
-      borderRight: {
-        duration: 0.5,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-      },
-    },
-  }),
   hover: {
     color: "#f4e04c",
-    borderRight: "0.15em solid transparent",
+    transition: { duration: 0.3 },
+  },
+  nonHover: {
+    color: "#ffffff",
     transition: { duration: 0.3 },
   },
 };
@@ -166,37 +146,12 @@ const HomeCards = () => {
   const textRef = useRef(null);
   const cardsRef = useRef(null);
 
-  // Track if titles have been typed
-  const [titleTyped, setTitleTyped] = useState([false, false, false]);
-
   // Use inView to detect when elements enter viewport
   const isInView = useInView(sectionRef, {
     once: true,
     amount: 0.2,
     margin: "-100px 0px",
   });
-
-  // Set timers to mark each title as typed
-  useEffect(() => {
-    if (isInView) {
-      // Set timers for each card title to be marked as completed
-      const timers = [
-        setTimeout(() => {
-          setTitleTyped((prev) => [true, prev[1], prev[2]]);
-        }, 2000), // First card (1.2s delay + 0.8s typing)
-
-        setTimeout(() => {
-          setTitleTyped((prev) => [prev[0], true, prev[2]]);
-        }, 2500), // Second card (1.7s delay + 0.8s typing)
-
-        setTimeout(() => {
-          setTitleTyped((prev) => [prev[0], prev[1], true]);
-        }, 3000), // Third card (2.2s delay + 0.8s typing)
-      ];
-
-      return () => timers.forEach((timer) => clearTimeout(timer));
-    }
-  }, [isInView]);
 
   const cards = [
     {
@@ -217,19 +172,17 @@ const HomeCards = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="py-8 overflow-hidden relative">
+    <section ref={sectionRef} className="pt-8 md:pt-20 pb-12 overflow-hidden relative">
       <div className="container mx-auto">
         {/* Intro text section */}
         <motion.div
           ref={textRef}
-          className="max-w-4xl mx-auto text-center mb-16"
+          className="max-w-4xl mx-auto text-center mb-4"
           variants={introTextAnim}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
-            Our Approach
-          </h2>
+          
           <p
             className="text-gray-600 dark:text-gray-300 text-2xl text-justify tracking-wide"
             style={{ textAlignLast: "center" }}
@@ -305,42 +258,33 @@ const HomeCards = () => {
 
                   {/* Card content */}
                   <div className="relative flex flex-col pt-16 h-full">
-                    {/* Title with typewriter effect - Additional workarounds for overflow */}
-                    <div className="mb-6 h-[80px]">
-                      {/* Wrapper div to handle the typing animation but with overflow visible */}
-                      <div className="overflow-hidden">
-                        <motion.h3
-                          className="md:text-6xl font-light inline-block"
-                          custom={index}
-                          variants={cardTitleTypewriterVariants}
-                          initial="hidden"
-                          animate={
-                            isInView
-                              ? titleTyped[index]
-                                ? "completed"
-                                : "visible"
-                              : "hidden"
-                          }
-                          whileHover="hover"
-                          style={{
-                            display: "inline-block",
-                            whiteSpace: "nowrap",
-                            overflow: "visible", // Allow text to overflow
-                            lineHeight: "1.1",
-                            paddingBottom: "10px", // Add bottom padding for descenders
-                          }}
-                        >
-                          {card.title}
-                        </motion.h3>
-                      </div>
+                    {/* Title - removed typewriter effect */}
+                    <div className="mb-6">
+                      <motion.h3
+                        className="md:text-6xl font-light"
+                        variants={titleVariants}
+                        initial="hidden"
+                        animate="visible"
+                        whileHover="hover"
+                        whileTap="hover"
+                        whileInView="nonHover"
+                        viewport={{ once: false, amount: 0.8 }}
+                        custom={index}
+                        style={{
+                          lineHeight: "1.1",
+                          paddingBottom: "10px", // Keep padding for descenders
+                        }}
+                      >
+                        {card.title}
+                      </motion.h3>
                     </div>
 
-                    {/* Description fades in after title is typed */}
+                    {/* Description fades in along with title */}
                     <motion.p
                       className="text-gray-300 text-justify tracking-wide text-lg flex-grow"
                       initial={{ opacity: 0 }}
-                      animate={{ opacity: titleTyped[index] ? 1 : 0 }}
-                      transition={{ duration: 0.5 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.7 + index * 0.15 }}
                     >
                       {card.description}
                     </motion.p>
@@ -349,8 +293,8 @@ const HomeCards = () => {
                     <motion.div
                       className="absolute -bottom-5 right-0"
                       initial={{ opacity: 0 }}
-                      animate={{ opacity: titleTyped[index] ? 1 : 0 }}
-                      transition={{ duration: 0.3 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.9 + index * 0.15 }}
                       whileHover={{
                         x: 5,
                         transition: {
