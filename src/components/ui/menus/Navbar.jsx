@@ -4,16 +4,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../../../data/navigationLinks";
 import MobileMenu from "./MobileMenu";
 import StarBorder from "../../../ui/StarBorder/StarBorder";
+import Button from "../../../ui/Buttons/Button";
 
 // Animation variants defined outside component for better performance
 const navbarVariants = {
-  visible: (scrolled) => ({
+  visible: (customProps) => ({
     transform: "translate3d(0px, 0px, 0px)",
-    // Use gradient when at top of page, solid when scrolled
-    background: scrolled
-      ? "rgba(0, 0, 0, 0.8)"
-      : "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0) 95%)",
-    boxShadow: scrolled ? "0 4px 6px -1px rgba(0, 0, 0, 0.3)" : "none",
+    // Use different backgrounds based on page and scroll position
+    background: customProps.isHomePage
+      ? customProps.scrolled
+        ? "rgba(0, 0, 0, 0.8)"
+        : "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0) 95%)"
+      : customProps.scrolled
+      ? "rgba(255, 255, 255, 1)"
+      : "rgba(255, 255, 255, 1)",
+    boxShadow: customProps.scrolled
+      ? customProps.isHomePage
+        ? "0 4px 6px -1px rgba(0, 0, 0, 0.3)"
+        : "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
+      : "none",
     transition: {
       type: "tween",
       ease: [0.25, 0.1, 0.25, 1.0],
@@ -69,6 +78,9 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  // Check if we're on home page
+  const isHomePage = location.pathname === "/" || location.pathname === "";
 
   // Reference to track if we're programmatically scrolling
   const scrollingRef = useRef(false);
@@ -142,6 +154,33 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // Get text color based on page and scroll position
+  const getTextColor = () => {
+    if (isHomePage) {
+      return "text-white"; // Home page always has white text
+    } else {
+      return scrolled ? "text-black" : "text-black"; // Non-home pages have black text
+    }
+  };
+
+  // Get logo based on page and scroll position
+  const getLogoSrc = () => {
+    if (isHomePage) {
+      return "/logos/logo-light.jpg"; // Home page always has light logo
+    } else {
+      return "/logos/logo-dark.jpg"; // Non-home pages have dark logo
+    }
+  };
+
+  // Get hamburger color based on page and scroll position
+  const getHamburgerColor = () => {
+    if (isHomePage) {
+      return "bg-yellow"; // Home page always has yellow hamburger
+    } else {
+      return "bg-black"; // Non-home pages have black hamburger
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -208,17 +247,17 @@ const Navbar = () => {
         className="fixed top-0 left-0 w-full z-40"
         initial="hidden"
         animate={visible || isMobileMenuOpen ? "visible" : "hidden"}
-        custom={scrolled}
+        custom={{ scrolled, isHomePage }}
         variants={navbarVariants}
         style={{ willChange: "transform, background, box-shadow" }}
       >
         <div
           className={`container mx-auto px-4 lg:px-8 ${
-            !scrolled ? "gradient-nav-padding" : ""
+            !scrolled && isHomePage ? "gradient-nav-padding" : ""
           }`}
         >
           <div className="flex items-center justify-between py-4">
-            {/* Logo - Always use light logo at the top */}
+            {/* Logo - Dynamic based on page */}
             <motion.div
               className="flex-shrink-0"
               initial="initial"
@@ -228,14 +267,14 @@ const Navbar = () => {
             >
               <Link to="/" className="block">
                 <img
-                  src="/logos/logo-light.jpg"
+                  src={getLogoSrc()}
                   alt="PPTPRO Logo"
                   className="h-10 md:h-12"
                 />
               </Link>
             </motion.div>
 
-            {/* Desktop Navigation - Always yellow text since we have black background */}
+            {/* Desktop Navigation - Dynamic text color */}
             <motion.nav
               className="hidden md:flex flex-grow mx-8"
               initial="initial"
@@ -248,7 +287,7 @@ const Navbar = () => {
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className={`nav-link text-base uppercase font-medium transition-colors text-white ${
+                      className={`nav-link text-base uppercase font-medium transition-colors ${getTextColor()} ${
                         location.pathname === link.path ? "active" : ""
                       }`}
                     >
@@ -259,7 +298,7 @@ const Navbar = () => {
               </ul>
             </motion.nav>
 
-            {/* CTA Button - Yellow with white star effect */}
+            {/* CTA Button - Same on all pages */}
             <div className="hidden md:block">
               <motion.div
                 initial="initial"
@@ -279,7 +318,7 @@ const Navbar = () => {
               </motion.div>
             </div>
 
-            {/* Mobile Hamburger Button - Always yellow since we have black background */}
+            {/* Mobile Hamburger Button - Dynamic color */}
             <motion.button
               className="md:hidden z-50 p-2 cursor-pointer"
               initial="initial"
@@ -291,9 +330,15 @@ const Navbar = () => {
                 willChange: "transform, opacity",
               }}
             >
-              <div className="w-6 h-0.5 bg-yellow mb-1.5 rounded-full"></div>
-              <div className="w-6 h-0.5 bg-yellow mb-1.5 rounded-full"></div>
-              <div className="w-6 h-0.5 bg-yellow rounded-full"></div>
+              <div
+                className={`w-6 h-0.5 ${getHamburgerColor()} mb-1.5 rounded-full`}
+              ></div>
+              <div
+                className={`w-6 h-0.5 ${getHamburgerColor()} mb-1.5 rounded-full`}
+              ></div>
+              <div
+                className={`w-6 h-0.5 ${getHamburgerColor()} rounded-full`}
+              ></div>
             </motion.button>
           </div>
         </div>
