@@ -154,6 +154,29 @@ const HomeAccordion = () => {
     },
   };
 
+  // Typewriter animation variants
+  const typewriterVariants = {
+    hidden: { width: "0%" },
+    visible: {
+      width: "100%",
+      transition: {
+        duration: 1.5,
+        ease: "easeInOut",
+        delay: 0.3,
+      },
+    },
+  };
+
+  // Title animation variants
+  const titleVariants = {
+    hidden: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0, 0, 0)",
+      transition: { type: "spring", stiffness: 200, damping: 18, delay: 0.1 },
+    },
+  };
+
   // Format number with leading zero
   const formatNumber = (num) => {
     return num < 10 ? `0${num}` : `${num}`;
@@ -183,7 +206,7 @@ const HomeAccordion = () => {
     return textArray;
   };
 
-  // Get appropriate pills for each service
+  // Get appropriate pills for each service (only using yellow, gray, and shades of yellow)
   const getPillsForService = (index) => {
     switch (index) {
       case 0:
@@ -205,13 +228,13 @@ const HomeAccordion = () => {
         return [
           <span
             key="video"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700"
           >
             Video
           </span>,
           <span
             key="animation"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-200 text-yellow-800"
           >
             Animation
           </span>,
@@ -220,13 +243,13 @@ const HomeAccordion = () => {
         return [
           <span
             key="training"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-300 text-yellow-900"
           >
             Training
           </span>,
           <span
             key="skills"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700"
           >
             Skills
           </span>,
@@ -235,7 +258,7 @@ const HomeAccordion = () => {
         return [
           <span
             key="consult"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
           >
             Consultation
           </span>,
@@ -250,7 +273,7 @@ const HomeAccordion = () => {
         return [
           <span
             key="finance"
-            className="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-400 text-yellow-900"
           >
             Financial
           </span>,
@@ -277,43 +300,75 @@ const HomeAccordion = () => {
     <div className="py-12 md:py-20 bg-white w-full relative">
       {/* Decorative hexagon pattern on the right side */}
       <div
-        className="absolute right-0 top-0 w-1/2 h-full  pointer-events-none"
+        className="absolute right-0 top-0 w-1/2 h-full pointer-events-none"
         style={{
           backgroundImage: "url('/backgrounds/hexa3.svg')",
           backgroundSize: "cover",
           backgroundPosition: "right center",
-         
         }}
       ></div>
 
       {/* Header section with constrained width */}
       <div className="mx-auto max-w-6xl px-4 md:px-6 mb-12 relative z-10">
-        <h2 className="text-4xl md:text-5xl font-medium uppercase text-black mb-3 text-center">
-          Our Services
-        </h2>
+        {/* Title with typewriter effect */}
+        <motion.div
+          className="overflow-hidden text-center mb-3"
+          initial="hidden"
+          animate="visible"
+          variants={titleVariants}
+        >
+          <h2 className="text-4xl md:text-5xl font-medium uppercase text-black inline-block">
+            <motion.span
+              className="inline-block"
+              initial="hidden"
+              animate="visible"
+              variants={typewriterVariants}
+              style={{
+                display: "inline-block",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+              }}
+            >
+              Our Services
+            </motion.span>
+          </h2>
+        </motion.div>
 
         {/* Justified subtitle text */}
-        <p className="text-lg text-gray-600 text-justify mb-8 max-w-2xl mx-auto"
-        style={{ textAlignLast: "center" }}>
+        <motion.p
+          className="text-lg text-gray-600 text-justify mb-8 max-w-2xl mx-auto"
+          style={{ textAlignLast: "center" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.8 }}
+        >
           We offer presentation solutions to elevate your message, engage your
           audience, and deliver results across various business contexts.
-        </p>
+        </motion.p>
 
         {/* Horizontal divider */}
-        <div className="flex items-center mb-12">
+        <motion.div
+          className="flex items-center mb-12"
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ delay: 2, duration: 0.6 }}
+        >
           <div className="flex-grow h-px bg-gray-200"></div>
           <div className="flex-shrink-0 px-4 flex space-x-3 flex-wrap justify-center">
             {categories.map((category, index) => (
-              <span
+              <motion.span
                 key={index}
                 className="px-4 py-1 rounded-full text-sm font-medium bg-gray-100 text-black border border-gray-200 mb-2"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.2 + index * 0.1, duration: 0.4 }}
               >
                 {category}
-              </span>
+              </motion.span>
             ))}
           </div>
           <div className="flex-grow h-px bg-gray-200"></div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Full-width accordion section */}
@@ -344,7 +399,7 @@ const HomeAccordion = () => {
                       </span>
                     </h3>
 
-                    {/* Pills based on service type */}
+                    {/* Pills based on service type - only yellow and gray shades */}
                     <div className="flex items-center space-x-2">
                       {getPillsForService(index)}
                     </div>
