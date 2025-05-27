@@ -1,6 +1,8 @@
 import React from "react";
-import HomeHero from "../components/Home/HomeHero";
+import HomeIntro from "../components/Home/HomeIntro";
 import ThreeDMarqueeDemo from "../components/ui/3d-marquee-demo";
+import HomeMarquee from "../components/Home/HomeMarquee";
+import HomeCards from "../components/Home/HomeCards";
 
 const HomePage = () => {
   return (
@@ -8,8 +10,12 @@ const HomePage = () => {
       {/* Hero Section with Navbar */}
      
       <ThreeDMarqueeDemo />
+      <HomeIntro />
+      <HomeMarquee />
+      <HomeCards />
     </div>
   );
 };
 
 export default HomePage;
+
