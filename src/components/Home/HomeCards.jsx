@@ -1,28 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 // Optimized animations with transform3d for better performance
 const introTextAnim = {
-  initial: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
-  animate: {
+  hidden: { opacity: 0, transform: "translate3d(0, 30px, 0)" },
+  visible: {
     opacity: 1,
     transform: "translate3d(0, 0, 0)",
-    transition: { type: "spring", stiffness: 200, damping: 18, delay: 0.1 },
+    transition: { type: "spring", stiffness: 200, damping: 18 },
   },
-};
-
-const cardAnim = {
-  initial: { opacity: 0, transform: "translate3d(0, 40px, 0)" },
-  animate: (index) => ({
-    opacity: 1,
-    transform: "translate3d(0, 0, 0)",
-    transition: {
-      type: "spring",
-      stiffness: 150,
-      damping: 20,
-      delay: 0.2 + index * 0.1,
-    },
-  }),
 };
 
 const marqueeTopAnim = {
@@ -51,19 +37,120 @@ const marqueeBottomAnim = {
   },
 };
 
+// Shared transitions with explicit definitions for both directions
+const hoverTransition = {
+  y: {
+    type: "tween",
+    ease: [0.25, 0.1, 0.25, 1.0],
+    duration: 0.3,
+  },
+  boxShadow: {
+    type: "tween",
+    ease: [0.25, 0.1, 0.25, 1.0],
+    duration: 0.3,
+  },
+  default: {
+    type: "tween",
+    ease: [0.25, 0.1, 0.25, 1.0],
+    duration: 0.3,
+  },
+};
+
+// Refined card variants with explicit transitions for each state
+const cardVariants = {
+  // Initial hidden state (before section enters view)
+  hidden: {
+    opacity: 0,
+    y: 70,
+  },
+  // Visible state (when section enters view)
+  visible: (index) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 70,
+      damping: 14,
+      delay: 0.3 + index * 0.15,
+    },
+  }),
+  // Hover state with improved transition
+  hover: {
+    y: -10,
+    boxShadow:
+      "0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2)",
+    transition: hoverTransition,
+  },
+  // Non-hover state with the same transition properties for smooth exit
+  nonHover: {
+    y: 0,
+    boxShadow:
+      "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
+    transition: hoverTransition,
+  },
+};
+
+// Improved glow effect variants with explicit transitions
+const glowVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 0,
+    scale: 1,
+    transition: {
+      opacity: { duration: 0.3 },
+      scale: { duration: 0.3 },
+    },
+  },
+  hover: {
+    opacity: 0.1,
+    scale: 1.05,
+    filter: "blur(15px)",
+    transition: {
+      opacity: { duration: 0.3 },
+      scale: { duration: 0.3 },
+      filter: { duration: 0.3 },
+    },
+  },
+  nonHover: {
+    opacity: 0,
+    scale: 1,
+    filter: "blur(10px)",
+    transition: {
+      opacity: { duration: 0.3 },
+      scale: { duration: 0.3 },
+      filter: { duration: 0.3 },
+    },
+  },
+};
+
+// Improved title color variants with explicit transitions
+const titleVariants = {
+  hidden: { color: "#ffffff" },
+  visible: {
+    color: "#ffffff",
+    transition: { duration: 0.3 },
+  },
+  hover: {
+    color: "#f4e04c",
+    transition: { duration: 0.3 },
+  },
+  nonHover: {
+    color: "#ffffff",
+    transition: { duration: 0.3 },
+  },
+};
+
 const HomeCards = () => {
-  const [animationState, setAnimationState] = useState("initial");
+  // Create refs for section parts
+  const sectionRef = useRef(null);
+  const textRef = useRef(null);
 
-  // Trigger animations after component mounts
-  useEffect(() => {
-    const animationTimer = setTimeout(() => {
-      setAnimationState("animate");
-    }, 100);
-
-    return () => {
-      clearTimeout(animationTimer);
-    };
-  }, []);
+  // Use inView to detect when elements enter viewport
+  const isInView = useInView(sectionRef, {
+    once: true,
+    amount: 0.2,
+    margin: "-100px 0px",
+  });
 
   const cards = [
     {
@@ -84,14 +171,27 @@ const HomeCards = () => {
   ];
 
   return (
-    <section className="py-8 overflow-hidden relative">
+    <section ref={sectionRef} className="py-8 overflow-hidden relative">
       <div className="container mx-auto">
         {/* Intro paragraph with optimized animation */}
         <motion.div
-          className="max-w-4xl mx-auto text-center mb-16 mt-16" // Increased margin for marquee space
-          initial="initial"
-          animate={animationState}
-          variants={introTextAnim}
+          ref={textRef}
+          className="max-w-4xl mx-auto text-center mb-16 mt-16"
+          initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
+          animate={
+            isInView
+              ? {
+                  opacity: 1,
+                  transform: "translate3d(0, 0, 0)",
+                  transition: {
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 18,
+                    delay: 0.1,
+                  },
+                }
+              : {}
+          }
         >
           <p className="text-gray-600 dark:text-gray-300 text-2xl text-justify tracking-wide">
             At PPT Pro, we believe that presentations are more than just slides
@@ -127,43 +227,78 @@ const HomeCards = () => {
         {/* Cards section with separated overlay background */}
         <div className="relative" style={{ zIndex: 10 }}>
           {/* Cards container */}
-          <div className="relative p-6  md:p-12 rounded-lg">
-            {/* Cards grid - adjusted to center fixed-size cards */}
+          <div className="relative p-6 md:p-12 rounded-lg">
+            {/* Cards grid with staggered animation */}
             <div className="flex flex-wrap justify-center gap-8">
               {cards.map((card, index) => (
                 <motion.div
                   key={card.title}
-                  className="bg-black text-white rounded-xl p-8 shadow-lg relative overflow-hidden"
+                  className="bg-black text-white rounded-xl p-8 shadow-lg relative overflow-hidden cursor-pointer"
                   style={{
                     width: "420px",
                     height: "475px",
                     display: "flex",
                     flexDirection: "column",
-                    willChange: "transform, opacity", // Optimize for animations
+                    willChange: "transform, opacity, box-shadow",
                   }}
                   custom={index}
-                  initial="initial"
-                  animate={animationState}
-                  variants={cardAnim}
-                  viewport={{ once: true }}
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  whileHover="hover"
+                  whileTap="hover"
+                  whileInView="nonHover"
+                  viewport={{ once: false, amount: 0.8 }}
                 >
+                  {/* Glow effect on hover - appears behind the card */}
+                  <motion.div
+                    className="absolute inset-0 bg-yellow-500 rounded-xl"
+                    variants={glowVariants}
+                    initial="hidden"
+                    animate="visible"
+                    whileHover="hover"
+                    whileTap="hover"
+                    whileInView="nonHover"
+                    viewport={{ once: false, amount: 0.8 }}
+                    style={{ zIndex: -1 }}
+                  />
+
                   {/* Card content */}
                   <div className="relative flex flex-col pt-16 h-full">
-                    <h3 className="md:text-6xl font-light mb-4">
+                    <motion.h3
+                      className="md:text-6xl font-light mb-4"
+                      variants={titleVariants}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover="hover"
+                      whileTap="hover"
+                      whileInView="nonHover"
+                      viewport={{ once: false, amount: 0.8 }}
+                    >
                       {card.title}
-                    </h3>
+                    </motion.h3>
                     <p className="text-gray-300 text-justify tracking-wide text-lg flex-grow">
                       {card.description}
                     </p>
 
                     {/* Arrow at bottom right of each card */}
-                    <div className="absolute -bottom-5 right-0">
+                    <motion.div
+                      className="absolute -bottom-5 right-0"
+                      whileHover={{
+                        x: 5,
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "mirror",
+                          duration: 0.7,
+                        },
+                      }}
+                    >
                       <img
                         src="/graphics/halfArrowRight.svg"
                         alt="Arrow"
                         className="w-12 h-12"
                       />
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               ))}
