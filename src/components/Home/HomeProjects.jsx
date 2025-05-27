@@ -7,6 +7,7 @@ import {
   PieChart,
   BarChart4,
 } from "lucide-react";
+import StarBorder from "../../ui/StarBorder/StarBorder";
 
 const HomeProjects = () => {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -327,9 +328,9 @@ const HomeProjects = () => {
           ))}
         </motion.div>
 
-        {/* View all projects button */}
+        {/* View all projects button with StarBorder */}
         <motion.div
-          className="mt-12 flex justify-center"
+          className="mt-16 flex justify-center"
           initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
           animate={
             isGridInView
@@ -346,36 +347,17 @@ const HomeProjects = () => {
           }}
           style={{ willChange: "transform, opacity" }}
         >
-          <motion.button
-            className="px-8 py-3 bg-gray-900 hover:bg-black text-white rounded-full font-medium flex items-center gap-2 group"
-            whileHover={{
-              transform: "translate3d(0, -2px, 0)",
-              boxShadow:
-                "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-            }}
-            transition={{
-              duration: 0.3,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
-            style={{ willChange: "transform, box-shadow" }}
+          <StarBorder
+            as="a"
+            href="/projects"
+            color="#000"
+            speed="8s"
           >
-            View All Projects
-            <motion.span
-              className="inline-block"
-              initial={{ transform: "translate3d(0, 0, 0)" }}
-              whileHover={{
-                transform: "translate3d(5px, 0, 0)",
-                transition: {
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  duration: 0.7,
-                },
-              }}
-              style={{ willChange: "transform" }}
-            >
-              <ArrowRight className="h-5 w-5" />
-            </motion.span>
-          </motion.button>
+            <span className="flex items-center gap-2">
+              View All Projects
+              <ArrowRight className="h-5 w-5 group-hover:transform group-hover:translate-x-1 transition-transform" />
+            </span>
+          </StarBorder>
         </motion.div>
       </div>
     </section>

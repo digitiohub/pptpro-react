@@ -15,7 +15,7 @@ const StarBorder = ({
 
   // Define button styles based on variant
   let buttonStyle =
-    "relative z-1 bg-gradient-to-b from-black to-gray-900 border border-gray-800 text-white";
+    "relative z-1 bg-gradient-to-b from-black to-gray-700 border border-gray-800 text-white";
 
   if (variant === "yellow") {
     buttonStyle =
