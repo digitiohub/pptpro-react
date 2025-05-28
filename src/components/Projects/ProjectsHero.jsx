@@ -20,7 +20,7 @@ const ProjectsHero = () => {
   return (
     <section
       ref={sectionRef}
-      className="pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden bg-white dark:bg-gray-900"
+      className="pt-32 pb-8 overflow-hidden bg-white dark:bg-gray-900"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
@@ -44,13 +44,13 @@ const ProjectsHero = () => {
           }}
           style={{ willChange: "transform, opacity" }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
-            Our <span className="text-yellow-500">Portfolio</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-gray-900 dark:text-white mb-6 tracking-tight">
+            Our Portfolio<span className="text-yellow-500">.</span>
           </h1>
 
           <motion.p
             ref={textRef}
-            className="text-xl text-gray-600 dark:text-gray-400 mb-12 md:mb-16"
+            className="text-xl text-gray-600 dark:text-gray-400"
             initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
             animate={
               isTextInView
@@ -68,40 +68,6 @@ const ProjectsHero = () => {
             helped our clients communicate their vision and achieve their goals.
           </motion.p>
         </motion.div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mt-8">
-          {[
-            { value: "125+", label: "Projects Completed" },
-            { value: "98%", label: "Client Satisfaction" },
-            { value: "42", label: "Industries Served" },
-            { value: "18", label: "Design Awards" },
-          ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              className="text-center"
-              initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-              animate={
-                isTextInView
-                  ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                  : {}
-              }
-              transition={{
-                duration: 0.5,
-                delay: 0.3 + index * 0.1,
-                ease: [0.25, 0.1, 0.25, 1.0],
-              }}
-              style={{ willChange: "transform, opacity" }}
-            >
-              <div className="text-3xl md:text-4xl font-bold text-yellow-500 mb-2">
-                {stat.value}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );

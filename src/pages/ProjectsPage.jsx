@@ -7,7 +7,7 @@ const ProjectsPage = () => {
   return (
     <div className="projects-page">
       <Navbar />
-      <ProjectsHero />
+      {/* <ProjectsHero /> */}
       <ProjectsGrid />
     </div>
   );
