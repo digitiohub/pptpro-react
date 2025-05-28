@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../../../data/navigationLinks";
 import MobileMenu from "./MobileMenu";
 import StarBorder from "../../../ui/StarBorder/StarBorder";
-import Button from "../../../ui/Buttons/Button";
+import { ChevronDown } from "lucide-react";
 
 // Animation variants defined outside component for better performance
 const navbarVariants = {
@@ -24,17 +24,17 @@ const navbarVariants = {
         : "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
       : "none",
     transition: {
-      type: "tween",
-      ease: [0.25, 0.1, 0.25, 1.0],
-      duration: 0.4,
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
     },
   }),
   hidden: {
     transform: "translate3d(0px, -100%, 0px)",
     transition: {
-      type: "tween",
-      ease: [0.25, 0.1, 0.25, 1.0],
-      duration: 0.4,
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
     },
   },
 };
@@ -48,9 +48,9 @@ const logoVariants = {
     opacity: 1,
     transform: "translate3d(0px, 0px, 0px)",
     transition: {
-      type: "tween",
-      ease: "easeOut",
-      duration: 0.5,
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
     },
   },
 };
@@ -64,10 +64,60 @@ const navLinksVariants = {
     opacity: 1,
     transform: "translate3d(0px, 0px, 0px)",
     transition: {
-      type: "tween",
-      ease: "easeOut",
-      duration: 0.5,
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
       delay: 0.1,
+    },
+  },
+};
+
+// Dropdown animation variants
+const dropdownVariants = {
+  hidden: {
+    opacity: 0,
+    height: 0,
+    transform: "translate3d(0px, -10px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      when: "beforeChildren",
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const dropdownItemVariants = {
+  hidden: {
+    opacity: 0,
+    transform: "translate3d(-10px, 0px, 0px)",
+  },
+  visible: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+  hover: {
+    transform: "translate3d(5px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
     },
   },
 };
@@ -77,7 +127,11 @@ const Navbar = () => {
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+  const hoverTimeoutRef = useRef(null);
 
   // Check if we're on home page
   const isHomePage = location.pathname === "/" || location.pathname === "";
@@ -85,6 +139,48 @@ const Navbar = () => {
   // Reference to track if we're programmatically scrolling
   const scrollingRef = useRef(false);
   const scrollTimeoutRef = useRef(null);
+
+  // Services submenu items
+  const servicesSubmenu = [
+    {
+      name: "Corporate Presentation",
+      path: "/services/corporate-presentation",
+    },
+    { name: "Video Presentation", path: "/services/video-presentation" },
+    { name: "Presentation Training", path: "/services/presentation-training" },
+    { name: "Financial Modeling", path: "/services/financial-modeling" },
+  ];
+
+  // Handle services link click - navigate to main services page
+  const handleServicesClick = (e) => {
+    e.preventDefault();
+    navigate("/services");
+  };
+
+  // Handle dropdown hover events
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setServicesDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Add a small delay before closing to prevent flickering
+    hoverTimeoutRef.current = setTimeout(() => {
+      setServicesDropdownOpen(false);
+    }, 100);
+  };
+
+  // Clean up hover timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Add effect to handle body scrolling when mobile menu is open
   useEffect(() => {
@@ -124,6 +220,8 @@ const Navbar = () => {
             if (currentScrollY > lastScrollY) {
               // Scrolling DOWN - hide the navbar
               setVisible(false);
+              // Close dropdown when scrolling down
+              setServicesDropdownOpen(false);
             } else if (currentScrollY < lastScrollY) {
               // Scrolling UP - show the navbar
               setVisible(true);
@@ -163,6 +261,25 @@ const Navbar = () => {
     }
   };
 
+  // Get dropdown background and text color based on page
+  const getDropdownStyles = () => {
+    if (isHomePage) {
+      return {
+        background: "bg-black/90",
+        text: "text-white",
+        hover: "hover:bg-black/70",
+        border: "border-gray-800",
+      };
+    } else {
+      return {
+        background: "bg-white",
+        text: "text-black",
+        hover: "hover:bg-gray-100",
+        border: "border-gray-200",
+      };
+    }
+  };
+
   // Get logo based on page and scroll position
   const getLogoSrc = () => {
     if (isHomePage) {
@@ -180,6 +297,12 @@ const Navbar = () => {
       return "bg-black"; // Non-home pages have black hamburger
     }
   };
+
+  // Check if current page is a service page
+  const isServicePage = location.pathname.includes("/services");
+
+  // Style variables for dropdown
+  const dropdownStyles = getDropdownStyles();
 
   return (
     <>
@@ -208,6 +331,26 @@ const Navbar = () => {
 
         .nav-link.active::after {
           transform: scaleX(1);
+        }
+        
+        .dropdown-link {
+          position: relative;
+        }
+        
+        .dropdown-link::before {
+          content: "";
+          position: absolute;
+          width: 3px;
+          height: 0;
+          left: -10px;
+          top: 50%;
+          background-color: var(--color-yellow);
+          transition: height 0.2s ease, top 0.2s ease;
+        }
+        
+        .dropdown-link:hover::before {
+          height: 80%;
+          top: 10%;
         }
         
         @keyframes star-movement-bottom {
@@ -284,15 +427,90 @@ const Navbar = () => {
             >
               <ul className="flex items-center justify-center space-x-8 w-full">
                 {navLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      to={link.path}
-                      className={`nav-link text-base uppercase font-medium transition-colors ${getTextColor()} ${
-                        location.pathname === link.path ? "active" : ""
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
+                  <li key={link.name} className="relative">
+                    {link.name === "Services" ? (
+                      // Services with dropdown
+                      <div
+                        ref={dropdownRef}
+                        className="relative"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        <div
+                          className={`nav-link text-base uppercase font-medium transition-colors flex items-center ${getTextColor()} ${
+                            isServicePage ? "active" : ""
+                          } cursor-pointer`}
+                          style={{ transform: "translate3d(0, 0, 0)" }}
+                          onClick={handleServicesClick}
+                        >
+                          {link.name}
+                          <ChevronDown
+                            size={16}
+                            className="ml-1 mt-0.5"
+                            style={{
+                              transform: servicesDropdownOpen
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
+                              transition: "transform 0.3s",
+                              willChange: "transform",
+                              transformOrigin: "center",
+                            }}
+                          />
+                        </div>
+
+                        {/* Services Dropdown Menu */}
+                        <AnimatePresence>
+                          {servicesDropdownOpen && (
+                            <motion.div
+                              className={`absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg ${dropdownStyles.background} border ${dropdownStyles.border} overflow-hidden`}
+                              variants={dropdownVariants}
+                              initial="hidden"
+                              animate="visible"
+                              exit="hidden"
+                              style={{
+                                willChange: "transform, opacity, height",
+                                transformOrigin: "top",
+                                zIndex: 50,
+                                transform: "translate3d(0, 0, 0)",
+                                backfaceVisibility: "hidden",
+                              }}
+                            >
+                              <div className="py-2">
+                                {servicesSubmenu.map((service) => (
+                                  <motion.div
+                                    key={service.name}
+                                    variants={dropdownItemVariants}
+                                    whileHover="hover"
+                                    style={{
+                                      willChange: "transform, opacity",
+                                      transform: "translate3d(0, 0, 0)",
+                                      backfaceVisibility: "hidden",
+                                    }}
+                                  >
+                                    <Link
+                                      to={service.path}
+                                      className={`block px-4 py-3 ${dropdownStyles.text} ${dropdownStyles.hover} dropdown-link`}
+                                    >
+                                      {service.name}
+                                    </Link>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      // Regular nav links
+                      <Link
+                        to={link.path}
+                        className={`nav-link text-base uppercase font-medium transition-colors ${getTextColor()} ${
+                          location.pathname === link.path ? "active" : ""
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -351,6 +569,7 @@ const Navbar = () => {
             key="mobile-menu"
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
+            serviceSubmenu={servicesSubmenu}
           />
         )}
       </AnimatePresence>

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowRight, ChevronDown, ExternalLink } from "lucide-react";
+import { ArrowRight, ChevronDown, ExternalLink, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
+import { servicesList } from "../../data/servicesData";
 
 // Animation variants following the codebase pattern
 const titleVariants = {
@@ -215,6 +217,7 @@ const ServicesList = () => {
       ],
       link: "/contact",
       cta: "Request Corporate Deck",
+      detailSlug: "corporate-presentation",
     },
     {
       id: 2,
@@ -232,6 +235,7 @@ const ServicesList = () => {
       ],
       link: "/contact",
       cta: "Create Video Content",
+      detailSlug: "video-presentation",
     },
     {
       id: 3,
@@ -249,6 +253,7 @@ const ServicesList = () => {
       ],
       link: "/contact",
       cta: "Book Training Session",
+      detailSlug: "presentation-training",
     },
     {
       id: 4,
@@ -266,6 +271,7 @@ const ServicesList = () => {
       ],
       link: "/contact",
       cta: "Discuss Financial Needs",
+      detailSlug: "financial-modeling",
     },
   ];
 
@@ -366,6 +372,34 @@ const ServicesList = () => {
           </span>,
         ];
     }
+  };
+
+  // Button variants for animations
+  const buttonVariants = {
+    initial: {
+      opacity: 0,
+      transform: "translate3d(0px, 10px, 0px)",
+    },
+    animate: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+        delay: 0.3,
+      },
+    },
+    hover: {
+      transform: "translate3d(0px, -2px, 0px)",
+      boxShadow:
+        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10,
+      },
+    },
   };
 
   return (
@@ -585,7 +619,7 @@ const ServicesList = () => {
                         {/* Left column with image */}
                         <div className="flex flex-col">
                           <div
-                            className="overflow-hidden rounded-xl shadow-lg h-64 md:h-full flex-grow"
+                            className="overflow-hidden rounded-xl shadow-lg h-64 md:h-auto flex-grow"
                             style={{
                               transform: "translate3d(0,0,0)",
                               backfaceVisibility: "hidden",
@@ -599,6 +633,30 @@ const ServicesList = () => {
                               style={{ transform: "translate3d(0, 0, 0)" }}
                             />
                           </div>
+
+                          {/* Service Detail Link Button */}
+                          <motion.div
+                            className="mt-4"
+                            variants={buttonVariants}
+                            initial="initial"
+                            animate="animate"
+                            whileHover="hover"
+                            style={{
+                              willChange: "transform, opacity, box-shadow",
+                              transform: "translate3d(0, 0, 0)",
+                              backfaceVisibility: "hidden",
+                            }}
+                          >
+                            <Link
+                              to={`/services/${item.detailSlug}`}
+                              className="flex items-center justify-center w-full py-3 px-4 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-lg transition-colors duration-200"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <FileText size={18} className="mr-2" />
+                              Learn More About {item.title.firstPart}{" "}
+                              {item.title.secondPart}
+                            </Link>
+                          </motion.div>
                         </div>
 
                         {/* Right column with content */}
@@ -632,10 +690,11 @@ const ServicesList = () => {
                             </ul>
                           </div>
 
-                          <div className="mt-4">
+                          <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <a
                               href={item.link}
                               className="inline-flex items-center text-yellow-500 hover:text-yellow-600 transition-colors group"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <span className="mr-2 font-medium">
                                 {item.cta}
