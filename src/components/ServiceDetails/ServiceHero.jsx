@@ -1,14 +1,53 @@
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import React, { useRef, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const ServiceHero = ({ title, subtitle, image }) => {
+  const location = useLocation();
   const heroRef = useRef(null);
-  const isInView = useInView(heroRef, { once: true, amount: 0.3 });
+
+  // Force remount with a unique key on every route change
+  const [mountKey, setMountKey] = useState(Date.now());
+
+  // Reset key when route changes to force complete remount
+  useEffect(() => {
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
+    // Force remount with new key
+    setMountKey(Date.now());
+  }, [location.pathname]);
+
+  // Split title into words for one-word-per-line styling
+  const titleWords = title.split(" ");
+
+  // Use Unsplash images with appropriate search terms for each service
+  const getUnsplashImage = () => {
+    // If specific service image is provided, use it
+    if (image) return image;
+
+    // Otherwise generate appropriate Unsplash query based on service title
+    let query = title.toLowerCase();
+
+    // Enhance queries for better image results
+    if (query.includes("corporate")) {
+      query = "business presentation conference";
+    } else if (query.includes("video")) {
+      query = "video production filming";
+    } else if (query.includes("training")) {
+      query = "presentation workshop training";
+    } else if (query.includes("financial")) {
+      query = "financial business chart data";
+    }
+
+    return `https://source.unsplash.com/random/1600x900/?${encodeURIComponent(
+      query
+    )}`;
+  };
+
+  const imageUrl = getUnsplashImage();
 
   // Animation variants
-  const contentVariants = {
+  const cardVariants = {
     hidden: {
       opacity: 0,
       transform: "translate3d(0px, 30px, 0px)",
@@ -22,38 +61,11 @@ const ServiceHero = ({ title, subtitle, image }) => {
         damping: 20,
       },
     },
-  };
-
-  const titleVariants = {
-    hidden: {
+    exit: {
       opacity: 0,
-      transform: "translate3d(0px, 30px, 0px)",
-    },
-    visible: {
-      opacity: 1,
-      transform: "translate3d(0px, 0px, 0px)",
+      transform: "translate3d(0px, -30px, 0px)",
       transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        delay: 0.2,
-      },
-    },
-  };
-
-  const subtitleVariants = {
-    hidden: {
-      opacity: 0,
-      transform: "translate3d(0px, 20px, 0px)",
-    },
-    visible: {
-      opacity: 1,
-      transform: "translate3d(0px, 0px, 0px)",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        delay: 0.4,
+        duration: 0.2,
       },
     },
   };
@@ -73,12 +85,35 @@ const ServiceHero = ({ title, subtitle, image }) => {
         delay: 0.1,
       },
     },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
   };
 
-  const breadcrumbVariants = {
+  const titleContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
+  const titleWordVariants = {
     hidden: {
       opacity: 0,
-      transform: "translate3d(0px, -10px, 0px)",
+      transform: "translate3d(0px, 20px, 0px)",
     },
     visible: {
       opacity: 1,
@@ -89,133 +124,145 @@ const ServiceHero = ({ title, subtitle, image }) => {
         damping: 20,
       },
     },
+    exit: {
+      opacity: 0,
+      transform: "translate3d(0px, -20px, 0px)",
+      transition: {
+        duration: 0.15,
+      },
+    },
+  };
+
+  const subtitleVariants = {
+    hidden: {
+      opacity: 0,
+      transform: "translate3d(0px, 10px, 0px)",
+    },
+    visible: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0px)",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+        delay: 0.4 + titleWords.length * 0.1,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
   };
 
   return (
-    <section
-      ref={heroRef}
-      className="relative bg-black text-white w-full overflow-hidden"
-      style={{
-        height: "min(90vh, 800px)",
-        transform: "translate3d(0, 0, 0)",
-        backfaceVisibility: "hidden",
-      }}
-    >
-      {/* Background image with overlay */}
-      <motion.div
-        className="absolute inset-0 w-full h-full z-0"
-        variants={imageVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+    <AnimatePresence mode="wait">
+      <section
+        ref={heroRef}
+        className="relative w-full overflow-hidden pt-32 pb-16 md:pt-32 md:pb-24 px-4 md:px-12 bg-white dark:bg-gray-950"
         style={{
-          willChange: "transform, opacity",
           transform: "translate3d(0, 0, 0)",
           backfaceVisibility: "hidden",
         }}
+        key={mountKey} // Force remount on route change with unique key
       >
-        <div className="absolute inset-0 bg-black/60 z-10"></div>
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover object-center"
-          style={{ transform: "translate3d(0, 0, 0)" }}
-        />
-      </motion.div>
+        <div className="container mx-auto">
+          {/* Card-style hero image with title overlay */}
+          <motion.div
+            className="relative w-full rounded-3xl overflow-hidden shadow-2xl"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            style={{
+              height: "min(75vh, 700px)",
+              willChange: "transform, opacity",
+              transform: "translate3d(0, 0, 0)",
+              backfaceVisibility: "hidden",
+            }}
+          >
+            {/* Image */}
+            <motion.div
+              className="absolute inset-0 w-full h-full"
+              variants={imageVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              style={{
+                willChange: "transform, opacity",
+                transform: "translate3d(0, 0, 0)",
+                backfaceVisibility: "hidden",
+              }}
+            >
+              <img
+                src={imageUrl}
+                alt={title}
+                className="w-full h-full object-cover object-center"
+                style={{ transform: "translate3d(0, 0, 0)" }}
+              />
+              {/* Full black overlay with opacity for text visibility */}
+              <div className="absolute inset-0 bg-black opacity-60"></div>
+            </motion.div>
 
-      {/* Content */}
-      <div
-        className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center"
-        style={{ transform: "translate3d(0, 0, 0)" }}
-      >
-        {/* Breadcrumb navigation */}
-        <motion.div
-          className="absolute top-32 left-4 md:left-8"
-          variants={breadcrumbVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          style={{
-            willChange: "transform, opacity",
-            transform: "translate3d(0, 0, 0)",
-            backfaceVisibility: "hidden",
-          }}
-        >
-          <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-1 md:space-x-3">
-              <li className="inline-flex items-center">
-                <Link
-                  to="/"
-                  className="inline-flex items-center text-sm font-medium text-gray-300 hover:text-white"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <div className="flex items-center">
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
-                  <Link
-                    to="/services"
-                    className="ml-1 text-sm font-medium text-gray-300 hover:text-white md:ml-2"
+            {/* Title and subtitle positioned in bottom left */}
+            <div
+              className="absolute bottom-0 left-0 p-6 md:p-10 w-full"
+              style={{ transform: "translate3d(0, 0, 0)" }}
+            >
+              {/* Title with one word per line */}
+              <motion.div
+                className="flex flex-col mb-4"
+                variants={titleContainerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                style={{
+                  willChange: "opacity",
+                  transform: "translate3d(0, 0, 0)",
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                {titleWords.map((word, index) => (
+                  <motion.div
+                    key={index}
+                    className="overflow-hidden"
+                    variants={titleWordVariants}
+                    style={{
+                      willChange: "transform, opacity",
+                      transform: "translate3d(0, 0, 0)",
+                      backfaceVisibility: "hidden",
+                    }}
                   >
-                    Services
-                  </Link>
-                </div>
-              </li>
-              <li aria-current="page">
-                <div className="flex items-center">
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
-                  <span className="ml-1 text-sm font-medium text-gray-100 md:ml-2">
-                    {title}
-                  </span>
-                </div>
-              </li>
-            </ol>
-          </nav>
-        </motion.div>
+                    <h1 className="text-5xl md:text-6xl lg:text-8xl tracking-tight font-semibold text-white leading-tight">
+                      {word}
+                      {index === titleWords.length - 1 && (
+                        <span className="text-yellow-500">.</span>
+                      )}
+                    </h1>
+                  </motion.div>
+                ))}
+              </motion.div>
 
-        <motion.div
-          className="max-w-3xl"
-          variants={contentVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          style={{
-            willChange: "transform, opacity",
-            transform: "translate3d(0, 0, 0)",
-            backfaceVisibility: "hidden",
-          }}
-        >
-          <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight"
-            variants={titleVariants}
-            style={{
-              willChange: "transform, opacity",
-              transform: "translate3d(0, 0, 0)",
-              backfaceVisibility: "hidden",
-            }}
-          >
-            {title}
-            <span className="text-yellow-500">.</span>
-          </motion.h1>
-
-          <motion.p
-            className="text-xl md:text-2xl text-gray-200 max-w-2xl"
-            variants={subtitleVariants}
-            style={{
-              willChange: "transform, opacity",
-              transform: "translate3d(0, 0, 0)",
-              backfaceVisibility: "hidden",
-            }}
-          >
-            {subtitle}
-          </motion.p>
-        </motion.div>
-      </div>
-
-      {/* Bottom decorative element */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-gray-950 to-transparent z-10"
-        style={{ transform: "translate3d(0, 0, 0)" }}
-      ></div>
-    </section>
+              <motion.p
+                className="text-lg md:text-xl text-gray-200 max-w-2xl"
+                variants={subtitleVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                style={{
+                  willChange: "transform, opacity",
+                  transform: "translate3d(0, 0, 0)",
+                  backfaceVisibility: "hidden",
+                }}
+              >
+                {subtitle}
+              </motion.p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </AnimatePresence>
   );
 };
 
