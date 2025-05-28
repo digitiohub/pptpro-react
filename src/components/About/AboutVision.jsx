@@ -25,14 +25,14 @@ const AboutVision = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 overflow-hidden relative"
+      className="pl-4 md:pl-12 py-4 md:py-8 overflow-hidden relative"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
         perspective: 1000,
       }}
     >
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative container mx-auto pl-4">
         <div className="flex flex-col md:flex-row">
           {/* Text content on the left */}
           <motion.div
@@ -162,7 +162,7 @@ const AboutVision = () => {
             >
               <div className="relative h-[400px] md:h-full w-full overflow-hidden">
                 <div
-                  className="absolute inset-0 rounded-tl-[80px] rounded-br-[80px] overflow-hidden"
+                  className="absolute inset-0 rounded-tl-[250px] rounded-bl-[250px] overflow-hidden"
                   style={{
                     transform: "translate3d(0,0,0)",
                     backfaceVisibility: "hidden",

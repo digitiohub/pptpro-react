@@ -25,14 +25,14 @@ const AboutMission = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 overflow-hidden relative"
+      className="pr-4 md:pr-12 py-16 md:py-24 overflow-hidden relative"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
         perspective: 1000,
       }}
     >
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative container mx-auto pr-4">
         <div className="flex flex-col-reverse md:flex-row">
           {/* Image container that extends to the left edge */}
           <div className="w-full md:w-1/2 md:absolute md:left-0 md:top-0 md:bottom-0 md:pr-4 lg:pr-8 mt-10 md:mt-0">
@@ -54,7 +54,7 @@ const AboutMission = () => {
             >
               <div className="relative h-[400px] md:h-full w-full overflow-hidden">
                 <div
-                  className="absolute inset-0 rounded-tr-[80px] rounded-bl-[80px] overflow-hidden"
+                  className="absolute inset-0 rounded-tr-[250px] rounded-br-[250px] overflow-hidden"
                   style={{
                     transform: "translate3d(0,0,0)",
                     backfaceVisibility: "hidden",

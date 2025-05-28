@@ -1,5 +1,33 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import {
+  FaLinkedinIn,
+  FaTwitter,
+  FaInstagram,
+  FaGithub,
+  FaDribbble,
+  FaMediumM,
+} from "react-icons/fa";
+
+// Icon mapping for social platforms
+const getSocialIcon = (platform) => {
+  switch (platform.toLowerCase()) {
+    case "linkedin":
+      return <FaLinkedinIn />;
+    case "twitter":
+      return <FaTwitter />;
+    case "instagram":
+      return <FaInstagram />;
+    case "github":
+      return <FaGithub />;
+    case "dribbble":
+      return <FaDribbble />;
+    case "medium":
+      return <FaMediumM />;
+    default:
+      return <FaLinkedinIn />;
+  }
+};
 
 const TeamCard = ({ member, index }) => {
   const cardRef = useRef(null);
@@ -11,7 +39,7 @@ const TeamCard = ({ member, index }) => {
   return (
     <motion.div
       ref={cardRef}
-      className="group relative"
+      className="group"
       initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
       animate={
         isCardInView ? { opacity: 1, transform: "translate3d(0, 0, 0)" } : {}
@@ -23,58 +51,52 @@ const TeamCard = ({ member, index }) => {
       }}
       style={{ willChange: "transform, opacity" }}
     >
+      {/* Image with rounded corners */}
       <div
-        className="relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 group-hover:shadow-xl"
+        className="overflow-hidden rounded-lg mb-5 aspect-[3/4]"
         style={{
           transform: "translate3d(0,0,0)",
           backfaceVisibility: "hidden",
           perspective: 1000,
         }}
       >
-        {/* Image container with hover effect */}
-        <div className="relative h-80 overflow-hidden">
-          <img
-            src={member.image}
-            alt={member.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            style={{ transform: "translate3d(0, 0, 0)" }}
-          />
-
-          {/* Color overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 transition-opacity duration-300"></div>
-
-          {/* Social icons - appear on hover */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 flex justify-center space-x-3 opacity-0 translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-            {member.social.map((social, idx) => (
-              <a
-                key={idx}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-gray-800 hover:bg-yellow-500 hover:text-white transition-colors duration-200"
-                aria-label={`${member.name}'s ${social.platform}`}
-              >
-                <i className={`fab fa-${social.platform.toLowerCase()}`}></i>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* Text content */}
-        <div className="bg-white dark:bg-gray-800 p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-            {member.name}
-          </h3>
-          <p className="text-yellow-500 font-medium mb-2">{member.role}</p>
-          <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
-            {member.bio}
-          </p>
-        </div>
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          style={{ transform: "translate3d(0, 0, 0)" }}
+        />
       </div>
 
-      {/* Decorative elements */}
-      <div className="absolute -bottom-2 -right-2 w-16 h-16 bg-yellow-500 rounded-full opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-20"></div>
-      <div className="absolute -top-2 -left-2 w-12 h-12 bg-blue-500 rounded-full opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-20"></div>
+      {/* Content below image */}
+      <div className="text-center">
+        {/* Name and role */}
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+          {member.name}
+        </h3>
+        <p className="text-yellow-500 font-medium mb-3">{member.role}</p>
+
+        {/* Bio */}
+        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 px-2">
+          {member.bio}
+        </p>
+
+        {/* Social links */}
+        <div className="flex justify-center space-x-3">
+          {member.social.map((social, idx) => (
+            <a
+              key={idx}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-yellow-500 hover:text-white transition-colors duration-200"
+              aria-label={`${member.name}'s ${social.platform}`}
+            >
+              {getSocialIcon(social.platform)}
+            </a>
+          ))}
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -174,7 +196,7 @@ const AboutTeam = () => {
           style={{ willChange: "transform, opacity" }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Meet Our <span className="text-yellow-500">Team</span>
+            Meet Our Team<span className="text-yellow-500">.</span>
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
             Talented professionals dedicated to transforming your ideas into
@@ -183,7 +205,7 @@ const AboutTeam = () => {
         </motion.div>
 
         {/* Team grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           {teamMembers.map((member, index) => (
             <TeamCard key={member.name} member={member} index={index} />
           ))}

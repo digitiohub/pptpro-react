@@ -6,6 +6,7 @@ const AboutHero = () => {
   const sectionRef = useRef(null);
   const statsRef = useRef(null);
   const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
   const contentRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -30,6 +31,11 @@ const AboutHero = () => {
   });
 
   const isTitleInView = useInView(titleRef, {
+    once: true,
+    amount: 0.5,
+  });
+
+  const isSubtitleInView = useInView(subtitleRef, {
     once: true,
     amount: 0.5,
   });
@@ -83,26 +89,45 @@ const AboutHero = () => {
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Title at top */}
-        <motion.div
-          ref={titleRef}
-          initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-          animate={
-            isTitleInView
-              ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-              : {}
-          }
-          transition={{
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1.0],
-          }}
-          className="mb-12 md:mb-16"
-          style={{ willChange: "transform, opacity" }}
-        >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center md:text-left text-gray-900 dark:text-white tracking-tight">
+        {/* Centered title and subtitle */}
+        <div className="text-center max-w-4xl mx-auto mb-16 md:mb-20">
+          <motion.h1
+            ref={titleRef}
+            className="text-4xl md:text-5xl lg:text-6xl font-medium text-gray-900 dark:text-white mb-4 tracking-tight"
+            initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
+            animate={
+              isTitleInView
+                ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
+                : {}
+            }
+            transition={{
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1.0],
+            }}
+            style={{ willChange: "transform, opacity" }}
+          >
             About PPT Pro<span className="text-yellow-500">.</span>
-          </h1>
-        </motion.div>
+          </motion.h1>
+
+          <motion.p
+            ref={subtitleRef}
+            className="text-xl text-gray-600 dark:text-gray-400"
+            initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
+            animate={
+              isSubtitleInView
+                ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
+                : {}
+            }
+            transition={{
+              duration: 0.6,
+              delay: 0.2,
+              ease: [0.25, 0.1, 0.25, 1.0],
+            }}
+            style={{ willChange: "transform, opacity" }}
+          >
+            Creating impactful presentations since 2012
+          </motion.p>
+        </div>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
           {/* Left side - Image with 3D optimizations */}
@@ -180,24 +205,6 @@ const AboutHero = () => {
             {/* Text content - Simplified */}
             <div className="mb-8 md:mb-10">
               <motion.p
-                className="text-xl md:text-2xl font-medium text-gray-700 dark:text-gray-300 mb-6"
-                initial={{ opacity: 0, transform: "translate3d(0, 15px, 0)" }}
-                animate={
-                  isContentInView
-                    ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                    : {}
-                }
-                transition={{
-                  duration: 0.6,
-                  delay: 0.4,
-                  ease: [0.25, 0.1, 0.25, 1.0],
-                }}
-                style={{ willChange: "transform, opacity" }}
-              >
-                Creating impactful presentations since 2012.
-              </motion.p>
-
-              <motion.p
                 className="text-gray-600 dark:text-gray-400"
                 style={{
                   textAlign: "justify",
@@ -218,7 +225,9 @@ const AboutHero = () => {
                 At PPT Pro, we transform ideas into compelling visual stories.
                 Our team of experts combines design excellence with strategic
                 thinking to create presentations that captivate audiences and
-                drive results.
+                drive results. We're dedicated to helping businesses communicate
+                their message effectively through powerful visuals and clear
+                narratives.
               </motion.p>
             </div>
 
@@ -249,7 +258,7 @@ const AboutHero = () => {
                   }}
                   style={{ willChange: "transform, opacity" }}
                 >
-                  <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-500 dark:text-yellow-400">
+                  <span className="text-3xl md:text-4xl lg:text-5xl font-medium text-yellow-500 dark:text-yellow-400">
                     {areStatsInView && (
                       <>
                         {stat.prefix}

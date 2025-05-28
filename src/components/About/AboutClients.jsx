@@ -60,13 +60,21 @@ const LogoMarquee = ({ logos, direction = "left", speed = 25 }) => {
               transform: "translate3d(0, 0, 0)",
             }}
           >
+            {/* Fixed image URL and added fallback options */}
             <img
-              src={logo.logo}
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Generic_Logo.svg/240px-Generic_Logo.svg.png"
               alt={logo.name}
-              className="h-12 md:h-16 w-auto grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+              className="h-12 md:h-16 w-auto opacity-70 hover:opacity-100 transition-all duration-300"
               style={{
                 transform: "translate3d(0, 0, 0)", // Force GPU rendering
-                backfaceVisibility: "hidden",
+                filter: "grayscale(100%)",
+                minWidth: "80px", // Ensure minimum width
+                objectFit: "contain",
+              }}
+              onError={(e) => {
+                // Fallback if the image fails to load
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/150x50?text=Logo";
               }}
             />
           </div>
@@ -91,54 +99,24 @@ const AboutClients = () => {
     amount: 0.5,
   });
 
-  // Combined client logos in a single array
+  // Client logos data (keeping names for alt text, but using generic logo for all)
   const clientLogos = [
-    {
-      name: "Microsoft",
-      logo: "https://cdn.worldvectorlogo.com/logos/microsoft-3.svg",
-    },
-    {
-      name: "Google",
-      logo: "https://cdn.worldvectorlogo.com/logos/google-2015.svg",
-    },
-    {
-      name: "Apple",
-      logo: "https://cdn.worldvectorlogo.com/logos/apple-14.svg",
-    },
-    {
-      name: "Amazon",
-      logo: "https://cdn.worldvectorlogo.com/logos/amazon-icon-1.svg",
-    },
-    {
-      name: "Netflix",
-      logo: "https://cdn.worldvectorlogo.com/logos/netflix-4.svg",
-    },
-    {
-      name: "Meta",
-      logo: "https://cdn.worldvectorlogo.com/logos/meta-1.svg",
-    },
-    {
-      name: "Tesla",
-      logo: "https://cdn.worldvectorlogo.com/logos/tesla-9.svg",
-    },
-    {
-      name: "IBM",
-      logo: "https://cdn.worldvectorlogo.com/logos/ibm.svg",
-    },
-    {
-      name: "Spotify",
-      logo: "https://cdn.worldvectorlogo.com/logos/spotify-2.svg",
-    },
-    {
-      name: "Adobe",
-      logo: "https://cdn.worldvectorlogo.com/logos/adobe-2.svg",
-    },
+    { name: "Microsoft" },
+    { name: "Google" },
+    { name: "Apple" },
+    { name: "Amazon" },
+    { name: "Netflix" },
+    { name: "Meta" },
+    { name: "Tesla" },
+    { name: "IBM" },
+    { name: "Spotify" },
+    { name: "Adobe" },
   ];
 
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden"
+      className="py-4 md:py-8 dark:bg-gray-900 overflow-hidden"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
@@ -161,8 +139,9 @@ const AboutClients = () => {
           }}
           style={{ willChange: "transform, opacity" }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-medium text-gray-900 dark:text-white mb-4">
             From Startups to Big Companies
+            <span className="text-yellow-500">.</span>
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
             Trusted by innovative businesses around the world
@@ -175,9 +154,9 @@ const AboutClients = () => {
         <LogoMarquee logos={clientLogos} direction="left" speed={18} />
       </div>
 
-      {/* Fade gradient effect on edges */}
-      <div className="absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-gray-50 to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
-      <div className="absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-gray-50 to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
+      {/* Make sure fade gradients are positioned correctly */}
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 h-full w-16 bg-gradient-to-r from-gray-50 to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-16 bg-gradient-to-l from-gray-50 to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
     </section>
   );
 };
