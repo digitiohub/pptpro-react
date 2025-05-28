@@ -92,8 +92,9 @@ const AboutMission = () => {
             }}
             style={{ willChange: "transform, opacity" }}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              Our Mission to <span className="text-yellow-500">Inspire</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-gray-900 dark:text-white mb-6">
+              Our Mission to Inspire
+              <span className="text-yellow-500">.</span>
             </h2>
 
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">

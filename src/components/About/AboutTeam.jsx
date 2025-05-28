@@ -171,7 +171,7 @@ const AboutTeam = () => {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden"
+      className="pb-16 md:pb-24 pt-4  dark:bg-gray-900 overflow-hidden"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
@@ -195,7 +195,7 @@ const AboutTeam = () => {
           }}
           style={{ willChange: "transform, opacity" }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-gray-900 dark:text-white mb-4">
             Meet Our Team<span className="text-yellow-500">.</span>
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
