@@ -1,11 +1,89 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { Play } from "lucide-react";
+
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const subtitleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2,
+    },
+  },
+};
+
+const imageVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 30px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.3,
+    },
+  },
+};
+
+const buttonVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 0px, 0px) scale(0.9)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px) scale(1)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.5,
+    },
+  },
+  hover: {
+    transform: "translate3d(0px, 0px, 0px) scale(1.1)",
+    boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)",
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
+    },
+  },
+};
 
 const ServicesHero = () => {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const textRef = useRef(null);
-  const cardsRef = useRef(null);
+  const imageRef = useRef(null);
 
   // Track if elements are in view
   const isTitleInView = useInView(titleRef, {
@@ -18,77 +96,16 @@ const ServicesHero = () => {
     amount: 0.5,
   });
 
-  const areCardsInView = useInView(cardsRef, {
+  const isImageInView = useInView(imageRef, {
     once: true,
     amount: 0.2,
   });
 
-  // Service cards data
-  const serviceHighlights = [
-    {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-          />
-        </svg>
-      ),
-      title: "Custom Design",
-      description:
-        "Tailored presentations that align with your brand and captivate your audience.",
-    },
-    {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-          />
-        </svg>
-      ),
-      title: "Content Creation",
-      description:
-        "Compelling content that transforms complex ideas into clear, persuasive narratives.",
-    },
-    {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-          />
-        </svg>
-      ),
-      title: "Template Systems",
-      description:
-        "Consistent, branded template systems for ongoing presentation needs.",
-    },
-  ];
+  // Mock video open function
+  const handleOpenVideo = () => {
+    console.log("Open video player");
+    // Implementation would connect to your video player component
+  };
 
   return (
     <section
@@ -101,40 +118,25 @@ const ServicesHero = () => {
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero title */}
+        {/* Hero title with black text and yellow full stop */}
         <motion.div
           ref={titleRef}
           className="text-center max-w-4xl mx-auto"
-          initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-          animate={
-            isTitleInView
-              ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-              : {}
-          }
-          transition={{
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1.0],
-          }}
+          variants={titleVariants}
+          initial="initial"
+          animate={isTitleInView ? "animate" : "initial"}
           style={{ willChange: "transform, opacity" }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
-            Our <span className="text-yellow-500">Services</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-gray-900 dark:text-white mb-6 tracking-tight">
+            Our Services<span className="text-yellow-500">.</span>
           </h1>
 
           <motion.p
             ref={textRef}
             className="text-xl text-gray-600 dark:text-gray-400 mb-12 md:mb-16"
-            initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-            animate={
-              isTextInView
-                ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                : {}
-            }
-            transition={{
-              duration: 0.6,
-              delay: 0.2,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
+            variants={subtitleVariants}
+            initial="initial"
+            animate={isTextInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
             Elevate your presentations with our comprehensive suite of services,
@@ -142,53 +144,48 @@ const ServicesHero = () => {
           </motion.p>
         </motion.div>
 
-        {/* Service highlight cards */}
+        {/* Featured image with play button */}
         <motion.div
-          ref={cardsRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8"
-          initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
-          animate={
-            areCardsInView
-              ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-              : {}
-          }
-          transition={{
-            duration: 0.8,
-            delay: 0.3,
-            ease: [0.25, 0.1, 0.25, 1.0],
+          ref={imageRef}
+          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden aspect-video shadow-xl"
+          variants={imageVariants}
+          initial="initial"
+          animate={isImageInView ? "animate" : "initial"}
+          style={{
+            willChange: "transform, opacity",
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
           }}
-          style={{ willChange: "transform, opacity" }}
         >
-          {serviceHighlights.map((service, index) => (
-            <motion.div
-              key={service.title}
-              className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center text-center"
-              initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-              animate={
-                areCardsInView
-                  ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                  : {}
-              }
-              transition={{
-                duration: 0.5,
-                delay: 0.3 + index * 0.1,
-                ease: [0.25, 0.1, 0.25, 1.0],
-              }}
-              style={{
-                transform: "translate3d(0,0,0)",
-                backfaceVisibility: "hidden",
-                perspective: 1000,
-              }}
-            >
-              <div className="text-yellow-500 mb-4">{service.icon}</div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {service.description}
-              </p>
-            </motion.div>
-          ))}
+          {/* Image */}
+          <img
+            src="https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+            alt="Our presentation services in action"
+            className="w-full h-full object-cover"
+            style={{ transform: "translate3d(0, 0, 0)" }}
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
+          {/* Play button */}
+          <motion.button
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-white p-6 rounded-full shadow-lg z-10"
+            variants={buttonVariants}
+            initial="initial"
+            animate={isImageInView ? "animate" : "initial"}
+            whileHover="hover"
+            whileTap={{ scale: 0.95 }}
+            onClick={handleOpenVideo}
+            style={{
+              willChange: "transform, box-shadow",
+              transform: "translate3d(-50%, -50%, 0)",
+              backfaceVisibility: "hidden",
+            }}
+            aria-label="Play presentation services video"
+          >
+            <Play size={36} fill="white" />
+          </motion.button>
         </motion.div>
       </div>
     </section>

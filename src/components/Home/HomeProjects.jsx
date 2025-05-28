@@ -9,6 +9,128 @@ import {
 } from "lucide-react";
 import StarBorder from "../../ui/StarBorder/StarBorder";
 
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(-30px, 0px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const pillsVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.3,
+    },
+  },
+};
+
+const subtitleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(30px, 0px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.4,
+    },
+  },
+};
+
+const gridVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 40px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.5,
+    },
+  },
+};
+
+const projectVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 30px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2 + index * 0.1,
+    },
+  }),
+  hover: {
+    transform: "translate3d(0px, -5px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const buttonVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.8,
+    },
+  },
+};
+
+const pillButtonVariants = {
+  hover: {
+    transform: "translate3d(0px, -2px, 0px)",
+    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
+    },
+  },
+};
+
 const HomeProjects = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const sectionRef = useRef(null);
@@ -111,20 +233,14 @@ const HomeProjects = () => {
             <motion.h2
               ref={titleRef}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-left mb-6 md:mb-8 tracking-tight text-gray-900 dark:text-white"
-              initial={{ opacity: 0, transform: "translate3d(-30px, 0, 0)" }}
-              animate={
-                isTitleInView
-                  ? {
-                      opacity: 1,
-                      transform: "translate3d(0, 0, 0)",
-                    }
-                  : {}
-              }
-              transition={{
-                duration: 0.8,
-                ease: [0.25, 0.1, 0.25, 1.0],
+              variants={titleVariants}
+              initial="initial"
+              animate={isTitleInView ? "animate" : "initial"}
+              style={{
+                willChange: "transform, opacity",
+                transform: "translate3d(0, 0, 0)",
+                backfaceVisibility: "hidden",
               }}
-              style={{ willChange: "transform, opacity" }}
             >
               Our Featured Projects
               <span className="text-yellow-500">.</span>
@@ -134,21 +250,14 @@ const HomeProjects = () => {
             <motion.div
               ref={pillsRef}
               className="flex flex-wrap gap-3 mb-8 md:mb-0"
-              initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-              animate={
-                isPillsInView
-                  ? {
-                      opacity: 1,
-                      transform: "translate3d(0, 0, 0)",
-                    }
-                  : {}
-              }
-              transition={{
-                duration: 0.6,
-                delay: 0.3,
-                ease: [0.25, 0.1, 0.25, 1.0],
+              variants={pillsVariants}
+              initial="initial"
+              animate={isPillsInView ? "animate" : "initial"}
+              style={{
+                willChange: "transform, opacity",
+                transform: "translate3d(0, 0, 0)",
+                backfaceVisibility: "hidden",
               }}
-              style={{ willChange: "transform, opacity" }}
             >
               {pills.map((pill) => {
                 const Icon = pill.icon;
@@ -161,15 +270,13 @@ const HomeProjects = () => {
                         : "bg-transparent border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:border-gray-400 dark:hover:border-gray-600"
                     } transition-all duration-200 transform`}
                     onClick={() => setActiveFilter(pill.id)}
-                    whileHover={{
-                      transform: "translate3d(0, -2px, 0)",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    variants={pillButtonVariants}
+                    whileHover="hover"
+                    style={{
+                      willChange: "transform, box-shadow",
+                      transform: "translate3d(0, 0, 0)",
+                      backfaceVisibility: "hidden",
                     }}
-                    transition={{
-                      duration: 0.2,
-                      ease: [0.25, 0.1, 0.25, 1.0],
-                    }}
-                    style={{ willChange: "transform, box-shadow" }}
                   >
                     <Icon className="h-3.5 w-3.5" />
                     {pill.label}
@@ -183,21 +290,14 @@ const HomeProjects = () => {
           <motion.div
             ref={subtitleRef}
             className="mt-6 md:mt-0 max-w-md ml-0 md:ml-auto"
-            initial={{ opacity: 0, transform: "translate3d(30px, 0, 0)" }}
-            animate={
-              isSubtitleInView
-                ? {
-                    opacity: 1,
-                    transform: "translate3d(0, 0, 0)",
-                  }
-                : {}
-            }
-            transition={{
-              duration: 0.8,
-              delay: 0.4,
-              ease: [0.25, 0.1, 0.25, 1.0],
+            variants={subtitleVariants}
+            initial="initial"
+            animate={isSubtitleInView ? "animate" : "initial"}
+            style={{
+              willChange: "transform, opacity",
+              transform: "translate3d(0, 0, 0)",
+              backfaceVisibility: "hidden",
             }}
-            style={{ willChange: "transform, opacity" }}
           >
             <p
               className="text-lg text-gray-600 dark:text-gray-400"
@@ -217,62 +317,56 @@ const HomeProjects = () => {
         <motion.div
           ref={gridRef}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
-          initial={{ opacity: 0, transform: "translate3d(0, 40px, 0)" }}
-          animate={
-            isGridInView
-              ? {
-                  opacity: 1,
-                  transform: "translate3d(0, 0, 0)",
-                }
-              : {}
-          }
-          transition={{
-            duration: 0.8,
-            delay: 0.5,
-            ease: [0.25, 0.1, 0.25, 1.0],
-          }}
+          variants={gridVariants}
+          initial="initial"
+          animate={isGridInView ? "animate" : "initial"}
           style={{
             willChange: "transform, opacity",
             transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
+            perspective: 1000,
           }}
         >
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
               className="group relative overflow-hidden rounded-2xl bg-black cursor-pointer"
-              initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
-              animate={
-                isGridInView
-                  ? {
-                      opacity: 1,
-                      transform: "translate3d(0, 0, 0)",
-                    }
-                  : {}
-              }
-              transition={{
-                duration: 0.6,
-                delay: 0.2 + index * 0.1,
-                ease: [0.25, 0.1, 0.25, 1.0],
-              }}
-              whileHover={{
-                transform: "translate3d(0, -5px, 0)",
-                transition: { duration: 0.3 },
-              }}
+              variants={projectVariants}
+              custom={index}
+              initial="initial"
+              animate={isGridInView ? "animate" : "initial"}
+              whileHover="hover"
               style={{
                 willChange: "transform, opacity",
                 aspectRatio: "660/450",
                 transform: "translate3d(0, 0, 0)",
+                backfaceVisibility: "hidden",
               }}
             >
               {/* Project image */}
-              <div className="w-full h-full overflow-hidden">
+              <div
+                className="w-full h-full overflow-hidden"
+                style={{
+                  transform: "translate3d(0, 0, 0)",
+                  backfaceVisibility: "hidden",
+                }}
+              >
                 <motion.img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700"
-                  initial={{ scale: 1 }}
-                  whileHover={{ scale: 1.05 }}
-                  style={{ willChange: "transform" }}
+                  className="w-full h-full object-cover"
+                  whileHover={{
+                    scale: 1.05,
+                    transition: {
+                      type: "spring",
+                      stiffness: 150,
+                      damping: 30,
+                    },
+                  }}
+                  style={{
+                    willChange: "transform",
+                    transform: "translate3d(0, 0, 0)",
+                  }}
                 />
               </div>
 
@@ -288,38 +382,64 @@ const HomeProjects = () => {
                   <motion.h3
                     className="text-white text-xl font-medium mb-1"
                     initial={{
-                      transform: "translate3d(0, 10px, 0)",
+                      transform: "translate3d(0px, 10px, 0px)",
                       opacity: 0.8,
                     }}
                     whileHover={{
-                      transform: "translate3d(0, 0, 0)",
+                      transform: "translate3d(0px, 0px, 0px)",
                       opacity: 1,
-                      transition: { duration: 0.3 },
+                      transition: {
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      },
                     }}
-                    style={{ willChange: "transform, opacity" }}
+                    style={{
+                      willChange: "transform, opacity",
+                      transform: "translate3d(0, 0, 0)",
+                    }}
                   >
                     {project.title}
                   </motion.h3>
                   <motion.span
                     className="inline-block text-yellow-400 text-sm"
                     initial={{
-                      transform: "translate3d(0, 10px, 0)",
+                      transform: "translate3d(0px, 10px, 0px)",
                       opacity: 0.6,
                     }}
                     whileHover={{
-                      transform: "translate3d(0, 0, 0)",
+                      transform: "translate3d(0px, 0px, 0px)",
                       opacity: 1,
-                      transition: { duration: 0.3, delay: 0.05 },
+                      transition: {
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                        delay: 0.05,
+                      },
                     }}
-                    style={{ willChange: "transform, opacity" }}
+                    style={{
+                      willChange: "transform, opacity",
+                      transform: "translate3d(0, 0, 0)",
+                    }}
                   >
                     {project.type}
                   </motion.span>
                 </div>
                 <motion.div
                   className="bg-yellow-500 p-2 rounded-full opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-                  whileHover={{ rotate: 45, scale: 1.1 }}
-                  style={{ willChange: "transform, opacity" }}
+                  whileHover={{
+                    rotate: 45,
+                    scale: 1.1,
+                    transition: {
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 10,
+                    },
+                  }}
+                  style={{
+                    willChange: "transform, opacity",
+                    transform: "translate3d(0, 0, 0)",
+                  }}
                 >
                   <ArrowRight className="h-5 w-5 text-black" />
                 </motion.div>
@@ -331,28 +451,16 @@ const HomeProjects = () => {
         {/* View all projects button with StarBorder */}
         <motion.div
           className="mt-16 flex justify-center"
-          initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-          animate={
-            isGridInView
-              ? {
-                  opacity: 1,
-                  transform: "translate3d(0, 0, 0)",
-                }
-              : {}
-          }
-          transition={{
-            duration: 0.5,
-            delay: 0.8,
-            ease: [0.25, 0.1, 0.25, 1.0],
+          variants={buttonVariants}
+          initial="initial"
+          animate={isGridInView ? "animate" : "initial"}
+          style={{
+            willChange: "transform, opacity",
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
           }}
-          style={{ willChange: "transform, opacity" }}
         >
-          <StarBorder
-            as="a"
-            href="/projects"
-            color="#000"
-            speed="8s"
-          >
+          <StarBorder as="a" href="/projects" color="#000" speed="8s">
             <span className="flex items-center gap-2">
               View All Projects
               <ArrowRight className="h-5 w-5 group-hover:transform group-hover:translate-x-1 transition-transform" />

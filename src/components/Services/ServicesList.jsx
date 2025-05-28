@@ -1,112 +1,107 @@
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { ArrowRight, ChevronDown, ExternalLink } from "lucide-react";
 
-const ServiceCard = ({ service, index }) => {
-  const cardRef = useRef(null);
-  const isCardInView = useInView(cardRef, {
-    once: true,
-    amount: 0.2,
-  });
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
 
-  // Alternate layout direction based on index
-  const isEven = index % 2 === 0;
+const subtitleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.1,
+    },
+  },
+};
 
-  return (
-    <motion.div
-      ref={cardRef}
-      className={`flex flex-col ${
-        isEven ? "md:flex-row" : "md:flex-row-reverse"
-      } 
-        gap-8 md:gap-12 py-12 md:py-20 border-b border-gray-200 dark:border-gray-800
-        ${index === 0 ? "border-t" : ""}`}
-      initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
-      animate={
-        isCardInView ? { opacity: 1, transform: "translate3d(0, 0, 0)" } : {}
-      }
-      transition={{
-        duration: 0.7,
-        delay: 0.1,
-        ease: [0.25, 0.1, 0.25, 1.0],
-      }}
-      style={{ willChange: "transform, opacity" }}
-    >
-      {/* Image */}
-      <div className="w-full md:w-5/12">
-        <div
-          className="overflow-hidden rounded-xl shadow-lg h-64 md:h-80"
-          style={{
-            transform: "translate3d(0,0,0)",
-            backfaceVisibility: "hidden",
-            perspective: 1000,
-          }}
-        >
-          <img
-            src={service.image}
-            alt={service.title}
-            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            style={{ transform: "translate3d(0, 0, 0)" }}
-          />
-        </div>
-      </div>
+const contentVariants = {
+  hidden: {
+    height: 0,
+    opacity: 0,
+    transform: "translate3d(0px, -10px, 0px)",
+    transition: {
+      height: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
+      opacity: { duration: 0.2 },
+      transform: { duration: 0.2 },
+    },
+  },
+  visible: {
+    height: "auto",
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      height: { duration: 0.4, ease: [0.33, 1, 0.68, 1] },
+      opacity: { duration: 0.4, delay: 0.1 },
+      transform: { duration: 0.4, delay: 0.1 },
+    },
+  },
+};
 
-      {/* Content */}
-      <div className="w-full md:w-7/12 flex flex-col justify-center">
-        <div className="inline-block mb-3">
-          <span className="px-3 py-1 text-sm font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full">
-            {service.category}
-          </span>
-        </div>
-        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-          {service.title}
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          {service.description}
-        </p>
+const listItemVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(-10px, 0px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.1 + index * 0.1,
+    },
+  }),
+};
 
-        {/* Features list */}
-        <ul className="space-y-3 mb-6">
-          {service.features.map((feature, idx) => (
-            <li key={idx} className="flex items-start">
-              <svg
-                className="w-5 h-5 text-yellow-500 mr-3 mt-0.5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="text-gray-700 dark:text-gray-300">
-                {feature}
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        {/* CTA button */}
-        <div>
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
-          >
-            {service.cta}
-          </a>
-        </div>
-      </div>
-    </motion.div>
-  );
+const marqueeVariants = {
+  animate: {
+    transform: "translate3d(-50%, 0, 0)",
+    transition: {
+      duration: 20,
+      ease: "linear",
+      repeat: Infinity,
+      repeatType: "loop",
+    },
+  },
 };
 
 const ServicesList = () => {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [autoCyclingPaused, setAutoCyclingPaused] = useState(false);
+  const cycleIntervalRef = useRef(null);
+  const pauseTimerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Check if section is in view
   const isSectionInView = useInView(sectionRef, {
-    once: true,
-    amount: 0.1,
+    once: false,
+    amount: 0.2,
+    margin: "-100px 0px",
   });
 
   const isTitleInView = useInView(titleRef, {
@@ -114,108 +109,563 @@ const ServicesList = () => {
     amount: 0.5,
   });
 
-  // Services data
+  // Effect to check window size and set isMobile state
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkScreenSize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Setup auto-cycling effect - only on larger screens and when in view
+  useEffect(() => {
+    if (isMobile) {
+      // Don't auto-cycle on mobile
+      if (cycleIntervalRef.current) {
+        clearInterval(cycleIntervalRef.current);
+        cycleIntervalRef.current = null;
+      }
+      return;
+    }
+
+    // Only start auto-cycling when component is in view
+    if (isSectionInView && !autoCyclingPaused) {
+      // Function to cycle to next accordion item
+      const cycleToNextItem = () => {
+        if (!autoCyclingPaused) {
+          setActiveIndex((prevIndex) =>
+            prevIndex === services.length - 1 ? 0 : prevIndex + 1
+          );
+        }
+      };
+
+      // Start the interval for auto-cycling (every 8 seconds)
+      cycleIntervalRef.current = setInterval(cycleToNextItem, 8000);
+    } else {
+      // Clear interval when component is not in view
+      if (cycleIntervalRef.current) {
+        clearInterval(cycleIntervalRef.current);
+        cycleIntervalRef.current = null;
+      }
+    }
+
+    // Cleanup on component unmount
+    return () => {
+      if (cycleIntervalRef.current) {
+        clearInterval(cycleIntervalRef.current);
+      }
+      if (pauseTimerRef.current) {
+        clearTimeout(pauseTimerRef.current);
+      }
+    };
+  }, [autoCyclingPaused, isMobile, isSectionInView]);
+
+  // Toggle accordion item with manual click handling
+  const toggleAccordion = (index) => {
+    // Set the clicked index as active
+    setActiveIndex(index === activeIndex ? null : index);
+
+    // Pause auto-cycling
+    setAutoCyclingPaused(true);
+
+    // Clear any existing pause timer
+    if (pauseTimerRef.current) {
+      clearTimeout(pauseTimerRef.current);
+    }
+
+    // Resume auto-cycling after 20 seconds (only on non-mobile)
+    if (!isMobile) {
+      pauseTimerRef.current = setTimeout(() => {
+        setAutoCyclingPaused(false);
+      }, 20000);
+    }
+  };
+
+  // Format number with leading zero
+  const formatNumber = (num) => {
+    return num < 10 ? `0${num}` : `${num}`;
+  };
+
+  // Common number styling class
+  const numberStyleClass = "text-gray-400 mr-2 md:mr-4 font-mono";
+
+  // Services data with your requested categories
   const services = [
     {
-      title: "Presentation Design",
-      category: "Design",
+      id: 1,
+      title: { firstPart: "Corporate", secondPart: "Presentations" },
+      category: "Corporate",
       description:
-        "Transform your content into visually stunning presentations that engage and inspire your audience. Our designers blend aesthetics with strategic communication to create impactful slides.",
+        "Elevate your business communications with professionally designed corporate presentations that align with your brand and deliver your message with clarity and impact.",
       image:
-        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
       features: [
-        "Custom slide designs aligned with your brand",
-        "Data visualization and infographics",
-        "Image selection and enhancement",
-        "Typography and color scheme optimization",
+        "Branded slide design with custom templates",
+        "Executive presentations and board decks",
+        "Sales and marketing presentations",
+        "Investor relations materials",
       ],
-      cta: "Get a Custom Design",
+      link: "/contact",
+      cta: "Request Corporate Deck",
     },
     {
-      title: "Content Development",
-      category: "Strategy",
+      id: 2,
+      title: { firstPart: "Video", secondPart: "Presentations" },
+      category: "Video",
       description:
-        "Craft compelling narratives that resonate with your audience. Our content specialists help distill complex information into clear, persuasive stories that drive your message home.",
+        "Transform your static content into dynamic video presentations that capture attention and drive engagement in today's digital-first communication landscape.",
       image:
-        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80",
       features: [
-        "Messaging strategy and narrative development",
-        "Script writing and speech preparation",
-        "Content organization and flow optimization",
-        "Audience analysis and tailored messaging",
+        "Animated explainer videos and motion graphics",
+        "Video slide presentations with transitions",
+        "Screen recordings with professional editing",
+        "Promotional and social media video content",
       ],
-      cta: "Develop Your Content",
+      link: "/contact",
+      cta: "Create Video Content",
     },
     {
-      title: "Template Systems",
-      category: "Solutions",
+      id: 3,
+      title: { firstPart: "Presentation", secondPart: "Training" },
+      category: "Training",
       description:
-        "Create consistent, branded presentation systems that empower your team. Our template solutions ensure brand consistency while providing flexibility for various presentation needs.",
+        "Master the art of creating and delivering impactful presentations with our comprehensive training programs tailored for individuals and teams at all skill levels.",
       image:
-        "https://images.unsplash.com/photo-1622675363311-3e1904dc1885?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-      features: [
-        "Custom master templates and layouts",
-        "Style guides and usage documentation",
-        "Training for your team",
-        "Ongoing template maintenance and updates",
-      ],
-      cta: "Create Your Template",
-    },
-    {
-      title: "Presentation Training",
-      category: "Education",
-      description:
-        "Develop the skills to deliver presentations with confidence and impact. Our training programs help you master both the art of presentation design and delivery.",
-      image:
-        "https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1544725121-be3bf52e2dc8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1467&q=80",
       features: [
         "Presentation design principles and best practices",
-        "Delivery techniques and public speaking skills",
-        "Visual storytelling methods",
+        "Public speaking and delivery techniques",
         "Software mastery (PowerPoint, Keynote, etc.)",
+        "Storytelling and narrative development",
       ],
-      cta: "Start Training",
+      link: "/contact",
+      cta: "Book Training Session",
+    },
+    {
+      id: 4,
+      title: { firstPart: "Financial", secondPart: "Modeling" },
+      category: "Finance",
+      description:
+        "Communicate complex financial data effectively with custom-built models and visualizations that bring clarity to your numbers and support informed decision-making.",
+      image:
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1026&q=80",
+      features: [
+        "Financial data visualization and dashboards",
+        "Interactive financial models and projections",
+        "Investor presentations with financial narratives",
+        "Financial reporting templates and systems",
+      ],
+      link: "/contact",
+      cta: "Discuss Financial Needs",
     },
   ];
+
+  // Categories for pills - updated to match your service categories
+  const categories = ["Corporate", "Video", "Training", "Finance"];
+
+  // Create marquee text for each service
+  const createMarqueeText = (item, index) => {
+    const textArray = new Array(15).fill(
+      <>
+        <span className={numberStyleClass}>{formatNumber(index + 1)}</span>
+        <span className="text-gray-900 tracking-tighter">
+          {item.title.firstPart}{" "}
+        </span>
+        -
+        <span className="text-yellow-500 tracking-tighter">
+          {item.title.secondPart}
+        </span>
+        <span className="mx-6 w-[1.2em] h-[1.2em] border border-black rounded-full flex justify-center items-center">
+          <ArrowRight size={12} className="text-yellow-500" />
+        </span>
+      </>
+    );
+
+    return textArray;
+  };
+
+  // Get pills for each service
+  const getPillsForService = (index) => {
+    switch (index) {
+      case 0:
+        return [
+          <span
+            key="corporate"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+          >
+            Corporate
+          </span>,
+          <span
+            key="business"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 ml-2"
+          >
+            Business
+          </span>,
+        ];
+      case 1:
+        return [
+          <span
+            key="video"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700"
+          >
+            Video
+          </span>,
+          <span
+            key="animation"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-yellow-200 text-yellow-800 ml-2"
+          >
+            Animation
+          </span>,
+        ];
+      case 2:
+        return [
+          <span
+            key="training"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-300 text-yellow-900"
+          >
+            Training
+          </span>,
+          <span
+            key="skills"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 ml-2"
+          >
+            Skills
+          </span>,
+        ];
+      case 3:
+        return [
+          <span
+            key="finance"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+          >
+            Finance
+          </span>,
+          <span
+            key="data"
+            className="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 ml-2"
+          >
+            Data
+          </span>,
+        ];
+      default:
+        return [
+          <span
+            key="default"
+            className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+          >
+            Service
+          </span>,
+        ];
+    }
+  };
 
   return (
     <section
       ref={sectionRef}
-      className="py-16 bg-white dark:bg-gray-900"
+      className="pb-12 md:pb-20 bg-white w-full relative overflow-hidden"
       style={{
-        transform: "translate3d(0,0,0)",
+        transform: "translateZ(0)",
         backfaceVisibility: "hidden",
         perspective: 1000,
       }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Decorative pattern */}
+      <div
+        className="absolute right-0 top-10 w-1/3 h-full pointer-events-none "
+        style={{
+          backgroundImage: "url('/backgrounds/hexa3.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "right center",
+          transform: "translate3d(0, 0, 0)", // Force GPU rendering
+        }}
+      ></div>
+
+      {/* Header section */}
+      <div
+        className="mx-auto max-w-6xl px-4 md:px-6 mb-8 md:mb-12 relative z-10"
+        style={{ willChange: "transform, opacity" }}
+      >
         <motion.div
           ref={titleRef}
-          initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-          animate={
-            isTitleInView
-              ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-              : {}
-          }
-          transition={{
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1.0],
+          className="text-center mb-3"
+          variants={titleVariants}
+          initial="initial"
+          animate={isTitleInView ? "animate" : "initial"}
+          style={{
+            perspective: 1000,
+            backfaceVisibility: "hidden",
           }}
-          className="max-w-3xl mx-auto text-center mb-16"
-          style={{ willChange: "transform, opacity" }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Comprehensive Presentation Solutions
+          <h2
+            className="text-3xl md:text-4xl lg:text-5xl mb-6 font-medium tracking-tight text-gray-900"
+            style={{ transform: "translate3d(0, 0, 0)" }}
+          >
+            Comprehensive Solutions<span className="text-yellow-500">.</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            Explore our range of specialized services designed to meet all your
-            presentation needs
-          </p>
         </motion.div>
 
-        <div className="space-y-4">
-          {services.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
+        {/* Category pills */}
+        <motion.div
+          className="flex flex-wrap items-center mb-8 md:mb-12"
+          initial={{ opacity: 0, transform: "scale3d(0, 1, 1)" }}
+          animate={
+            isTitleInView ? { opacity: 1, transform: "scale3d(1, 1, 1)" } : {}
+          }
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            delay: 0.2,
+          }}
+          style={{
+            transformOrigin: "center",
+            willChange: "transform, opacity",
+          }}
+        >
+          <div className="hidden md:block flex-grow h-px bg-gray-200"></div>
+
+          <div className="w-full md:w-auto md:flex-shrink-0 px-0 md:px-4 flex flex-wrap justify-center gap-2 md:space-x-3">
+            {categories.map((category, index) => (
+              <motion.span
+                key={index}
+                className="px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gray-100 text-gray-900 border border-gray-200 mb-2"
+                initial={{
+                  opacity: 0,
+                  transform: "translate3d(0px, 20px, 0px)",
+                }}
+                animate={{
+                  opacity: 1,
+                  transform: "translate3d(0px, 0px, 0px)",
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                  delay: 0.3 + index * 0.1,
+                }}
+                style={{ willChange: "transform, opacity" }}
+              >
+                {category}
+              </motion.span>
+            ))}
+          </div>
+
+          <div className="hidden md:block flex-grow h-px bg-gray-200"></div>
+        </motion.div>
+      </div>
+
+      {/* Accordion section */}
+      <div
+        className="w-full relative z-10"
+        style={{
+          perspective: 1000,
+          transform: "translate3d(0, 0, 0)",
+        }}
+      >
+        <div className="space-y-0">
+          {services.map((item, index) => (
+            <div
+              key={item.id}
+              className="border-b border-gray-200 w-full"
+              style={{ willChange: "auto" }}
+            >
+              {/* Accordion header */}
+              <motion.div
+                className={`relative group cursor-pointer overflow-hidden w-full ${
+                  activeIndex === index ? "bg-gray-50" : "hover:bg-gray-50"
+                }`}
+                onClick={() => toggleAccordion(index)}
+                initial={false}
+                style={{ willChange: "transform" }}
+              >
+                {/* Normal state */}
+                <div className="max-w-6xl mx-auto w-full">
+                  <div className="flex justify-between items-center py-4 md:py-6 lg:py-8 px-4 md:px-6">
+                    <h3 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-medium text-left flex items-center flex-wrap">
+                      <span className={numberStyleClass}>
+                        {formatNumber(index + 1)}
+                      </span>
+                      <span className="text-gray-900 mr-1">
+                        {item.title.firstPart}{" "}
+                      </span>
+                      <span className="text-yellow-500">
+                        {item.title.secondPart}
+                      </span>
+                    </h3>
+
+                    <div className="flex items-center">
+                      <div className="hidden sm:flex items-center space-x-0">
+                        {getPillsForService(index)}
+                      </div>
+
+                      <motion.div
+                        className="ml-3 sm:ml-4 text-gray-400"
+                        animate={{
+                          transform:
+                            activeIndex === index
+                              ? "rotate3d(0, 0, 1, 180deg)"
+                              : "rotate3d(0, 0, 1, 0deg)",
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        }}
+                        style={{ transformOrigin: "center" }}
+                      >
+                        <ChevronDown size={isMobile ? 18 : 24} />
+                      </motion.div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hover state with scrolling text - desktop only */}
+                {!isMobile && activeIndex !== index && (
+                  <div className="absolute top-0 left-0 w-full h-full flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-gray-50 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom"
+                      style={{ willChange: "transform" }}
+                    ></div>
+
+                    <motion.div
+                      className="flex items-center text-lg md:text-3xl lg:text-4xl font-medium pl-6 relative z-10 whitespace-nowrap"
+                      variants={marqueeVariants}
+                      initial={{ transform: "translate3d(0%, 0, 0)" }}
+                      animate="animate"
+                      style={{
+                        willChange: "transform",
+                        backfaceVisibility: "hidden",
+                        perspective: 1000,
+                        transformStyle: "preserve-3d",
+                      }}
+                    >
+                      {createMarqueeText(item, index).map((text, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center mr-12"
+                          style={{ transform: "translate3d(0, 0, 0)" }}
+                        >
+                          {text}
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Accordion content */}
+              <AnimatePresence initial={index === 0}>
+                {activeIndex === index && (
+                  <motion.div
+                    key={`content-${item.id}`}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={contentVariants}
+                    className="overflow-hidden bg-gray-50 w-full relative"
+                    style={{
+                      willChange: "height, opacity, transform",
+                      transformStyle: "preserve-3d",
+                    }}
+                  >
+                    <div
+                      className="max-w-6xl mx-auto relative z-10"
+                      style={{ transform: "translate3d(0, 0, 0)" }}
+                    >
+                      <div className="p-4 sm:p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                        {/* Left column with image */}
+                        <div className="flex flex-col">
+                          <div
+                            className="overflow-hidden rounded-xl shadow-lg h-64 md:h-full flex-grow"
+                            style={{
+                              transform: "translate3d(0,0,0)",
+                              backfaceVisibility: "hidden",
+                              perspective: 1000,
+                            }}
+                          >
+                            <img
+                              src={item.image}
+                              alt={`${item.title.firstPart} ${item.title.secondPart}`}
+                              className="w-full h-full object-cover"
+                              style={{ transform: "translate3d(0, 0, 0)" }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Right column with content */}
+                        <div className="flex flex-col justify-between">
+                          <div>
+                            <p className="text-gray-900 text-base md:text-lg mb-6">
+                              {item.description}
+                            </p>
+
+                            <h4 className="text-gray-900 font-medium mb-4 text-base md:text-lg">
+                              Key features:
+                            </h4>
+                            <ul className="space-y-2 md:space-y-3 mb-6">
+                              {item.features.map((feature, i) => (
+                                <motion.li
+                                  key={i}
+                                  className="flex items-start text-gray-900 text-sm md:text-base"
+                                  variants={listItemVariants}
+                                  initial="initial"
+                                  animate="animate"
+                                  custom={i}
+                                  style={{ willChange: "transform, opacity" }}
+                                >
+                                  <ArrowRight
+                                    size={isMobile ? 14 : 16}
+                                    className="text-yellow-500 mt-1 mr-2 md:mr-3 flex-shrink-0"
+                                  />
+                                  <span>{feature}</span>
+                                </motion.li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="mt-4">
+                            <a
+                              href={item.link}
+                              className="inline-flex items-center text-yellow-500 hover:text-yellow-600 transition-colors group"
+                            >
+                              <span className="mr-2 font-medium">
+                                {item.cta}
+                              </span>
+                              <motion.div
+                                initial={{ transform: "translate3d(0, 0, 0)" }}
+                                animate={{
+                                  transform: "translate3d(5px, 0, 0)",
+                                }}
+                                transition={{
+                                  transform: {
+                                    duration: 1,
+                                    repeat: Infinity,
+                                    repeatType: "reverse",
+                                    ease: "easeInOut",
+                                  },
+                                }}
+                                style={{ willChange: "transform" }}
+                              >
+                                <ExternalLink size={isMobile ? 16 : 18} />
+                              </motion.div>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ))}
         </div>
       </div>
