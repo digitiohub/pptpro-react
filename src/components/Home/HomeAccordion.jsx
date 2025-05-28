@@ -3,6 +3,155 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ExternalLink, ChevronDown } from "lucide-react";
 
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 30px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const subtitleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2,
+    },
+  },
+};
+
+const dividerVariants = {
+  initial: {
+    opacity: 0,
+    transform: "scale3d(0, 1, 1)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "scale3d(1, 1, 1)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.4,
+    },
+  },
+};
+
+const pillVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.5 + index * 0.1,
+    },
+  }),
+};
+
+const contentVariants = {
+  hidden: {
+    height: 0,
+    opacity: 0,
+    transform: "translate3d(0px, -10px, 0px)",
+    transition: {
+      height: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
+      opacity: { duration: 0.2 },
+      transform: { duration: 0.2 },
+    },
+  },
+  visible: {
+    height: "auto",
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      height: { duration: 0.4, ease: [0.33, 1, 0.68, 1] },
+      opacity: { duration: 0.4, delay: 0.1 },
+      transform: { duration: 0.4, delay: 0.1 },
+    },
+  },
+};
+
+const listItemVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(-10px, 0px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.1 + index * 0.1,
+    },
+  }),
+};
+
+const marqueeVariants = {
+  animate: {
+    transform: "translate3d(-50%, 0, 0)",
+    transition: {
+      duration: 20,
+      ease: "linear",
+      repeat: Infinity,
+      repeatType: "loop",
+    },
+  },
+};
+
+const chevronVariants = {
+  initial: {
+    transform: "rotate3d(0, 0, 1, 0deg)",
+  },
+  animate: {
+    transform: "rotate3d(0, 0, 1, 180deg)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const buttonIconVariants = {
+  initial: {
+    transform: "translate3d(0px, 0px, 0px)",
+  },
+  animate: {
+    transform: "translate3d(5px, 0px, 0px)",
+    transition: {
+      repeat: Infinity,
+      repeatType: "reverse",
+      duration: 1,
+      ease: "easeInOut",
+    },
+  },
+};
+
 const HomeAccordion = () => {
   // Create ref for animation section
   const sectionRef = useRef(null);
@@ -185,64 +334,6 @@ const HomeAccordion = () => {
     navigate(link);
   };
 
-  // Optimized animation variants using transform3d
-  const contentVariants = {
-    hidden: {
-      height: 0,
-      opacity: 0,
-      transform: "translate3d(0, -10px, 0)",
-      transition: {
-        height: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
-        opacity: { duration: 0.2 },
-        transform: { duration: 0.2 },
-      },
-    },
-    visible: {
-      height: "auto",
-      opacity: 1,
-      transform: "translate3d(0, 0, 0)",
-      transition: {
-        height: { duration: 0.4, ease: [0.33, 1, 0.68, 1] },
-        opacity: { duration: 0.4, delay: 0.1 },
-        transform: { duration: 0.4, delay: 0.1 },
-      },
-    },
-  };
-
-  // Optimized title animation variants with transform3d
-  const titleVariants = {
-    hidden: {
-      opacity: 0,
-      transform: "translate3d(0, 30px, 0)",
-      transformStyle: "preserve-3d",
-      willChange: "transform, opacity",
-    },
-    visible: {
-      opacity: 1,
-      transform: "translate3d(0, 0, 0)",
-      transformStyle: "preserve-3d",
-      willChange: "transform, opacity",
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 18,
-      },
-    },
-  };
-
-  // Optimized marquee animation with transform3d
-  const marqueeVariants = {
-    animate: {
-      transform: "translate3d(-50%, 0, 0)",
-      transition: {
-        duration: 20,
-        ease: "linear",
-        repeat: Infinity,
-        repeatType: "loop",
-      },
-    },
-  };
-
   // Format number with leading zero
   const formatNumber = (num) => {
     return num < 10 ? `0${num}` : `${num}`;
@@ -367,18 +458,18 @@ const HomeAccordion = () => {
       ref={sectionRef}
       className="py-12 md:pt-20 bg-white w-full relative overflow-hidden"
       style={{
-        transform: "translateZ(0)", // Force GPU rendering
+        transform: "translate3d(0, 0, 0)", // Force GPU rendering
         backfaceVisibility: "hidden",
+        perspective: 1000,
       }}
     >
       {/* Decorative hexagon pattern on the right side - hidden on small screens */}
       <div
-        className="absolute right-0 top-10 w-1/2 h-full pointer-events-none "
+        className="absolute right-0 top-10 w-1/2 h-full pointer-events-none"
         style={{
           backgroundImage: "url('/backgrounds/hexa3.svg')",
           backgroundSize: "cover",
           backgroundPosition: "right center",
-          transform: "translate3d(0, 0, 0)", // Force GPU rendering
         }}
       ></div>
 
@@ -390,33 +481,36 @@ const HomeAccordion = () => {
         {/* Regular title without typewriter effect */}
         <motion.div
           className="text-center mb-3"
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
           variants={titleVariants}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
           style={{
             perspective: 1000,
             backfaceVisibility: "hidden",
+            willChange: "transform, opacity",
+            transform: "translate3d(0, 0, 0)",
           }}
         >
           <h2
             className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-gray-900"
-            style={{ transform: "translate3d(0, 0, 0)" }} // Force GPU rendering
+            style={{ transform: "translate3d(0, 0, 0)" }}
           >
-            Our Services
+            Our Services<span className="text-yellow-500">.</span>
           </h2>
         </motion.div>
 
         {/* Justified subtitle text */}
         <motion.p
           className="text-base md:text-lg text-gray-600 text-center md:text-justify mb-6 md:mb-8 max-w-2xl mx-auto px-4"
+          variants={subtitleVariants}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
           style={{
             textAlignLast: "center",
-            transform: "translate3d(0, 0, 0)", // Force GPU rendering
-            willChange: "opacity",
+            transform: "translate3d(0, 0, 0)",
+            willChange: "transform, opacity",
+            backfaceVisibility: "hidden",
           }}
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5, duration: 0.8 }}
         >
           We offer presentation solutions to elevate your message, engage your
           audience, and deliver results across various business contexts.
@@ -425,14 +519,14 @@ const HomeAccordion = () => {
         {/* Horizontal divider - optimized for mobile */}
         <motion.div
           className="flex flex-wrap items-center mb-8 md:mb-12"
-          initial={{ opacity: 0, transform: "scale3d(0, 1, 1)" }}
-          animate={
-            isInView ? { opacity: 1, transform: "scale3d(1, 1, 1)" } : {}
-          }
-          transition={{ delay: 0.8, duration: 0.6 }}
+          variants={dividerVariants}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
           style={{
             transformOrigin: "center",
             willChange: "transform, opacity",
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
           }}
         >
           {/* Line visible only on larger screens */}
@@ -444,14 +538,15 @@ const HomeAccordion = () => {
               <motion.span
                 key={index}
                 className="px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-gray-100 text-gray-900 border border-gray-200 mb-2"
-                initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-                animate={
-                  isInView
-                    ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                    : {}
-                }
-                transition={{ delay: 1.0 + index * 0.1, duration: 0.4 }}
-                style={{ willChange: "transform, opacity" }}
+                variants={pillVariants}
+                custom={index}
+                initial="initial"
+                animate={isInView ? "animate" : "initial"}
+                style={{ 
+                  willChange: "transform, opacity",
+                  transform: "translate3d(0, 0, 0)",
+                  backfaceVisibility: "hidden" 
+                }}
               >
                 {category}
               </motion.span>
@@ -468,7 +563,8 @@ const HomeAccordion = () => {
         className="w-full relative z-10"
         style={{
           perspective: 1000,
-          transform: "translate3d(0, 0, 0)", // Force GPU rendering
+          transform: "translate3d(0, 0, 0)",
+          backfaceVisibility: "hidden",
         }}
       >
         <div className="space-y-0">
@@ -485,7 +581,11 @@ const HomeAccordion = () => {
                 }`}
                 onClick={() => toggleAccordion(index)}
                 initial={false}
-                style={{ willChange: "transform" }}
+                style={{ 
+                  willChange: "transform",
+                  transform: "translate3d(0, 0, 0)",
+                  backfaceVisibility: "hidden" 
+                }}
               >
                 {/* Normal state - full width with container for content */}
                 <div className="max-w-6xl mx-auto w-full">
@@ -513,14 +613,15 @@ const HomeAccordion = () => {
                       {/* Chevron indicator for mobile - rotates when active */}
                       <motion.div
                         className="ml-3 sm:ml-4 text-gray-400"
-                        animate={{
-                          transform:
-                            activeIndex === index
-                              ? "rotate3d(0, 0, 1, 180deg)"
-                              : "rotate3d(0, 0, 1, 0deg)",
+                        variants={chevronVariants}
+                        initial="initial"
+                        animate={activeIndex === index ? "animate" : "initial"}
+                        style={{ 
+                          transformOrigin: "center",
+                          willChange: "transform",
+                          transform: "translate3d(0, 0, 0)",
+                          backfaceVisibility: "hidden" 
                         }}
-                        transition={{ duration: 0.3 }}
-                        style={{ transformOrigin: "center" }}
                       >
                         <ChevronDown size={isMobile ? 18 : 24} />
                       </motion.div>
@@ -534,7 +635,11 @@ const HomeAccordion = () => {
                     {/* Background fill animation */}
                     <div
                       className="absolute inset-0 bg-gray-50 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-bottom"
-                      style={{ willChange: "transform" }}
+                      style={{ 
+                        willChange: "transform",
+                        transform: "translate3d(0, 0, 0)",
+                        backfaceVisibility: "hidden" 
+                      }}
                     ></div>
 
                     {/* Scrolling text animation - optimized with transform3d */}
@@ -548,13 +653,17 @@ const HomeAccordion = () => {
                         backfaceVisibility: "hidden",
                         perspective: 1000,
                         transformStyle: "preserve-3d",
+                        transform: "translate3d(0, 0, 0)",
                       }}
                     >
                       {createMarqueeText(item, index).map((text, i) => (
                         <div
                           key={i}
                           className="flex items-center mr-12"
-                          style={{ transform: "translate3d(0, 0, 0)" }}
+                          style={{ 
+                            transform: "translate3d(0, 0, 0)",
+                            backfaceVisibility: "hidden" 
+                          }}
                         >
                           {text}
                         </div>
@@ -577,11 +686,15 @@ const HomeAccordion = () => {
                     style={{
                       willChange: "height, opacity, transform",
                       transformStyle: "preserve-3d",
+                      backfaceVisibility: "hidden",
                     }}
                   >
                     <div
                       className="max-w-6xl mx-auto relative z-10"
-                      style={{ transform: "translate3d(0, 0, 0)" }}
+                      style={{ 
+                        transform: "translate3d(0, 0, 0)",
+                        backfaceVisibility: "hidden" 
+                      }}
                     >
                       {/* Responsive grid: single column on mobile, two columns on desktop */}
                       <div className="p-4 sm:p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -595,17 +708,14 @@ const HomeAccordion = () => {
                           >
                             <span className="mr-2 font-medium">Learn more</span>
                             <motion.div
-                              initial={{ transform: "translate3d(0, 0, 0)" }}
-                              animate={{ transform: "translate3d(5px, 0, 0)" }}
-                              transition={{
-                                transform: {
-                                  duration: 1,
-                                  repeat: Infinity,
-                                  repeatType: "reverse",
-                                  ease: "easeInOut",
-                                },
+                              variants={buttonIconVariants}
+                              initial="initial"
+                              animate="animate"
+                              style={{ 
+                                willChange: "transform",
+                                transform: "translate3d(0, 0, 0)",
+                                backfaceVisibility: "hidden" 
                               }}
-                              style={{ willChange: "transform" }}
                             >
                               <ExternalLink size={isMobile ? 16 : 18} />
                             </motion.div>
@@ -622,16 +732,15 @@ const HomeAccordion = () => {
                               <motion.li
                                 key={i}
                                 className="flex items-start text-gray-900 text-sm md:text-base"
-                                initial={{
-                                  opacity: 0,
-                                  transform: "translate3d(-10px, 0, 0)",
-                                }}
-                                animate={{
-                                  opacity: 1,
+                                variants={listItemVariants}
+                                custom={i}
+                                initial="initial"
+                                animate="animate"
+                                style={{ 
+                                  willChange: "transform, opacity",
                                   transform: "translate3d(0, 0, 0)",
+                                  backfaceVisibility: "hidden" 
                                 }}
-                                transition={{ delay: 0.1 + i * 0.1 }}
-                                style={{ willChange: "transform, opacity" }}
                               >
                                 <ArrowRight
                                   size={isMobile ? 14 : 16}
