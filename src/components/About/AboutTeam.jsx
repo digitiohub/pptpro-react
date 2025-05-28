@@ -9,6 +9,40 @@ import {
   FaMediumM,
 } from "react-icons/fa";
 
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const cardVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 30px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.1 * index,
+    },
+  }),
+};
+
 // Icon mapping for social platforms
 const getSocialIcon = (platform) => {
   switch (platform.toLowerCase()) {
@@ -40,16 +74,15 @@ const TeamCard = ({ member, index }) => {
     <motion.div
       ref={cardRef}
       className="group"
-      initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
-      animate={
-        isCardInView ? { opacity: 1, transform: "translate3d(0, 0, 0)" } : {}
-      }
-      transition={{
-        duration: 0.6,
-        delay: 0.1 * index,
-        ease: [0.25, 0.1, 0.25, 1.0],
+      variants={cardVariants}
+      initial="initial"
+      animate={isCardInView ? "animate" : "initial"}
+      custom={index}
+      style={{
+        willChange: "transform, opacity",
+        transform: "translate3d(0, 0, 0)",
+        backfaceVisibility: "hidden",
       }}
-      style={{ willChange: "transform, opacity" }}
     >
       {/* Image with rounded corners */}
       <div
@@ -60,10 +93,18 @@ const TeamCard = ({ member, index }) => {
           perspective: 1000,
         }}
       >
-        <img
+        <motion.img
           src={member.image}
           alt={member.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover"
+          whileHover={{
+            transform: "translate3d(0px, 0px, 0px) scale(1.05)",
+            transition: {
+              type: "spring",
+              stiffness: 150,
+              damping: 30,
+            },
+          }}
           style={{ transform: "translate3d(0, 0, 0)" }}
         />
       </div>
@@ -84,16 +125,30 @@ const TeamCard = ({ member, index }) => {
         {/* Social links */}
         <div className="flex justify-center space-x-3">
           {member.social.map((social, idx) => (
-            <a
+            <motion.a
               key={idx}
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-yellow-500 hover:text-white transition-colors duration-200"
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-yellow-500 hover:text-white"
               aria-label={`${member.name}'s ${social.platform}`}
+              whileHover={{
+                scale: 1.15,
+                backgroundColor: "#EAB308",
+                color: "#FFFFFF",
+                transition: {
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 10,
+                },
+              }}
+              style={{
+                transform: "translate3d(0, 0, 0)",
+                backfaceVisibility: "hidden",
+              }}
             >
               {getSocialIcon(social.platform)}
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>
@@ -139,7 +194,7 @@ const AboutTeam = () => {
       social: [
         { platform: "LinkedIn", url: "#" },
         { platform: "Dribbble", url: "#" },
-        { platform: "Behance", url: "#" },
+        { platform: "Github", url: "#" },
       ],
     },
     {
@@ -163,7 +218,7 @@ const AboutTeam = () => {
       social: [
         { platform: "LinkedIn", url: "#" },
         { platform: "Github", url: "#" },
-        { platform: "Codepen", url: "#" },
+        { platform: "Twitter", url: "#" },
       ],
     },
   ];
@@ -171,7 +226,7 @@ const AboutTeam = () => {
   return (
     <section
       ref={sectionRef}
-      className="pb-16 md:pb-24 pt-4  dark:bg-gray-900 overflow-hidden"
+      className="pb-16 md:pb-24 pt-4 dark:bg-gray-900 overflow-hidden"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
@@ -183,17 +238,14 @@ const AboutTeam = () => {
         <motion.div
           ref={titleRef}
           className="text-center max-w-3xl mx-auto mb-16"
-          initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-          animate={
-            isTitleInView
-              ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-              : {}
-          }
-          transition={{
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1.0],
+          variants={titleVariants}
+          initial="initial"
+          animate={isTitleInView ? "animate" : "initial"}
+          style={{
+            willChange: "transform, opacity",
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
           }}
-          style={{ willChange: "transform, opacity" }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-gray-900 dark:text-white mb-4">
             Meet Our Team<span className="text-yellow-500">.</span>

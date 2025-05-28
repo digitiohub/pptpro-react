@@ -2,6 +2,138 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import CountUp from "react-countup";
 
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const subtitleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2,
+    },
+  },
+};
+
+const imageVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(-30px, 0px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2,
+    },
+  },
+};
+
+const decorLeft = {
+  initial: {
+    transform: "translate3d(-20px, -20px, 0px)",
+  },
+  animate: {
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 20,
+      delay: 0.5,
+    },
+  },
+};
+
+const decorRight = {
+  initial: {
+    transform: "translate3d(20px, 20px, 0px)",
+  },
+  animate: {
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 20,
+      delay: 0.5,
+    },
+  },
+};
+
+const contentVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(30px, 0px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.3,
+    },
+  },
+};
+
+const paragraphVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 15px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.5,
+    },
+  },
+};
+
+const statVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2 + index * 0.1,
+    },
+  }),
+};
+
 const AboutHero = () => {
   const sectionRef = useRef(null);
   const statsRef = useRef(null);
@@ -94,16 +226,9 @@ const AboutHero = () => {
           <motion.h1
             ref={titleRef}
             className="text-4xl md:text-5xl lg:text-6xl font-medium text-gray-900 dark:text-white mb-4 tracking-tight"
-            initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-            animate={
-              isTitleInView
-                ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                : {}
-            }
-            transition={{
-              duration: 0.6,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
+            variants={titleVariants}
+            initial="initial"
+            animate={isTitleInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
             About PPT Pro<span className="text-yellow-500">.</span>
@@ -112,17 +237,9 @@ const AboutHero = () => {
           <motion.p
             ref={subtitleRef}
             className="text-xl text-gray-600 dark:text-gray-400"
-            initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-            animate={
-              isSubtitleInView
-                ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                : {}
-            }
-            transition={{
-              duration: 0.6,
-              delay: 0.2,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
+            variants={subtitleVariants}
+            initial="initial"
+            animate={isSubtitleInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
             Creating impactful presentations since 2012
@@ -133,15 +250,9 @@ const AboutHero = () => {
           {/* Left side - Image with 3D optimizations */}
           <motion.div
             className="w-full md:w-5/12 h-auto"
-            initial={{ opacity: 0, transform: "translate3d(-30px, 0, 0)" }}
-            animate={
-              isInView ? { opacity: 1, transform: "translate3d(0, 0, 0)" } : {}
-            }
-            transition={{
-              duration: 0.8,
-              delay: 0.2,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
+            variants={imageVariants}
+            initial="initial"
+            animate={isInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
             <div
@@ -162,24 +273,16 @@ const AboutHero = () => {
               {/* Decorative elements with optimized transform */}
               <motion.div
                 className="absolute -bottom-6 -right-6 w-32 h-32 bg-yellow-500 rounded-full opacity-20 blur-xl"
-                initial={{ transform: "translate3d(20px, 20px, 0)" }}
-                animate={isInView ? { transform: "translate3d(0, 0, 0)" } : {}}
-                transition={{
-                  duration: 1.2,
-                  delay: 0.5,
-                  ease: [0.25, 0.1, 0.25, 1.0],
-                }}
+                variants={decorRight}
+                initial="initial"
+                animate={isInView ? "animate" : "initial"}
                 style={{ willChange: "transform" }}
               />
               <motion.div
                 className="absolute -top-6 -left-6 w-24 h-24 bg-blue-500 rounded-full opacity-20 blur-xl"
-                initial={{ transform: "translate3d(-20px, -20px, 0)" }}
-                animate={isInView ? { transform: "translate3d(0, 0, 0)" } : {}}
-                transition={{
-                  duration: 1.2,
-                  delay: 0.5,
-                  ease: [0.25, 0.1, 0.25, 1.0],
-                }}
+                variants={decorLeft}
+                initial="initial"
+                animate={isInView ? "animate" : "initial"}
                 style={{ willChange: "transform" }}
               />
             </div>
@@ -189,17 +292,9 @@ const AboutHero = () => {
           <motion.div
             ref={contentRef}
             className="w-full md:w-7/12 flex flex-col justify-between"
-            initial={{ opacity: 0, transform: "translate3d(30px, 0, 0)" }}
-            animate={
-              isContentInView
-                ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                : {}
-            }
-            transition={{
-              duration: 0.8,
-              delay: 0.3,
-              ease: [0.25, 0.1, 0.25, 1.0],
-            }}
+            variants={contentVariants}
+            initial="initial"
+            animate={isContentInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
             {/* Text content - Simplified */}
@@ -210,17 +305,9 @@ const AboutHero = () => {
                   textAlign: "justify",
                   willChange: "transform, opacity",
                 }}
-                initial={{ opacity: 0, transform: "translate3d(0, 15px, 0)" }}
-                animate={
-                  isContentInView
-                    ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                    : {}
-                }
-                transition={{
-                  duration: 0.6,
-                  delay: 0.5,
-                  ease: [0.25, 0.1, 0.25, 1.0],
-                }}
+                variants={paragraphVariants}
+                initial="initial"
+                animate={isContentInView ? "animate" : "initial"}
               >
                 At PPT Pro, we transform ideas into compelling visual stories.
                 Our team of experts combines design excellence with strategic
@@ -245,17 +332,10 @@ const AboutHero = () => {
                 <motion.div
                   key={stat.label}
                   className="flex flex-col"
-                  initial={{ opacity: 0, transform: "translate3d(0, 20px, 0)" }}
-                  animate={
-                    areStatsInView
-                      ? { opacity: 1, transform: "translate3d(0, 0, 0)" }
-                      : {}
-                  }
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.2 + index * 0.1,
-                    ease: [0.25, 0.1, 0.25, 1.0],
-                  }}
+                  variants={statVariants}
+                  initial="initial"
+                  animate={areStatsInView ? "animate" : "initial"}
+                  custom={index}
                   style={{ willChange: "transform, opacity" }}
                 >
                   <span className="text-3xl md:text-4xl lg:text-5xl font-medium text-yellow-500 dark:text-yellow-400">

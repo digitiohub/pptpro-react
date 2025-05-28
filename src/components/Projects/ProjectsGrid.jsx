@@ -4,6 +4,57 @@ import ProjectFilter from "./ProjectFilter";
 import ProjectCard from "./ProjectCard";
 import { projects, projectCategories } from "../../data/projects";
 
+// Animation variants following the codebase pattern
+const titleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(-30px, 0px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const subtitleVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(30px, 0px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.3,
+    },
+  },
+};
+
+const gridVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 40px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.4,
+    },
+  },
+};
+
 const ProjectsGrid = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const sectionRef = useRef(null);
@@ -46,20 +97,12 @@ const ProjectsGrid = () => {
           (project) => project.category.toLowerCase() === activeFilter
         );
 
-  // Spring animation preset
-  const springTransition = {
-    type: "spring",
-    stiffness: 120,
-    damping: 20,
-    mass: 1,
-  };
-
   return (
     <section
       ref={sectionRef}
       className="py-24 md:py-40 px-8 md:px-12 lg:px-16 dark:bg-gray-900 overflow-hidden"
       style={{
-        transform: "translateZ(0)",
+        transform: "translate3d(0, 0, 0)",
         backfaceVisibility: "hidden",
         perspective: 1000,
       }}
@@ -71,10 +114,14 @@ const ProjectsGrid = () => {
             <motion.h2
               ref={titleRef}
               className="text-4xl sm:text-5xl md:text-6xl font-medium text-left mb-6 md:mb-8 tracking-tight text-gray-900 dark:text-white"
-              initial={{ opacity: 0, x: -30 }}
-              animate={isTitleInView ? { opacity: 1, x: 0 } : {}}
-              transition={springTransition}
-              style={{ willChange: "transform, opacity" }}
+              variants={titleVariants}
+              initial="initial"
+              animate={isTitleInView ? "animate" : "initial"}
+              style={{
+                willChange: "transform, opacity",
+                transform: "translate3d(0, 0, 0)",
+                backfaceVisibility: "hidden",
+              }}
             >
               Project Collection<span className="text-yellow-500">.</span>
             </motion.h2>
@@ -94,13 +141,14 @@ const ProjectsGrid = () => {
           <motion.div
             ref={subtitleRef}
             className="mt-6 md:mt-0 max-w-md ml-0 md:ml-auto"
-            initial={{ opacity: 0, x: 30 }}
-            animate={isSubtitleInView ? { opacity: 1, x: 0 } : {}}
-            transition={{
-              ...springTransition,
-              delay: 0.3,
+            variants={subtitleVariants}
+            initial="initial"
+            animate={isSubtitleInView ? "animate" : "initial"}
+            style={{
+              willChange: "transform, opacity",
+              transform: "translate3d(0, 0, 0)",
+              backfaceVisibility: "hidden",
             }}
-            style={{ willChange: "transform, opacity" }}
           >
             <p
               className="text-lg text-gray-600 dark:text-gray-400"
@@ -121,14 +169,13 @@ const ProjectsGrid = () => {
         <motion.div
           ref={gridRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isGridInView ? { opacity: 1, y: 0 } : {}}
-          transition={{
-            ...springTransition,
-            delay: 0.4,
-          }}
+          variants={gridVariants}
+          initial="initial"
+          animate={isGridInView ? "animate" : "initial"}
           style={{
             willChange: "transform, opacity",
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
           }}
         >
           <AnimatePresence mode="sync">
