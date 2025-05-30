@@ -1,13 +1,6 @@
-import React, { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState } from "react";
 
-const ContactForm = () => {
-  const formRef = useRef(null);
-  const isFormInView = useInView(formRef, {
-    once: true,
-    amount: 0.3,
-  });
-
+const ContactForm = ({ isEmbedded = false }) => {
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -40,37 +33,28 @@ const ContactForm = () => {
 
   // Validate form
   const validateForm = () => {
-    let tempErrors = {};
-    let isValid = true;
+    const newErrors = {};
 
     if (!formData.name.trim()) {
-      tempErrors.name = "Name is required";
-      isValid = false;
+      newErrors.name = "Name is required";
     }
 
     if (!formData.email.trim()) {
-      tempErrors.email = "Email is required";
-      isValid = false;
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = "Email is invalid";
-      isValid = false;
+      newErrors.email = "Email is invalid";
     }
 
     if (!formData.subject.trim()) {
-      tempErrors.subject = "Subject is required";
-      isValid = false;
+      newErrors.subject = "Subject is required";
     }
 
     if (!formData.message.trim()) {
-      tempErrors.message = "Message is required";
-      isValid = false;
-    } else if (formData.message.trim().length < 10) {
-      tempErrors.message = "Message must be at least 10 characters";
-      isValid = false;
+      newErrors.message = "Message is required";
     }
 
-    setErrors(tempErrors);
-    return isValid;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   // Handle form submission
@@ -100,24 +84,9 @@ const ContactForm = () => {
   };
 
   return (
-    <motion.div
-      ref={formRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isFormInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1.0] }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8 lg:p-10"
-      style={{
-        transform: "translate3d(0,0,0)",
-        backfaceVisibility: "hidden",
-        perspective: 1000,
-      }}
-    >
-      <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">
-        Send us a message
-      </h3>
-
+    <>
       {submitSuccess && (
-        <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
+        <div className="mb-6 p-4 bg-white/10 text-white rounded-lg">
           Thank you! Your message has been sent successfully. We'll get back to
           you soon.
         </div>
@@ -129,7 +98,7 @@ const ContactForm = () => {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Your Name *
             </label>
@@ -140,16 +109,12 @@ const ContactForm = () => {
               value={formData.name}
               onChange={handleChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.name
-                  ? "border-red-500 dark:border-red-400"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500`}
+                errors.name ? "border-white/40" : "border-white/20"
+              } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
               placeholder="John Doe"
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                {errors.name}
-              </p>
+              <p className="mt-1 text-sm text-white/80">{errors.name}</p>
             )}
           </div>
 
@@ -157,7 +122,7 @@ const ContactForm = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Your Email *
             </label>
@@ -168,16 +133,12 @@ const ContactForm = () => {
               value={formData.email}
               onChange={handleChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.email
-                  ? "border-red-500 dark:border-red-400"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500`}
+                errors.email ? "border-white/40" : "border-white/20"
+              } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
               placeholder="john@example.com"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                {errors.email}
-              </p>
+              <p className="mt-1 text-sm text-white/80">{errors.email}</p>
             )}
           </div>
         </div>
@@ -186,7 +147,7 @@ const ContactForm = () => {
         <div className="mb-6">
           <label
             htmlFor="subject"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            className="block text-sm font-medium text-white mb-2"
           >
             Subject *
           </label>
@@ -197,16 +158,12 @@ const ContactForm = () => {
             value={formData.subject}
             onChange={handleChange}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.subject
-                ? "border-red-500 dark:border-red-400"
-                : "border-gray-300 dark:border-gray-600"
-            } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500`}
+              errors.subject ? "border-white/40" : "border-white/20"
+            } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
             placeholder="How can we help you?"
           />
           {errors.subject && (
-            <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-              {errors.subject}
-            </p>
+            <p className="mt-1 text-sm text-white/80">{errors.subject}</p>
           )}
         </div>
 
@@ -214,7 +171,7 @@ const ContactForm = () => {
         <div className="mb-8">
           <label
             htmlFor="message"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            className="block text-sm font-medium text-white mb-2"
           >
             Your Message *
           </label>
@@ -225,16 +182,12 @@ const ContactForm = () => {
             onChange={handleChange}
             rows="5"
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.message
-                ? "border-red-500 dark:border-red-400"
-                : "border-gray-300 dark:border-gray-600"
-            } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500`}
+              errors.message ? "border-white/40" : "border-white/20"
+            } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
             placeholder="Please describe what you need help with..."
           ></textarea>
           {errors.message && (
-            <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-              {errors.message}
-            </p>
+            <p className="mt-1 text-sm text-white/80">{errors.message}</p>
           )}
         </div>
 
@@ -243,12 +196,12 @@ const ContactForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full md:w-auto px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg transition-colors duration-200 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full md:w-auto px-6 py-3 bg-white hover:bg-white/90 text-black font-medium rounded-lg transition-colors duration-200 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -275,7 +228,7 @@ const ContactForm = () => {
           </button>
         </div>
       </form>
-    </motion.div>
+    </>
   );
 };
 
