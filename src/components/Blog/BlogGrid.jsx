@@ -3,6 +3,41 @@ import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/dateUtils";
 
+// Animation variants following the codebase pattern
+const cardVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 30px, 0px)",
+  },
+  animate: (index) => ({
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.1 * (index % 3),
+    },
+  }),
+};
+
+const gridVariants = {
+  initial: {
+    opacity: 0,
+    transform: "translate3d(0px, 20px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      delay: 0.2,
+    },
+  },
+};
+
 const BlogCard = ({ post, index }) => {
   const cardRef = useRef(null);
   const isCardInView = useInView(cardRef, {
@@ -14,16 +49,15 @@ const BlogCard = ({ post, index }) => {
     <motion.div
       ref={cardRef}
       className="group"
-      initial={{ opacity: 0, transform: "translate3d(0, 30px, 0)" }}
-      animate={
-        isCardInView ? { opacity: 1, transform: "translate3d(0, 0, 0)" } : {}
-      }
-      transition={{
-        duration: 0.6,
-        delay: 0.1 * (index % 3),
-        ease: [0.25, 0.1, 0.25, 1.0],
+      variants={cardVariants}
+      initial="initial"
+      animate={isCardInView ? "animate" : "initial"}
+      custom={index}
+      style={{
+        willChange: "transform, opacity",
+        transform: "translate3d(0, 0, 0)",
+        backfaceVisibility: "hidden",
       }}
-      style={{ willChange: "transform, opacity" }}
     >
       <Link to={`/blog/${post.slug}`} className="block">
         <div
@@ -34,7 +68,7 @@ const BlogCard = ({ post, index }) => {
             perspective: 1000,
           }}
         >
-          {/* Image */}
+          {/* Image with optimized transform properties */}
           <div className="relative h-56 md:h-64 overflow-hidden">
             <img
               src={post.featuredImage}
@@ -86,42 +120,24 @@ const BlogCard = ({ post, index }) => {
   );
 };
 
-const BlogGrid = ({ posts }) => {
-  const [activeCategory, setActiveCategory] = useState("all");
+const BlogGrid = ({ filteredPosts = [] }) => {
   const sectionRef = useRef(null);
-  const filtersRef = useRef(null);
+  const gridRef = useRef(null);
 
   const isSectionInView = useInView(sectionRef, {
     once: true,
     amount: 0.1,
   });
 
-  const areFiltersInView = useInView(filtersRef, {
+  const isGridInView = useInView(gridRef, {
     once: true,
-    amount: 0.8,
+    amount: 0.1,
   });
-
-  // Get unique categories from posts
-  const categories = [
-    "all",
-    ...new Set(posts.map((post) => post.category.toLowerCase())),
-  ];
-
-  // Filter posts based on active category
-  const filteredPosts =
-    activeCategory === "all"
-      ? posts
-      : posts.filter((post) => post.category.toLowerCase() === activeCategory);
-
-  // Handle filter change
-  const handleFilterChange = (category) => {
-    setActiveCategory(category);
-  };
 
   return (
     <section
       ref={sectionRef}
-      className="py-16 bg-gray-50 dark:bg-gray-900"
+      className="py-16 dark:bg-gray-900"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
@@ -129,39 +145,33 @@ const BlogGrid = ({ posts }) => {
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Filter buttons */}
-        <motion.div
-          ref={filtersRef}
-          className="flex flex-wrap justify-center mb-12 gap-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={areFiltersInView ? { opacity: 1, y: 0 } : {}}
-          transition={{
-            duration: 0.5,
-            ease: [0.25, 0.1, 0.25, 1.0],
-          }}
-          style={{ willChange: "transform, opacity" }}
-        >
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                activeCategory === category
-                  ? "bg-yellow-500 text-white"
-                  : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => handleFilterChange(category)}
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-        </motion.div>
-
-        {/* Blog posts grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post, index) => (
-            <BlogCard key={post.id} post={post} index={index} />
-          ))}
-        </div>
+        {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
+          <motion.div
+            ref={gridRef}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={gridVariants}
+            initial="initial"
+            animate={isGridInView ? "animate" : "initial"}
+            style={{
+              willChange: "transform, opacity",
+              transform: "translate3d(0, 0, 0)",
+              backfaceVisibility: "hidden",
+            }}
+          >
+            {filteredPosts.map((post, index) => (
+              <BlogCard key={post.id} post={post} index={index} />
+            ))}
+          </motion.div>
+        ) : (
+          <div className="text-center py-16">
+            <h3 className="text-2xl font-medium text-gray-600 dark:text-gray-400">
+              No posts found for this category.
+            </h3>
+            <p className="mt-4 text-gray-500 dark:text-gray-500">
+              Try selecting a different category or check back later.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
