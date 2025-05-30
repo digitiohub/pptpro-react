@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { Timeline } from "@/components/ui/timeline";
 
 const ServiceSteps = ({ steps }) => {
   const stepsRef = useRef(null);
@@ -22,6 +23,23 @@ const ServiceSteps = ({ steps }) => {
     },
   };
 
+  const decorativeVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.8,
+    },
+    visible: {
+      opacity: 0.15,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 25,
+        delay: 0.5,
+      },
+    },
+  };
+
   const stepContainerVariants = {
     hidden: {
       opacity: 0,
@@ -35,50 +53,61 @@ const ServiceSteps = ({ steps }) => {
     },
   };
 
-  const stepItemVariants = {
-    hidden: {
-      opacity: 0,
-      transform: "translate3d(-20px, 0px, 0px)",
-    },
-    visible: (index) => ({
-      opacity: 1,
-      transform: "translate3d(0px, 0px, 0px)",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        delay: 0.1 * index,
-      },
-    }),
-  };
-
-  const lineVariants = {
-    hidden: {
-      transform: "scale3d(0, 1, 1)",
-    },
-    visible: {
-      transform: "scale3d(1, 1, 1)",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        delay: 0.5,
-      },
-    },
-  };
+  // Transform steps data for timeline
+  const timelineData = steps.map((step, index) => ({
+    title: `Step ${index + 1}`,
+    content: (
+      <div>
+        <h3 className="text-2xl font-bold mb-4 text-white">{step.title}</h3>
+        <p className="mb-6 text-base font-normal text-gray-300 leading-relaxed">
+          {step.description}
+        </p>
+        {step.image && (
+          <div className="mt-8">
+            <img
+              src={step.image}
+              alt={step.title}
+              className="w-full rounded-lg shadow-lg"
+            />
+          </div>
+        )}
+      </div>
+    ),
+  }));
 
   return (
     <section
       ref={stepsRef}
-      className="py-16 md:py-24 bg-white dark:bg-gray-950"
+      className="py-16 md:py-24 bg-[#141313] relative overflow-hidden"
       style={{
         transform: "translate3d(0, 0, 0)",
         backfaceVisibility: "hidden",
       }}
     >
-      <div className="container mx-auto px-4">
+      {/* Decorative elements */}
+      <motion.img
+        src="/backgrounds/hexa1.svg"
+        alt=""
+        className="absolute top-10 -left-20 w-64 h-64 pointer-events-none z-0"
+        style={{ opacity: 0 }}
+        variants={decorativeVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      />
+
+      <motion.img
+        src="/backgrounds/hexa2.svg"
+        alt=""
+        className="absolute bottom-20 -right-20 w-80 h-80 pointer-events-none z-0"
+        style={{ opacity: 0 }}
+        variants={decorativeVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
         <motion.h2
-          className="text-3xl md:text-4xl font-bold mb-16 text-center text-gray-900 dark:text-white"
+          className="text-3xl md:text-4xl font-bold mb-0 text-center text-white"
           variants={titleVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -92,7 +121,7 @@ const ServiceSteps = ({ steps }) => {
         </motion.h2>
 
         <motion.div
-          className="relative max-w-4xl mx-auto"
+          className="relative max-w-5xl mx-auto mt-2"
           variants={stepContainerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -102,46 +131,12 @@ const ServiceSteps = ({ steps }) => {
             backfaceVisibility: "hidden",
           }}
         >
-          {/* Vertical line connecting steps */}
-          <motion.div
-            className="absolute left-6 top-0 bottom-0 w-1 bg-gray-200 dark:bg-gray-700 ml-0.5 hidden md:block"
-            variants={lineVariants}
-            style={{
-              transformOrigin: "top",
-              willChange: "transform",
-              transform: "translate3d(0, 0, 0)",
-              backfaceVisibility: "hidden",
-            }}
-          ></motion.div>
-
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.title}
-              className="flex flex-col md:flex-row items-start mb-12 last:mb-0 relative"
-              variants={stepItemVariants}
-              custom={index}
-              style={{
-                willChange: "transform, opacity",
-                transform: "translate3d(0, 0, 0)",
-                backfaceVisibility: "hidden",
-              }}
-            >
-              {/* Step number */}
-              <div className="flex-shrink-0 bg-yellow-500 text-black font-bold rounded-full w-12 h-12 flex items-center justify-center text-xl z-10 mb-4 md:mb-0">
-                {index + 1}
-              </div>
-
-              {/* Step content */}
-              <div className="md:ml-8">
-                <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {step.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          <div className="relative w-full overflow-clip">
+            <Timeline
+              data={timelineData}
+              title="" // Pass empty title to ensure Timeline doesn't add its own spacing
+            />
+          </div>
         </motion.div>
       </div>
     </section>
