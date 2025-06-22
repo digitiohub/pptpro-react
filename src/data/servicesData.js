@@ -2,203 +2,335 @@ export const servicesData = {
   "corporate-presentation": {
     title: "Corporate Presentation",
     subtitle: "Strategic Visual Communication for Business",
-    heroImage: "/images/services/corporate-presentation-hero.jpg",
+    heroImage:
+      "https://images.unsplash.com/photo-1576085898323-218337e3e43c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     intro: {
-      heading: "Elevate Your Corporate Communication",
-      subheading: "Professional design that aligns with your brand identity",
+      heading: "Showcase Your Business with Professional Excellence",
+      subheading:
+        "A well-crafted company profile is essential for building credibility",
       description:
-        "Our corporate presentation service transforms complex business information into clear, compelling visual narratives that engage stakeholders, align teams, and drive organizational goals. Whether for internal communication, client meetings, or investor relations, we deliver professional presentations that elevate your message.",
+        "A well-crafted company profile is essential for building credibility, attracting clients, and showcasing your brand's strengths. At PPTPRO, we specialize in high-impact corporate presentations, including company profiles, annual reports, and internal meeting presentations. Whether you need a polished profile for investors, clients, or internal stakeholders, we design visually compelling and informative presentations that leave a lasting impression.",
     },
     infoGrid: [
       {
-        title: "Brand Consistency",
+        title: "Build Credibility with Professional Brand Identity",
         description:
-          "We ensure your presentations maintain consistent branding across all slides, reinforcing your identity with every view.",
-        icon: "Palette",
+          "Create powerful first impressions with meticulously crafted company profiles that showcase your vision, achievements, and competitive advantages to captivate key stakeholders.",
+        icon: "Building",
       },
       {
-        title: "Data Visualization",
+        title: "Transform Complex Data into Compelling Stories",
         description:
-          "Complex data transformed into intuitive charts and graphs that make your metrics immediately understandable.",
+          "Turn financial reports and metrics into engaging visual narratives using strategic infographics and brand-aligned layouts that make complex data accessible and memorable.",
         icon: "BarChart",
       },
       {
-        title: "Executive Summaries",
+        title: "Communicate with Clarity and Professional Impact",
         description:
-          "Concise, powerful slides that deliver your key points with maximum impact for busy executives.",
-        icon: "Briefcase",
+          "Create persuasive presentations that deliver your message with exceptional clarity and professional polish, whether for internal teams or investor pitches.",
+        icon: "Presentation",
       },
       {
-        title: "Narrative Structure",
+        title: "Drive Results Through Strategic Visual Excellence",
         description:
-          "Strategic slide organization that tells your story in a logical, persuasive sequence.",
-        icon: "FileText",
+          "Our award-winning design approach strengthens brand perception and accelerates business growth through strategic visual storytelling that resonates with stakeholders.",
+        icon: "Sparkles",
+      },
+      {
+        title: "Accelerate Decision-Making with Executive Dashboards",
+        description:
+          "Empower leadership teams with interactive dashboards and KPI visualizations that provide real-time insights and facilitate data-driven strategic decisions.",
+        icon: "Target",
+      },
+      {
+        title: "Ensure Brand Consistency Across All Touchpoints",
+        description:
+          "Maintain cohesive brand standards with custom templates and presentation frameworks that guarantee professional consistency while saving time and resources.",
+        icon: "Shield",
+      },
+      {
+        title: "Maximize ROI Through Professional Training Programs",
+        description:
+          "Enhance your team's presentation capabilities with comprehensive training workshops that boost communication skills and multiply internal talent impact.",
+        icon: "TrendingUp",
       },
     ],
     steps: [
       {
-        title: "Discovery",
+        title: "Discovery & Research",
         description:
-          "We begin with a comprehensive analysis of your goals, audience, and key messages to establish clear direction.",
+          "We understand your brand, industry, and objectives to tailor a compelling profile.",
       },
       {
-        title: "Content Strategy",
+        title: "Content Creation & Structuring",
         description:
-          "Our team develops a strategic framework for your presentation, organizing information for maximum impact.",
+          "Our experts craft persuasive narratives, ensuring clarity and professionalism.",
       },
       {
-        title: "Design Development",
+        title: "Design & Visual Storytelling",
         description:
-          "Our designers create visually compelling slides that align with your brand and enhance your message.",
+          "We incorporate modern layouts, branding elements, and infographics.",
       },
       {
-        title: "Revision & Refinement",
+        title: "Final Review & Enhancements",
         description:
-          "We collaborate with you to fine-tune every aspect until the presentation perfectly meets your needs.",
-      },
-      {
-        title: "Delivery Preparation",
-        description:
-          "Beyond design, we provide guidance on presentation delivery to ensure your message resonates.",
+          "Refinements to ensure accuracy, coherence, and maximum impact.",
       },
     ],
     includes: [
-      "Custom slide design aligned with brand guidelines",
-      "Professional data visualization and infographics",
-      "Executive summary slides for key decision-makers",
-      "Comprehensive presentation templates for future use",
-      "Speaker notes and delivery recommendations",
+      "Professional company profile presentations",
+      "Annual report design and data visualization",
+      "Internal meeting presentation templates",
+      "Investor pitch deck creation",
+      "Brand-aligned visual storytelling",
+      "Infographics and data visualization",
       "Multiple file formats (PowerPoint, PDF, Google Slides)",
-      "Animation and transition effects where appropriate",
-      "Follow-up support and minor revisions",
+      "Content writing and narrative development",
+      "Customized design styles and branding",
+      "Multilingual presentation options",
+      "Both digital and print-ready formats",
+      "Follow-up support and revisions",
     ],
     faqs: [
       {
-        question: "How long does it take to create a corporate presentation?",
+        question: "What is a company profile presentation?",
         answer:
-          "Typical corporate presentations take 1-2 weeks from initial consultation to final delivery, depending on complexity and scope. Rush options are available for time-sensitive projects.",
+          "A company profile presentation is a structured overview of a business, used for marketing, sales, and corporate communication.",
       },
       {
-        question: "Can you work with our existing brand guidelines?",
+        question: "Why is a company profile important?",
         answer:
-          "Absolutely. We seamlessly integrate your brand guidelines, colors, typography, and visual elements to ensure presentation consistency with your overall brand identity.",
+          "It establishes credibility, enhances brand image, and provides key stakeholders with insights into your business.",
       },
       {
-        question: "Do you provide editable files?",
+        question: "How long should a company profile presentation be?",
         answer:
-          "Yes, we deliver fully editable PowerPoint or Google Slides files, allowing your team to make future updates while maintaining design integrity.",
+          "Ideally, it should be 10-15 slides, ensuring a balance between detail and conciseness.",
       },
       {
-        question: "Can you help with presentation content development?",
+        question: "Do you provide content writing along with design?",
         answer:
-          "Yes, our content strategists can help refine your messaging, structure your narrative, and even develop content from scratch based on your input and objectives.",
+          "Yes, we offer complete content development, ensuring your company story is engaging and impactful.",
       },
       {
-        question: "Do you offer presentation training for our team?",
+        question: "Can you help update my existing company profile?",
         answer:
-          "Yes, we provide optional presentation delivery training to help your team effectively communicate your message with confidence and impact.",
+          "Absolutely! We can enhance your current profile with better design and refined messaging.",
+      },
+      {
+        question: "What industries do you create company profiles for?",
+        answer:
+          "We cater to businesses across all industries, from startups to multinational corporations.",
+      },
+      {
+        question: "Do you design company profiles for both digital and print?",
+        answer:
+          "Yes, our designs are optimized for digital presentations and printable formats.",
+      },
+      {
+        question:
+          "Can you include infographics and data visualization in my company profile?",
+        answer:
+          "Yes, we incorporate professional infographics to make data visually appealing.",
+      },
+      {
+        question: "What format do you deliver the company profile in?",
+        answer:
+          "We provide PowerPoint (PPT), PDF, and editable formats for future updates.",
+      },
+      {
+        question:
+          "How long does it take to create a company profile presentation?",
+        answer:
+          "Standard delivery is 5-7 business days, with expedited options available.",
+      },
+      {
+        question: "Do you sign NDAs for confidential business information?",
+        answer:
+          "Yes, we prioritize data security and sign NDAs for client confidentiality.",
+      },
+      {
+        question: "Can I request a customized design style?",
+        answer:
+          "Absolutely! We align with your brand guidelines and preferred aesthetics.",
+      },
+      {
+        question: "Do you offer multilingual company profile presentations?",
+        answer:
+          "Yes, we provide company profiles in multiple languages for global businesses.",
+      },
+      {
+        question: "How do I get started with your company profile services?",
+        answer:
+          "Contact us with your requirements, and we'll guide you through the process.",
       },
     ],
   },
   "video-presentation": {
     title: "Video Presentation",
     subtitle: "Dynamic Visual Storytelling in Motion",
-    heroImage: "/images/services/video-presentation-hero.jpg",
+    heroImage:
+      "https://images.unsplash.com/photo-1535016120720-40c646be5580?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     intro: {
-      heading: "Bring Your Story to Life",
-      subheading: "Professional video presentations that captivate and convert",
+      heading: "The Future of Business Communication",
+      subheading: "Video presentations that captivate, engage, and convert",
       description:
-        "Our video presentation service combines professional design, animation, and narrative techniques to create dynamic visual content that captures attention and drives engagement across platforms. From explainer videos to product demonstrations, we create compelling video presentations that communicate effectively.",
+        "Video presentations are the future of business communication, helping companies and entrepreneurs convey their message effectively and leave a lasting impression. At PPTPRO, we specialize in creating compelling video presentations for solopreneurs, entrepreneurs, startups, and corporate teams to enhance brand visibility, marketing impact, and business growth. Whether for product launches, investor pitches, corporate training, or sales presentations, we ensure your content is visually engaging and impactful.",
     },
     infoGrid: [
       {
-        title: "Motion Graphics",
+        title: "Business & Investor Video Presentations",
         description:
-          "Eye-catching animations that illustrate concepts and keep viewers engaged throughout your presentation.",
+          "Craft dynamic video presentations that communicate your business vision effectively, engage investors with compelling storytelling, and highlight financial insights in an easy-to-understand format.",
+        icon: "TrendingUp",
+      },
+      {
+        title: "Corporate Video Presentations",
+        description:
+          "Enhance internal and external communication with professional company profile videos, executive messaging, leadership videos, and annual reports that showcase performance summaries.",
+        icon: "Building",
+      },
+      {
+        title: "Marketing & Sales Video Presentations",
+        description:
+          "Increase conversions with impactful video pitch decks, animated product explainer videos, and sales funnel videos designed to nurture leads and close deals effectively.",
         icon: "Play",
       },
       {
-        title: "Narrative Scripting",
+        title: "Training & Educational Video Presentations",
         description:
-          "Professional scriptwriting that communicates your message clearly and compellingly.",
-        icon: "FileText",
+          "Improve knowledge retention with interactive e-learning content, employee training videos, industry-specific modules, and leadership development presentations.",
+        icon: "GraduationCap",
       },
       {
-        title: "Visual Storytelling",
+        title: "Product Demo & Explainer Videos",
         description:
-          "Strategic visual sequences that guide viewers through your message with clarity and impact.",
-        icon: "Film",
+          "Showcase your products and services with engaging demonstration videos, animated explainers, and step-by-step tutorials that simplify complex concepts and drive customer understanding.",
+        icon: "Monitor",
       },
       {
-        title: "Multi-Platform Optimization",
+        title: "Event & Conference Video Presentations",
         description:
-          "Video presentations formatted for various platforms, from social media to conference displays.",
-        icon: "Layers",
+          "Create memorable event experiences with professional keynote videos, conference presentations, webinar content, and virtual event materials that captivate audiences worldwide.",
+        icon: "Users",
+      },
+      {
+        title: "Social Media & Digital Marketing Videos",
+        description:
+          "Amplify your online presence with platform-optimized video content, social media campaigns, promotional videos, and digital advertising materials that maximize engagement and reach.",
+        icon: "Share2",
       },
     ],
     steps: [
       {
-        title: "Concept Development",
+        title: "Understanding Your Goals",
         description:
-          "We collaborate to define your video's goals, audience, message, and visual approach.",
+          "We assess your presentation needs and align them with your business objectives.",
       },
       {
-        title: "Scripting & Storyboarding",
+        title: "Content Creation & Storyboarding",
         description:
-          "Our team creates a detailed script and visual storyboard mapping out the entire presentation.",
+          "We develop compelling scripts, narratives, and storyboards for an engaging experience.",
       },
       {
-        title: "Design & Animation",
+        title: "Visual & Motion Design",
         description:
-          "Our designers and animators bring your presentation to life with professional motion graphics.",
+          "We integrate animations, graphics, and transitions to enhance visual appeal.",
       },
       {
-        title: "Voiceover & Sound",
+        title: "Final Production & Optimization",
         description:
-          "Professional narration and sound design enhance your presentation's impact and clarity.",
-      },
-      {
-        title: "Review & Finalization",
-        description:
-          "We refine every detail based on your feedback before delivering the final video.",
+          "We refine, edit, and optimize the video to ensure clarity and engagement.",
       },
     ],
     includes: [
-      "Professional script development and refinement",
-      "Custom motion graphics and animations",
-      "High-quality voiceover narration",
-      "Background music and sound effects",
-      "Brand integration throughout the video",
-      "Multiple resolution outputs for different platforms",
-      "Subtitle and caption options",
-      "Distribution recommendations and support",
+      "Custom video presentation development tailored to your needs",
+      "Professional scriptwriting and narrative development",
+      "Dynamic animations, graphics, and motion design",
+      "High-quality voiceovers and licensed background music",
+      "Multiple video formats (MP4, MOV, and standard formats)",
+      "Multilingual video presentation options",
+      "Interactive e-learning and training modules",
+      "Video marketing strategy consultation and integration",
+      "Multiple revision rounds for perfect results",
+      "Final production optimization for maximum engagement",
+      "Industry-specific content across finance, healthcare, tech, and education",
+      "Professional storyboarding and visual planning",
     ],
     faqs: [
       {
-        question:
-          "What's the typical length for an effective video presentation?",
+        question: "What is a video presentation?",
         answer:
-          "Most effective video presentations range from 1-3 minutes for marketing and social media, and up to 5-7 minutes for detailed product demonstrations or training. We tailor the length to your specific goals and audience.",
+          "A dynamic visual presentation combining text, graphics, and animations to convey a message effectively.",
       },
       {
-        question: "Can you use our existing presentation as a starting point?",
+        question: "Who can benefit from video presentations?",
         answer:
-          "Yes, we can transform your existing static presentations into dynamic video formats, enhancing them with animation, narration, and visual storytelling.",
+          "Solopreneurs, entrepreneurs, startups, corporate teams, and educators.",
       },
       {
-        question: "Do you provide voiceover talent?",
+        question: "How can a video presentation help my business?",
         answer:
-          "Yes, we offer professional male and female voiceover artists in multiple languages. You can select from our roster or we can help you find the perfect voice for your brand.",
+          "By enhancing engagement, simplifying complex ideas, and improving audience retention.",
       },
       {
-        question: "What file formats do you deliver?",
+        question: "Do you create custom video presentations?",
         answer:
-          "We typically deliver MP4 files in various resolutions optimized for different platforms (web, social media, presentations). Additional formats are available upon request.",
+          "Yes, we tailor each video presentation to meet your specific business needs.",
       },
       {
-        question: "How many revisions are included in the process?",
+        question: "What industries do you specialize in?",
         answer:
-          "Our standard package includes three rounds of revisions: after storyboarding, after initial animation, and after adding sound. Additional revision rounds can be arranged if needed.",
+          "We work across various industries, including finance, healthcare, tech, education, and more.",
+      },
+      {
+        question: "Can you create animated video presentations?",
+        answer:
+          "Yes, we offer fully animated video presentations for an engaging experience.",
+      },
+      {
+        question: "How long should a business video presentation be?",
+        answer:
+          "Ideally, between 1 to 5 minutes, depending on the objective and content.",
+      },
+      {
+        question: "Do you offer scriptwriting services?",
+        answer:
+          "Yes, our team can craft compelling scripts for your video presentations.",
+      },
+      {
+        question: "Can you include voiceovers and background music?",
+        answer:
+          "Absolutely! We offer professional voiceovers and licensed background music.",
+      },
+      {
+        question: "Do you provide multilingual video presentations?",
+        answer: "Yes, we can create video presentations in multiple languages.",
+      },
+      {
+        question: "What format do you deliver the videos in?",
+        answer:
+          "We provide various formats, including MP4, MOV, and other standard video formats.",
+      },
+      {
+        question: "Do you assist with video marketing strategies?",
+        answer:
+          "Yes, we help integrate video presentations into your marketing campaigns.",
+      },
+      {
+        question: "How long does it take to create a video presentation?",
+        answer:
+          "The timeframe varies, but typically, it takes 1-3 weeks depending on complexity.",
+      },
+      {
+        question: "Can I request revisions after the video is completed?",
+        answer:
+          "Yes, we offer multiple revision rounds to ensure your satisfaction.",
+      },
+      {
+        question: "How do I get started with your video presentation services?",
+        answer:
+          "Contact us today for a free consultation, and we'll help you create a high-impact video presentation.",
       },
     ],
   },

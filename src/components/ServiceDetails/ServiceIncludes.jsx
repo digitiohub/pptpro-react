@@ -56,7 +56,7 @@ const ServiceIncludes = ({ items }) => {
   return (
     <section
       ref={includesRef}
-      className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900"
+      className="py-16 md:py-24 dark:bg-gray-900"
       style={{
         transform: "translate3d(0, 0, 0)",
         backfaceVisibility: "hidden",
