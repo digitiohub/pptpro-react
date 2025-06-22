@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../../../data/navigationLinks";
 import MobileMenu from "./MobileMenu";
-import StarBorder from "../../../ui/StarBorder/StarBorder";
+import Button from "../../../ui/Buttons/Button";
 import { ChevronDown } from "lucide-react";
 
 // Animation variants defined outside component for better performance
@@ -319,33 +319,6 @@ const Navbar = () => {
           height: 80%;
           top: 10%;
         }
-        
-        @keyframes star-movement-bottom {
-          0% { transform: translate(0%, 0%); opacity: 1; }
-          100% { transform: translate(-100%, 0%); opacity: 0; }
-        }
-        
-        @keyframes star-movement-top {
-          0% { transform: translate(0%, 0%); opacity: 1; }
-          100% { transform: translate(100%, 0%); opacity: 0; }
-        }
-        
-        .animate-star-movement-bottom {
-          animation: star-movement-bottom linear infinite alternate;
-        }
-        
-        .animate-star-movement-top {
-          animation: star-movement-top linear infinite alternate;
-        }
-
-        /* Custom yellow button style */
-        .custom-yellow-button > div:last-child {
-          background: var(--color-yellow);
-          background-image: none;
-          border: none;
-          color: black;
-          font-weight: 500;
-        }
       `}</style>
 
       <motion.header
@@ -479,7 +452,7 @@ const Navbar = () => {
               </ul>
             </motion.nav>
 
-            {/* CTA Button */}
+            {/* CTA Button - Simplified with working hover animation */}
             <div className="hidden md:block">
               <motion.div
                 initial="initial"
@@ -487,16 +460,14 @@ const Navbar = () => {
                 variants={logoVariants}
                 style={{ willChange: "transform, opacity" }}
               >
-                <StarBorder
-                  as="div"
-                  color="white"
-                  speed="4s"
-                  variant="yellow"
+                <Button
+                  variant="hero-primary"
+                  size="md"
                   onClick={() => handleNavClick("/contact")}
-                  className="cursor-pointer"
+                  animate={true}
                 >
                   Get in Touch
-                </StarBorder>
+                </Button>
               </motion.div>
             </div>
 

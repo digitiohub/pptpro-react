@@ -175,7 +175,7 @@ const HomeHero = () => {
   return (
     <section
       ref={heroRef}
-      className="h-screen pt-20 md:pt-22 px-2  md:px-0 relative overflow-hidden flex items-center md:items-start justify-center md:justify-end"
+      className="h-screen pt-20 md:pt-22 px-2 md:px-0 relative overflow-hidden flex items-center justify-center md:justify-center"
       style={{
         transform: "translate3d(0, 0, 0)",
         backfaceVisibility: "hidden",
@@ -207,7 +207,7 @@ const HomeHero = () => {
 
       {/* Animated Gray Square Element - Different for mobile/desktop */}
       <motion.div
-        className="absolute bottom-4  left-1/2 -translate-x-1/2 md:left-42 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:right-auto md:translate-x-0 z-5"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 md:left-32 lg:left-42 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:right-auto md:translate-x-0 z-5"
         variants={isMobile ? mobileSquareVariants : squareVariants}
         initial="initial"
         animate={isVisible ? "animate" : "initial"}
@@ -239,9 +239,9 @@ const HomeHero = () => {
         />
       </motion.div>
 
-      {/* Main content - Responsive positioning */}
-      <div className="relative z-10 -mt-8 md:mt-12 lg:mt-8 mx-auto md:mx-0 md:mr-8 lg:mr-16 xl:mr-24 px-6 md:px-0 w-full md:w-auto">
-        <div className="max-w-full md:max-w-3xl lg:max-w-4xl">
+      {/* Main content - Responsive positioning with right adjustment for lg */}
+      <div className="relative z-10 -mt-8 md:-mt-16 mx-auto md:mx-0 md:mr-8 lg:mr-12 xl:-mr-24 px-6 md:px-1 w-full md:w-auto">
+        <div className="max-w-full">
           {/* Main headline */}
           <motion.div
             variants={titleVariants}
@@ -253,10 +253,9 @@ const HomeHero = () => {
               backfaceVisibility: "hidden",
             }}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-black leading-tight tracking-tight mb-8 text-left">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-[6.5rem] font-normal text-black leading-tight tracking-tight mb-8 text-left">
               TURN YOUR IDEA
-              <br className="hidden md:block" />
-              {" "}INTO
+              <br className="hidden md:block" /> INTO
               <br className="md:hidden" />
               <span className="md:ml-2">A DECK</span>
               <span className="text-yellow-500">.</span>
@@ -265,7 +264,7 @@ const HomeHero = () => {
 
           {/* Action Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-20 md:mb-0 justify-center md:justify-start items-center md:items-start"
+            className="flex flex-row gap-3 md:gap-6 mb-20 md:mb-0 justify-center md:justify-start items-center md:items-start"
             variants={buttonsVariants}
             initial="initial"
             animate={isVisible ? "animate" : "initial"}
@@ -280,7 +279,7 @@ const HomeHero = () => {
               variant="hero-primary"
               size="md"
               onClick={handleCollaborate}
-              className="w-48 md:w-auto"
+              className="flex-1 md:flex-none md:w-auto text-sm md:text-base"
               motionProps={{
                 initial: { opacity: 1, scale: 1 }, // Skip entrance animation
                 animate: { opacity: 1, scale: 1 }, // Skip entrance animation
@@ -294,7 +293,7 @@ const HomeHero = () => {
               variant="hero-outline"
               size="md"
               onClick={scrollToNextSection}
-              className="w-48 md:w-auto"
+              className="flex-1 md:flex-none md:w-auto text-sm md:text-base"
               motionProps={{
                 initial: { opacity: 1, scale: 1 }, // Skip entrance animation
                 animate: { opacity: 1, scale: 1 }, // Skip entrance animation
