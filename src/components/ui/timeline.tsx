@@ -38,7 +38,7 @@ export const Timeline = ({ data, title, description }: {
 
   return (
     <div
-      className="w-full bg-[#141313] font-sans  text-white"
+      className="w-full bg-[#141313]   text-white"
       ref={containerRef}
     >
       {title && (

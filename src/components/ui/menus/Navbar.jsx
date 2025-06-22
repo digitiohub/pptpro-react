@@ -139,10 +139,33 @@ const Navbar = () => {
     { name: "Financial Modeling", path: "/services/financial-modeling" },
   ];
 
+  // Utility function to scroll to top smoothly
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Handle navigation clicks with scroll to top
+  const handleNavClick = (path) => {
+    navigate(path);
+    scrollToTop();
+  };
+
   // Handle services link click - navigate to main services page
   const handleServicesClick = (e) => {
     e.preventDefault();
     navigate("/services");
+    scrollToTop();
+    setServicesDropdownOpen(false); // Close dropdown
+  };
+
+  // Handle dropdown service clicks
+  const handleDropdownClick = (path) => {
+    navigate(path);
+    scrollToTop();
+    setServicesDropdownOpen(false); // Close dropdown
   };
 
   // Handle dropdown hover events
@@ -169,6 +192,11 @@ const Navbar = () => {
       }
     };
   }, []);
+
+  // Scroll to top when location changes
+  useEffect(() => {
+    scrollToTop();
+  }, [location.pathname]);
 
   // Add effect to handle body scrolling when mobile menu is open
   useEffect(() => {
@@ -338,13 +366,16 @@ const Navbar = () => {
               variants={logoVariants}
               style={{ willChange: "transform, opacity" }}
             >
-              <Link to="/" className="block">
+              <div
+                className="block cursor-pointer"
+                onClick={() => handleNavClick("/")}
+              >
                 <img
                   src="/logos/logo-dark.jpg"
                   alt="PPTPRO Logo"
                   className="h-10 md:h-12"
                 />
-              </Link>
+              </div>
             </motion.div>
 
             {/* Desktop Navigation */}
@@ -417,12 +448,14 @@ const Navbar = () => {
                                       backfaceVisibility: "hidden",
                                     }}
                                   >
-                                    <Link
-                                      to={service.path}
-                                      className="block px-4 py-3 text-black hover:bg-gray-100 dropdown-link"
+                                    <div
+                                      className="block px-4 py-3 text-black hover:bg-gray-100 dropdown-link cursor-pointer"
+                                      onClick={() =>
+                                        handleDropdownClick(service.path)
+                                      }
                                     >
                                       {service.name}
-                                    </Link>
+                                    </div>
                                   </motion.div>
                                 ))}
                               </div>
@@ -432,14 +465,14 @@ const Navbar = () => {
                       </div>
                     ) : (
                       // Regular nav links
-                      <Link
-                        to={link.path}
-                        className={`nav-link text-base uppercase font-medium transition-colors text-black ${
+                      <div
+                        className={`nav-link text-base uppercase font-medium transition-colors text-black cursor-pointer ${
                           location.pathname === link.path ? "active" : ""
                         }`}
+                        onClick={() => handleNavClick(link.path)}
                       >
                         {link.name}
-                      </Link>
+                      </div>
                     )}
                   </li>
                 ))}
@@ -455,11 +488,12 @@ const Navbar = () => {
                 style={{ willChange: "transform, opacity" }}
               >
                 <StarBorder
-                  as={Link}
-                  to="/contact"
+                  as="div"
                   color="white"
                   speed="4s"
                   variant="yellow"
+                  onClick={() => handleNavClick("/contact")}
+                  className="cursor-pointer"
                 >
                   Get in Touch
                 </StarBorder>

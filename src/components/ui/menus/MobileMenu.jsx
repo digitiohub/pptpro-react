@@ -13,6 +13,21 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
   const [servicesOpen, setServicesOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Utility function to scroll to top smoothly
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Handle navigation with scroll to top and menu close
+  const handleNavigation = (path) => {
+    navigate(path);
+    scrollToTop();
+    onClose();
+  };
+
   // Animation variants for mobile menu using transform3d for better performance
   const mobileMenuVariants = {
     hidden: {
@@ -232,8 +247,7 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
   // Handle Services link click in mobile menu
   const handleServicesClick = (e) => {
     e.stopPropagation(); // Stop propagation to prevent dropdown toggle
-    navigate("/services");
-    onClose(); // Close mobile menu after navigation
+    handleNavigation("/services");
   };
 
   return (
@@ -271,13 +285,16 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
               }}
             >
               {/* Mobile Logo */}
-              <Link to="/" className="block">
+              <div
+                className="block cursor-pointer"
+                onClick={() => handleNavigation("/")}
+              >
                 <img
                   src="/logos/logo-dark.jpg"
                   alt="PPTPRO Logo"
                   className="h-12"
                 />
-              </Link>
+              </div>
 
               {/* Mobile Close Button */}
               <motion.button
@@ -373,13 +390,14 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
                                       backfaceVisibility: "hidden",
                                     }}
                                   >
-                                    <Link
-                                      to={service.path}
-                                      className="text-xl font-medium text-black hover:opacity-70 transition-opacity block"
-                                      onClick={onClose}
+                                    <div
+                                      className="text-xl font-medium text-black hover:opacity-70 transition-opacity block cursor-pointer"
+                                      onClick={() =>
+                                        handleNavigation(service.path)
+                                      }
                                     >
                                       {service.name}
-                                    </Link>
+                                    </div>
                                   </motion.div>
                                 ))}
                               </motion.div>
@@ -387,13 +405,12 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
                           </AnimatePresence>
                         </div>
                       ) : (
-                        <Link
-                          to={link.path}
-                          className="text-3xl font-medium text-black hover:opacity-70 transition-opacity block"
-                          onClick={onClose}
+                        <div
+                          className="text-3xl font-medium text-black hover:opacity-70 transition-opacity block cursor-pointer"
+                          onClick={() => handleNavigation(link.path)}
                         >
                           {link.name}
-                        </Link>
+                        </div>
                       )}
                     </motion.li>
                   ))}
@@ -428,12 +445,11 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
                   </h3>
 
                   <StarBorder
-                    as={Link}
-                    to="/contact"
+                    as="div"
                     color="#FFC559"
                     speed="4s"
-                    className="w-full"
-                    onClick={onClose}
+                    className="w-full cursor-pointer"
+                    onClick={() => handleNavigation("/contact")}
                   >
                     Get in Touch
                   </StarBorder>
@@ -497,9 +513,12 @@ const MobileMenu = ({ isOpen, onClose, serviceSubmenu }) => {
                         backfaceVisibility: "hidden",
                       }}
                     >
-                      <Link to={link.path} className="hover:text-yellow">
+                      <div
+                        className="hover:text-yellow cursor-pointer"
+                        onClick={() => handleNavigation(link.path)}
+                      >
                         {link.name}
-                      </Link>
+                      </div>
                     </motion.div>
                   ))}
                 </motion.div>

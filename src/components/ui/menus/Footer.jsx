@@ -1,9 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { navLinks, footerLinks } from '../../data/navigationLinks';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { navLinks, footerLinks } from "../../data/navigationLinks";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+
+  // Utility function to scroll to top smoothly
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // Handle navigation with scroll to top
+  const handleNavigation = (path) => {
+    navigate(path);
+    scrollToTop();
+  };
 
   return (
     <footer className="bg-black py-6 md:py-8 px-5 md:px-12 mt-auto">
@@ -12,13 +27,16 @@ const Footer = () => {
         <div className="hidden md:flex md:flex-row justify-between items-center">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="block">
+            <div
+              className="block cursor-pointer"
+              onClick={() => handleNavigation("/")}
+            >
               <img
                 src="/logos/logo-light.jpg"
                 alt="PPTPRO Logo"
                 className="h-12"
               />
-            </Link>
+            </div>
           </div>
 
           {/* Navigation Links */}
@@ -26,22 +44,22 @@ const Footer = () => {
             <ul className="flex flex-wrap justify-center gap-8">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="text-yellow hover:text-yellow/70 transition-colors text-base"
+                  <div
+                    className="text-yellow hover:text-yellow/70 transition-colors text-base cursor-pointer"
+                    onClick={() => handleNavigation(link.path)}
                   >
                     {link.name}
-                  </Link>
+                  </div>
                 </li>
               ))}
               {footerLinks.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className="text-yellow hover:text-yellow/70 transition-colors text-base"
+                  <div
+                    className="text-yellow hover:text-yellow/70 transition-colors text-base cursor-pointer"
+                    onClick={() => handleNavigation(link.path)}
                   >
                     {link.name}
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -58,18 +76,19 @@ const Footer = () => {
           {/* Top section with logo and copyright */}
           <div className="flex justify-between items-center mb-6">
             {/* Logo */}
-            <Link to="/" className="block">
+            <div
+              className="block cursor-pointer"
+              onClick={() => handleNavigation("/")}
+            >
               <img
                 src="/logos/logo-light.jpg"
                 alt="PPTPRO Logo"
                 className="h-10"
               />
-            </Link>
+            </div>
 
             {/* Copyright */}
-            <div className="text-yellow/50 text-xs">
-              © {currentYear} PPTPRO
-            </div>
+            <div className="text-yellow/50 text-xs">© {currentYear} PPTPRO</div>
           </div>
 
           {/* Navigation Grid - Main nav in 3 columns */}
@@ -77,13 +96,13 @@ const Footer = () => {
             <div className="grid grid-cols-3 gap-x-4 gap-y-5">
               {/* Main nav links in a 3-column grid */}
               {navLinks.map((link) => (
-                <Link
+                <div
                   key={link.name}
-                  to={link.path}
-                  className="text-yellow hover:text-yellow/70 transition-colors text-sm text-center"
+                  className="text-yellow hover:text-yellow/70 transition-colors text-sm text-center cursor-pointer"
+                  onClick={() => handleNavigation(link.path)}
                 >
                   {link.name}
-                </Link>
+                </div>
               ))}
             </div>
           </div>
@@ -91,13 +110,13 @@ const Footer = () => {
           {/* Footer links - Centered */}
           <div className="flex justify-center space-x-4 border-t border-yellow/20 pt-5">
             {footerLinks.map((link) => (
-              <Link
+              <div
                 key={link.name}
-                to={link.path}
-                className="text-yellow hover:text-yellow transition-colors text-xs"
+                className="text-yellow hover:text-yellow transition-colors text-xs cursor-pointer"
+                onClick={() => handleNavigation(link.path)}
               >
                 {link.name}
-              </Link>
+              </div>
             ))}
           </div>
         </div>
