@@ -337,203 +337,324 @@ export const servicesData = {
   "presentation-training": {
     title: "Presentation Training",
     subtitle: "Master the Art of Impactful Delivery",
-    heroImage: "/images/services/presentation-training-hero.jpg",
+    heroImage:
+      "https://images.unsplash.com/photo-1563394867331-e687a36112fd?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     intro: {
-      heading: "Communicate with Confidence",
+      heading: "Build Essential Skills for Success",
       subheading:
-        "Develop the skills to deliver powerful, persuasive presentations",
+        "Develop the confidence to engage, inform, and persuade any audience",
       description:
-        "Our presentation training service equips individuals and teams with the skills, techniques, and confidence to deliver compelling presentations in any setting. From content organization to delivery techniques, body language, and handling Q&A, we provide comprehensive training that transforms presentation abilities.",
+        "Effective presentations are a crucial skill for success in academics, business, and corporate settings. At PPTPRO, we offer specialized Presentation Training Programs for college students, professors, startups, and corporate professionals, helping them develop the skills needed to create compelling presentations and deliver them with confidence. Whether you're a student preparing for a project, a professor enhancing lecture delivery, or a corporate executive pitching ideas, our training is designed to help you engage, inform, and persuade any audience.",
     },
     infoGrid: [
       {
-        title: "Delivery Techniques",
+        title: "Training for College Students",
         description:
-          "Master verbal and non-verbal communication skills that enhance your presence and authority.",
-        icon: "MessageCircle",
+          "Develop essential academic and professional presentation skills. Learn to structure content effectively for clarity and impact, apply visual design principles to create engaging slides, and build confidence in public speaking to overcome stage fear.",
+        icon: "GraduationCap",
       },
       {
-        title: "Content Structure",
+        title: "Workshops for Professors & Educators",
         description:
-          "Learn to organize information in ways that maximize audience engagement and retention.",
-        icon: "LayoutList",
+          "Make lectures more engaging and interactive by simplifying complex topics using visuals and storytelling techniques while introducing modern presentation tools that enhance the overall teaching experience.",
+        icon: "BookOpen",
       },
       {
-        title: "Visual Design",
+        title: "Startup Pitch & Investor Presentation Training",
         description:
-          "Develop skills for creating slides that support rather than distract from your message.",
-        icon: "Image",
+          "Equip entrepreneurs and startup teams with skills to craft compelling pitch decks, engage investors effectively, and present data in a persuasive way that attracts funding and communicates business ideas clearly.",
+        icon: "Rocket",
       },
       {
-        title: "Audience Engagement",
+        title: "Corporate & Executive Presentation Training",
         description:
-          "Techniques for connecting with different audiences and maintaining their attention throughout.",
-        icon: "Users",
+          "Refine business presentations with executive-level communication skills, persuasive sales and marketing presentations for closing deals, and boardroom leadership talks that leave lasting impressions.",
+        icon: "Briefcase",
+      },
+      {
+        title: "Virtual & Remote Presentation Mastery",
+        description:
+          "Master the art of virtual presentations with specialized training for online meetings, webinars, and remote team communications. Learn platform-specific techniques, audience engagement strategies, and technical best practices for digital success.",
+        icon: "Monitor",
+      },
+      {
+        title: "Advanced Storytelling & Narrative Training",
+        description:
+          "Transform your presentations with powerful storytelling techniques that captivate audiences and create emotional connections. Learn to structure compelling narratives, use data storytelling, and craft memorable messages that resonate long after your presentation ends.",
+        icon: "FileText",
+      },
+      {
+        title: "Presentation Anxiety & Confidence Coaching",
+        description:
+          "Overcome presentation anxiety and build unshakeable confidence through specialized coaching techniques. Address stage fright, develop relaxation methods, and learn practical strategies to transform nervousness into positive energy and commanding presence.",
+        icon: "Heart",
       },
     ],
     steps: [
       {
-        title: "Assessment",
+        title: "Assessment & Goal Setting",
         description:
-          "We evaluate your current presentation skills and identify specific areas for improvement.",
+          "Understanding individual or team presentation strengths and areas for improvement.",
       },
       {
-        title: "Customized Training Plan",
+        title: "Training & Skill Development",
         description:
-          "We develop a tailored training program focused on your specific needs and objectives.",
+          "Interactive workshops on content creation, slide design, and public speaking.",
       },
       {
-        title: "Interactive Workshops",
+        title: "Practice & Personalized Feedback",
         description:
-          "Participate in hands-on training sessions covering all aspects of effective presentation.",
+          "Hands-on practice sessions with expert feedback for improvement.",
       },
       {
-        title: "Practice & Feedback",
+        title: "Final Review & Confidence Building",
         description:
-          "Refine your skills through practice presentations with detailed, constructive feedback.",
-      },
-      {
-        title: "Ongoing Support",
-        description:
-          "We provide resources and follow-up coaching to ensure continued skill development.",
+          "Strategies for handling Q&A sessions, body language, and stage presence.",
       },
     ],
     includes: [
-      "Comprehensive presentation skill assessment",
-      "Customized training workshops (in-person or virtual)",
-      "Video recording and analysis of practice presentations",
-      "Slide design and content organization training",
-      "Voice modulation and body language coaching",
-      "Q&A and impromptu speaking practice",
-      "Personalized feedback and improvement strategies",
-      "Follow-up sessions and resources for continued growth",
+      "Comprehensive presentation skill assessment and goal setting",
+      "Interactive workshops on content creation and slide design",
+      "Public speaking and delivery technique training",
+      "Visual design principles and modern presentation tools",
+      "Storytelling techniques and content structuring",
+      "Confidence-building exercises and stage fear management",
+      "Practice sessions with personalized expert feedback",
+      "Q&A handling and body language coaching",
+      "Both virtual and in-person presentation skills training",
+      "Training materials, guides, templates, and resources",
+      "Customized training programs for organizations",
+      "Individual coaching and group training sessions",
     ],
     faqs: [
       {
-        question: "How long are your training programs?",
+        question: "Who can benefit from presentation training?",
         answer:
-          "Our training programs range from half-day intensive workshops to comprehensive multi-week programs. We customize the duration based on your specific needs, goals, and available time.",
+          "College students, professors, startups, corporate professionals, and entrepreneurs.",
       },
       {
-        question: "Do you offer group or individual training?",
+        question: "How does presentation training help students?",
         answer:
-          "We offer both group training for teams and one-on-one coaching for executives or specialized needs. Group sessions promote collaborative learning, while individual coaching provides focused attention on specific challenges.",
+          "It improves confidence, content structuring, and delivery skills for academic and career success.",
       },
       {
-        question: "Can training be conducted virtually?",
+        question: "Can professors benefit from presentation training?",
         answer:
-          "Yes, we offer fully virtual training options using interactive video conferencing and collaborative tools, making our programs accessible regardless of location.",
+          "Yes, we help educators make their lectures more engaging and impactful.",
       },
       {
-        question: "Do you address presentation anxiety?",
+        question: "How does training help startups with pitch decks?",
         answer:
-          "Absolutely. Managing presentation anxiety is a core component of our training. We provide practical techniques to transform nervousness into positive energy and build confidence through structured practice.",
+          "We provide techniques to create investor-ready presentations that attract funding.",
       },
       {
-        question: "How do you measure improvement?",
+        question: "What topics are covered in corporate presentation training?",
         answer:
-          "We establish clear metrics at the beginning of training and conduct before-and-after assessments. Participants also receive recorded presentations showing their progress and specific improvements in technique.",
+          "Executive communication, sales presentations, leadership talks, and boardroom presentations.",
+      },
+      {
+        question: "Do you offer one-on-one coaching?",
+        answer:
+          "Yes, we provide both individual coaching and group training sessions.",
+      },
+      {
+        question: "How long does the training program take?",
+        answer:
+          "Depending on the module, training can range from a single session to multiple workshops.",
+      },
+      {
+        question: "Can we get customized training for our organization?",
+        answer:
+          "Absolutely! We tailor training to meet specific industry and company needs.",
+      },
+      {
+        question: "Do you cover both online and offline presentation skills?",
+        answer:
+          "Yes, we provide training for virtual presentations as well as in-person delivery.",
+      },
+      {
+        question: "What tools do you teach for creating presentations?",
+        answer:
+          "PowerPoint, Google Slides, Prezi, and advanced storytelling techniques.",
+      },
+      {
+        question: "Can you help with storytelling techniques in presentations?",
+        answer:
+          "Yes, we focus on structuring content with compelling storytelling.",
+      },
+      {
+        question: "How do you help with stage fear and nervousness?",
+        answer:
+          "We use confidence-building techniques, practice sessions, and feedback.",
+      },
+      {
+        question: "Do you provide training materials?",
+        answer:
+          "Yes, participants receive training guides, templates, and resources.",
+      },
+      {
+        question: "Can training be conducted remotely?",
+        answer:
+          "Yes, we offer virtual training sessions for individuals and teams.",
+      },
+      {
+        question: "How do we enroll in your presentation training programs?",
+        answer:
+          "Contact us today to discuss your needs and schedule a training session.",
       },
     ],
   },
   "financial-modeling": {
     title: "Financial Modeling",
-    subtitle: "Data-Driven Presentations for Financial Clarity",
-    heroImage: "/images/services/financial-modeling-hero.jpg",
+    subtitle: "Strategic Financial Modeling to Drive Business Growth",
+    heroImage:
+      "https://images.unsplash.com/photo-1596518433611-6f099bf4be3c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     intro: {
-      heading: "Communicate Complex Financial Data with Clarity",
-      subheading: "Transform numbers into compelling visual narratives",
+      heading:
+        "Drive Informed Business Decisions with Strategic Financial Models",
+      subheading:
+        "Essential tools for securing investments and ensuring long-term profitability",
       description:
-        "Our financial modeling presentation service transforms complex financial data into clear, compelling visual stories that inform and persuade key stakeholders. We combine financial expertise with presentation design to create sophisticated yet accessible financial presentations for investors, boards, and executive teams.",
+        "Financial modeling is essential for making informed business decisions, securing investments, and ensuring long-term profitability. At PPTPRO, we offer comprehensive financial modeling services for solopreneurs, entrepreneurs, and startups to help them structure financial projections, assess risks, and align their financial strategy with their business goals.",
     },
     infoGrid: [
       {
-        title: "Advanced Data Visualization",
+        title: "Financial Modeling for Solopreneurs & Entrepreneurs",
         description:
-          "Complex financial metrics translated into intuitive charts and dashboards that reveal insights at a glance.",
+          "Develop robust financial models that provide a clear financial roadmap for growth, forecast revenue, expenses, and profitability, while identifying potential risks and opportunities in financial planning.",
+        icon: "User",
+      },
+      {
+        title: "Startup Financial Planning & Investor Readiness",
+        description:
+          "Secure funding and scale efficiently with comprehensive financial projections for pitch decks, revenue and cost analysis to improve business viability, and investor-friendly financial reports.",
+        icon: "Rocket",
+      },
+      {
+        title: "Cash Flow & Profitability Analysis",
+        description:
+          "Maintain healthy cash flow and optimize profitability with break-even analysis, cash flow forecasting for better financial decision-making, and scenario analysis for different financial situations.",
         icon: "TrendingUp",
       },
       {
-        title: "Financial Narrative",
+        title: "Custom Financial Models for Business Strategy",
         description:
-          "Strategic presentation of financial data that tells a cohesive story about performance, projections, and opportunities.",
-        icon: "FileText",
-      },
-      {
-        title: "Investment Case",
-        description:
-          "Compelling visual communication of your value proposition and growth potential for investors.",
-        icon: "DollarSign",
-      },
-      {
-        title: "Scenario Modeling",
-        description:
-          "Visual presentation of different financial scenarios and their potential outcomes and implications.",
-        icon: "GitBranch",
+          "Build customized financial models aligned with specific industry standards and business needs, optimized for scaling operations and supporting mergers, acquisitions, and expansion strategies.",
+        icon: "Target",
       },
     ],
     steps: [
       {
-        title: "Financial Assessment",
-        description:
-          "We analyze your financial data, objectives, and target audience to determine the optimal approach.",
+        title: "Understanding Business Goals",
+        description: "We assess your financial needs and long-term objectives.",
       },
       {
-        title: "Narrative Development",
+        title: "Data Collection & Structuring",
         description:
-          "We craft a compelling financial story that highlights key metrics and supports your objectives.",
+          "We gather key financial inputs and structure a detailed financial model.",
       },
       {
-        title: "Model Creation",
+        title: "Analysis & Forecasting",
         description:
-          "Our financial experts build sophisticated yet understandable models that illustrate your financial position.",
+          "We develop financial projections, scenario analysis, and risk assessment.",
       },
       {
-        title: "Visual Design",
+        title: "Final Review & Implementation Guidance",
         description:
-          "We transform complex financial data into clear, professional visualizations that communicate effectively.",
-      },
-      {
-        title: "Review & Refinement",
-        description:
-          "We collaborate with your financial team to ensure accuracy and strategic alignment in the final presentation.",
+          "We ensure the model is investor-ready and aligned with business strategy.",
       },
     ],
     includes: [
-      "Financial data analysis and interpretation",
-      "Custom financial model development",
-      "Professional data visualization and dashboards",
-      "Key performance indicator highlights",
-      "Investor-focused presentation materials",
-      "Multiple scenario presentations",
-      "Executive summary for key decision-makers",
-      "Editable templates for future financial reporting",
+      "Comprehensive financial projections and forecasting",
+      "Revenue and expense modeling for business planning",
+      "Cash flow analysis and forecasting tools",
+      "Break-even analysis and profitability optimization",
+      "Investor-ready financial models for pitch decks",
+      "Scenario analysis and risk assessment frameworks",
+      "Industry-specific financial modeling standards",
+      "Custom models for mergers, acquisitions, and expansion",
+      "Financial roadmaps for growth planning",
+      "Business viability and cost analysis",
+      "Implementation guidance and strategic alignment",
+      "Editable templates for ongoing financial management",
     ],
     faqs: [
+      {
+        question: "What is financial modeling?",
+        answer:
+          "Financial modeling involves creating a detailed representation of a company's financial situation to aid decision-making.",
+      },
+      {
+        question: "Who needs financial modeling services?",
+        answer:
+          "Solopreneurs, entrepreneurs, startups, and businesses looking for investment, growth, or financial planning.",
+      },
+      {
+        question: "Why is financial modeling important for startups?",
+        answer:
+          "It helps in projecting financial performance, securing investors, and making informed strategic decisions.",
+      },
+      {
+        question:
+          "Do you help with financial modeling for investor presentations?",
+        answer:
+          "Yes, we create investor-ready financial models that enhance funding potential.",
+      },
+      {
+        question: "How do you forecast revenue and expenses?",
+        answer:
+          "We analyze market trends, historical data, and business strategies to create accurate financial forecasts.",
+      },
+      {
+        question: "What industries do you work with?",
+        answer:
+          "We serve various industries, including tech startups, e-commerce, healthcare, real estate, and more.",
+      },
+      {
+        question:
+          "Can you customize financial models for unique business needs?",
+        answer:
+          "Yes, our models are tailored to fit specific business structures and goals.",
+      },
       {
         question: "Do you work with our existing financial data?",
         answer:
           "Yes, we can work with your existing financial data in various formats, including Excel spreadsheets, financial software exports, or raw data that needs modeling from scratch.",
       },
       {
-        question: "How do you ensure the accuracy of financial presentations?",
+        question: "How do you ensure the accuracy of financial projections?",
         answer:
-          "We employ financial experts who verify all calculations and projections. We also work closely with your financial team to validate all data and assumptions before finalizing presentations.",
+          "We employ financial experts who verify all calculations and projections, working closely with your team to validate all data and assumptions.",
       },
       {
         question: "Can you create interactive financial dashboards?",
         answer:
-          "Yes, we create interactive financial dashboards that allow real-time exploration of data, scenario testing, and drill-down capabilities for more detailed analysis during presentations.",
+          "Yes, we create interactive financial dashboards that allow real-time exploration of data, scenario testing, and drill-down capabilities for detailed analysis.",
       },
       {
         question: "Do you sign NDAs for financial information?",
         answer:
-          "Absolutely. We understand the sensitivity of financial data and routinely sign comprehensive non-disclosure agreements before beginning any financial modeling project.",
+          "Absolutely. We understand the sensitivity of financial data and routinely sign comprehensive non-disclosure agreements before beginning any project.",
       },
       {
-        question: "Can you prepare presentations for specific investor types?",
+        question: "How long does it take to create a financial model?",
         answer:
-          "Yes, we tailor financial presentations for different audiences, whether venture capital firms, angel investors, banks, or internal stakeholders, emphasizing the metrics and information most relevant to each group.",
+          "The timeframe varies depending on complexity, but typically ranges from 1-3 weeks for comprehensive financial models.",
+      },
+      {
+        question: "Can you help with scenario planning and risk analysis?",
+        answer:
+          "Yes, we provide comprehensive scenario analysis to help you prepare for different financial situations and identify potential risks and opportunities.",
+      },
+      {
+        question: "Do you provide training on using the financial models?",
+        answer:
+          "Yes, we offer implementation guidance and training to ensure you can effectively use and update your financial models.",
+      },
+      {
+        question: "How do I get started with financial modeling services?",
+        answer:
+          "Contact us to discuss your financial modeling needs, and we'll create a customized solution aligned with your business goals.",
       },
     ],
   },
