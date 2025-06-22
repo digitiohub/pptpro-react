@@ -11,8 +11,9 @@ const navbarVariants = {
   visible: (customProps) => ({
     transform: "translate3d(0px, 0px, 0px)",
     background: customProps.scrolled
-      ? "rgba(255, 255, 255, 1)"
-      : "rgba(255, 255, 255, 1)",
+      ? "rgba(255, 255, 255, 0.95)"
+      : "rgba(255, 255, 255, 0)",
+    backdropFilter: customProps.scrolled ? "blur(10px)" : "blur(0px)",
     boxShadow: customProps.scrolled ? "0 1px 3px 0 rgba(0, 0, 0, 0.1)" : "none",
     transition: {
       type: "spring",
@@ -223,7 +224,7 @@ const Navbar = () => {
           // Always show navbar at the top of page
           if (currentScrollY < 100) {
             setVisible(true);
-            setScrolled(currentScrollY > 50); // Apply shadow only after 50px
+            setScrolled(currentScrollY > 50); // Apply background only after 50px
             setLastScrollY(currentScrollY);
             ticking = false;
             return;
@@ -322,12 +323,14 @@ const Navbar = () => {
       `}</style>
 
       <motion.header
-        className="fixed top-0 left-0 w-full z-40"
+        className="fixed top-0 left-0 w-full z-[9999]"
         initial="hidden"
         animate={visible || isMobileMenuOpen ? "visible" : "hidden"}
         custom={{ scrolled }}
         variants={navbarVariants}
-        style={{ willChange: "transform, background, box-shadow" }}
+        style={{
+          willChange: "transform, background, box-shadow, backdrop-filter",
+        }}
       >
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between py-4">
@@ -396,7 +399,7 @@ const Navbar = () => {
                         <AnimatePresence>
                           {servicesDropdownOpen && (
                             <motion.div
-                              className="absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg bg-white border border-gray-200 overflow-hidden"
+                              className="absolute top-full left-0 mt-2 w-64 bg-white rounded-md shadow-lg border border-gray-200 overflow-hidden"
                               variants={dropdownVariants}
                               initial="hidden"
                               animate="visible"

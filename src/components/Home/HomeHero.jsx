@@ -97,24 +97,6 @@ const mobileSquareVariants = {
   },
 };
 
-// Hexagonal background variants
-const hexaBgVariants = {
-  initial: {
-    opacity: 0,
-    scale: 1.1,
-  },
-  animate: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 30,
-      delay: 0.1,
-    },
-  },
-};
-
 // Floating animation for the desktop square
 const floatingAnimation = {
   y: [0, -15, 0],
@@ -216,13 +198,13 @@ const HomeHero = () => {
         backfaceVisibility: "hidden",
       }}
     >
-      {/* Decorative hexagon pattern on the right side - following HomeAccordion approach */}
+      {/* Decorative hexagon pattern - responsive coverage */}
       <div
-        className="absolute right-0 top-10 w-1/2 h-full pointer-events-none"
+        className="absolute top-0 right-0 w-full md:w-1/2 h-full pointer-events-none"
         style={{
           backgroundImage: "url('/backgrounds/hexa3.svg')",
           backgroundSize: "cover",
-          backgroundPosition: "right center",
+          backgroundPosition: isMobile ? "center center" : "right center",
         }}
       ></div>
 
@@ -332,7 +314,7 @@ const HomeHero = () => {
           <img
             src={
               isMobile
-                ? "https://images.unsplash.com/photo-1652265540589-46f91535337b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ? "https://images.unsplash.com/photo-1649920442906-3c8ef428fb6e?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 : "https://images.unsplash.com/photo-1649920442906-3c8ef428fb6e?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             }
             alt="Presentation design showcase"
@@ -369,9 +351,13 @@ const HomeHero = () => {
             </h1>
           </motion.div>
 
-          {/* Action Buttons */}
+          {/* Action Buttons - Responsive layout */}
           <motion.div
-            className="flex flex-row gap-3 md:gap-6 mb-20 md:mb-0 justify-center md:justify-start items-center md:items-start"
+            className={`flex mb-20 md:mb-0 items-center ${
+              isMobile
+                ? "flex-col gap-4 justify-center"
+                : "flex-row gap-3 md:gap-6 justify-center md:justify-start"
+            }`}
             variants={buttonsVariants}
             initial="initial"
             animate={isVisible ? "animate" : "initial"}
@@ -386,10 +372,12 @@ const HomeHero = () => {
               variant="hero-primary"
               size="md"
               onClick={handleCollaborate}
-              className="flex-1 md:flex-none md:w-auto text-sm md:text-base"
+              className={`text-sm md:text-base ${
+                isMobile ? "w-48" : "flex-1 md:flex-none md:w-auto"
+              }`}
               motionProps={{
-                initial: { opacity: 1, scale: 1 }, // Skip entrance animation
-                animate: { opacity: 1, scale: 1 }, // Skip entrance animation
+                initial: { opacity: 1, scale: 1 },
+                animate: { opacity: 1, scale: 1 },
               }}
             >
               Let's Collaborate
@@ -400,10 +388,12 @@ const HomeHero = () => {
               variant="hero-outline"
               size="md"
               onClick={scrollToNextSection}
-              className="flex-1 md:flex-none md:w-auto text-sm md:text-base"
+              className={`text-sm md:text-base ${
+                isMobile ? "w-48" : "flex-1 md:flex-none md:w-auto"
+              }`}
               motionProps={{
-                initial: { opacity: 1, scale: 1 }, // Skip entrance animation
-                animate: { opacity: 1, scale: 1 }, // Skip entrance animation
+                initial: { opacity: 1, scale: 1 },
+                animate: { opacity: 1, scale: 1 },
               }}
             >
               Explore Now
