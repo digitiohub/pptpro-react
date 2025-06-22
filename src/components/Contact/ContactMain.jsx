@@ -83,33 +83,45 @@ const ContactMain = () => {
 
               <div className="relative z-10">
                 <h3 className="text-2xl md:text-3xl font-medium text-white mb-6">
-                  Get in touch<span className="text-yellow-500">.</span>
+                  Let's working together<span className="text-yellow-500">.</span>
                 </h3>
                 <div className="space-y-8">
                   <p className="text-white">
-                    Have a question or interested in our services? We're here to
-                    help. Contact us through any of these methods and we'll get
-                    back to you as soon as possible.
+                    Thank you for your interest in PPTPRO. We're excited to hear from you and discuss
+                    how we can help transform your presentations and achieve your business goals.
                   </p>
+
+                  {/* Hours of Operation Banner */}
+                  <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 bg-yellow-500/30 p-2 rounded-lg text-yellow-500 mr-3">
+                        <LucideIcons.Clock className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold text-white">Hours of Operation</h4>
+                        <p className="text-yellow-300 font-medium">We are available 24/7</p>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Contact Methods */}
                   <div className="space-y-6">
                     {/* Phone */}
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-white/10 p-3 rounded-lg text-white">
+                      <div className="flex-shrink-0 bg-yellow-500/20 p-3 rounded-lg text-yellow-500">
                         <LucideIcons.Phone className="w-5 h-5" />
                       </div>
                       <div className="ml-4">
                         <h4 className="text-lg font-semibold text-white mb-1">
-                          Give us a call
+                          Phone Number
                         </h4>
                         <div className="text-white mb-3">
-                          <p>+1 (555) 123-4567</p>
-                          <p>Mon-Fri from 9am to 6pm EST</p>
+                          <p>+91 98333 22118</p>
+                          <p>zaib@pptpro.in</p>
                         </div>
                         <a
-                          href="tel:+15551234567"
-                          className="inline-flex items-center text-white hover:text-white/80 font-medium"
+                          href="tel:+919833322118"
+                          className="inline-flex items-center text-yellow-500 hover:text-yellow-400 font-medium transition-colors duration-200"
                         >
                           Call now
                           <LucideIcons.ArrowRight className="w-4 h-4 ml-1" />
@@ -119,7 +131,7 @@ const ContactMain = () => {
 
                     {/* Email */}
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-white/10 p-3 rounded-lg text-white">
+                      <div className="flex-shrink-0 bg-yellow-500/20 p-3 rounded-lg text-yellow-500">
                         <LucideIcons.Mail className="w-5 h-5" />
                       </div>
                       <div className="ml-4">
@@ -127,12 +139,12 @@ const ContactMain = () => {
                           Send us an email
                         </h4>
                         <div className="text-white mb-3">
-                          <p>info@pptpro.com</p>
+                          <p>zaib@pptpro.in</p>
                           <p>We'll respond within 24 hours</p>
                         </div>
                         <a
-                          href="mailto:info@pptpro.com"
-                          className="inline-flex items-center text-white hover:text-white/80 font-medium"
+                          href="mailto:zaib@pptpro.in"
+                          className="inline-flex items-center text-yellow-500 hover:text-yellow-400 font-medium transition-colors duration-200"
                         >
                           Email us
                           <LucideIcons.ArrowRight className="w-4 h-4 ml-1" />
@@ -142,22 +154,22 @@ const ContactMain = () => {
 
                     {/* Address */}
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-white/10 p-3 rounded-lg text-white">
+                      <div className="flex-shrink-0 bg-yellow-500/20 p-3 rounded-lg text-yellow-500">
                         <LucideIcons.MapPin className="w-5 h-5" />
                       </div>
                       <div className="ml-4">
                         <h4 className="text-lg font-semibold text-white mb-1">
-                          Visit our office
+                          Our Address
                         </h4>
                         <div className="text-white mb-3">
-                          <p>123 Presentation Ave</p>
-                          <p>Suite 500, New York, NY 10001</p>
+                          <p>Riidl Headquarters 520 Bhaskaracharya Building</p>
+                          <p>Somaiya Vidyavihar, Mumbai</p>
                         </div>
                         <a
-                          href="https://maps.google.com"
+                          href="https://maps.google.com/maps?q=Riidl+Headquarters+520+Bhaskaracharya+Building+Somaiya+Vidyavihar+Mumbai"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-white hover:text-white/80 font-medium"
+                          className="inline-flex items-center text-yellow-500 hover:text-yellow-400 font-medium transition-colors duration-200"
                         >
                           Get directions
                           <LucideIcons.ArrowRight className="w-4 h-4 ml-1" />
@@ -173,8 +185,8 @@ const ContactMain = () => {
                     </h4>
                     <div className="flex space-x-4">
                       <a
-                        href="#"
-                        className="text-white hover:text-white/80 transition-colors duration-200"
+                        href="https://twitter.com/pptpro"
+                        className="text-gray-400 hover:text-yellow-500 transition-colors duration-200"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Connect on Twitter"
@@ -182,8 +194,8 @@ const ContactMain = () => {
                         <LucideIcons.Twitter className="w-5 h-5" />
                       </a>
                       <a
-                        href="#"
-                        className="text-white hover:text-white/80 transition-colors duration-200"
+                        href="https://linkedin.com/company/pptpro"
+                        className="text-gray-400 hover:text-yellow-500 transition-colors duration-200"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Connect on LinkedIn"
@@ -191,8 +203,8 @@ const ContactMain = () => {
                         <LucideIcons.Linkedin className="w-5 h-5" />
                       </a>
                       <a
-                        href="#"
-                        className="text-white hover:text-white/80 transition-colors duration-200"
+                        href="https://instagram.com/pptpro"
+                        className="text-gray-400 hover:text-yellow-500 transition-colors duration-200"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Connect on Instagram"
@@ -200,8 +212,8 @@ const ContactMain = () => {
                         <LucideIcons.Instagram className="w-5 h-5" />
                       </a>
                       <a
-                        href="#"
-                        className="text-white hover:text-white/80 transition-colors duration-200"
+                        href="https://facebook.com/pptpro"
+                        className="text-gray-400 hover:text-yellow-500 transition-colors duration-200"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Connect on Facebook"
@@ -234,7 +246,11 @@ const FormContent = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
+    phone: "",
+    company: "",
+    service: "",
+    budget: "",
+    timeline: "",
     message: "",
   });
   const [errors, setErrors] = useState({});
@@ -269,12 +285,14 @@ const FormContent = () => {
       newErrors.email = "Email is invalid";
     }
 
-    if (!formData.subject.trim()) {
-      newErrors.subject = "Subject is required";
+    if (!formData.service.trim()) {
+      newErrors.service = "Please select a service";
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
+      newErrors.message = "Please provide project details";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Please provide more details (minimum 10 characters)";
     }
 
     setErrors(newErrors);
@@ -294,7 +312,11 @@ const FormContent = () => {
         setFormData({
           name: "",
           email: "",
-          subject: "",
+          phone: "",
+          company: "",
+          service: "",
+          budget: "",
+          timeline: "",
           message: "",
         });
 
@@ -306,12 +328,40 @@ const FormContent = () => {
     }
   };
 
+  const serviceOptions = [
+    { value: "", label: "Select a service..." },
+    { value: "corporate-presentation", label: "Corporate Presentation" },
+    { value: "video-presentation", label: "Video Presentation" },
+    { value: "presentation-training", label: "Presentation Training" },
+    { value: "financial-modeling", label: "Financial Modeling" },
+    { value: "consultation", label: "Presentation Consultation" },
+    { value: "other", label: "Other Services" }
+  ];
+
+  const budgetOptions = [
+    { value: "", label: "Select budget range..." },
+    { value: "under-5k", label: "Under ₹5,000" },
+    { value: "5k-15k", label: "₹5,000 - ₹15,000" },
+    { value: "15k-50k", label: "₹15,000 - ₹50,000" },
+    { value: "50k-1l", label: "₹50,000 - ₹1,00,000" },
+    { value: "above-1l", label: "Above ₹1,00,000" },
+    { value: "discuss", label: "Let's discuss" }
+  ];
+
+  const timelineOptions = [
+    { value: "", label: "When do you need this completed?" },
+    { value: "urgent", label: "ASAP (Rush job)" },
+    { value: "1-week", label: "Within 1 week" },
+    { value: "2-weeks", label: "Within 2 weeks" },
+    { value: "1-month", label: "Within 1 month" },
+    { value: "flexible", label: "Flexible timeline" }
+  ];
+
   return (
     <>
       {submitSuccess && (
-        <div className="mb-6 p-4 bg-white/10 text-white rounded-lg">
-          Thank you! Your message has been sent successfully. We'll get back to
-          you soon.
+        <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 text-green-300 rounded-lg">
+          Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.
         </div>
       )}
 
@@ -332,12 +382,12 @@ const FormContent = () => {
               value={formData.name}
               onChange={handleChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.name ? "border-white/40" : "border-white/20"
-              } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
+                errors.name ? "border-red-400/50" : "border-white/20"
+              } bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent`}
               placeholder="John Doe"
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-white/80">{errors.name}</p>
+              <p className="mt-1 text-sm text-red-400">{errors.name}</p>
             )}
           </div>
 
@@ -356,38 +406,113 @@ const FormContent = () => {
               value={formData.email}
               onChange={handleChange}
               className={`w-full px-4 py-3 rounded-lg border ${
-                errors.email ? "border-white/40" : "border-white/20"
-              } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
+                errors.email ? "border-red-400/50" : "border-white/20"
+              } bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent`}
               placeholder="john@example.com"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-white/80">{errors.email}</p>
+              <p className="mt-1 text-sm text-red-400">{errors.email}</p>
             )}
           </div>
         </div>
 
-        {/* Subject field */}
+        {/* Phone and Company */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent"
+              placeholder="+91 98765 43210"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="company" className="block text-sm font-medium text-white mb-2">
+              Company/Organization
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent"
+              placeholder="Your Company Name"
+            />
+          </div>
+        </div>
+
+        {/* Service and Budget */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label htmlFor="service" className="block text-sm font-medium text-white mb-2">
+              Service Interest *
+            </label>
+            <select
+              id="service"
+              name="service"
+              value={formData.service}
+              onChange={handleChange}
+              className={`w-full px-4 py-3 rounded-lg border ${
+                errors.service ? "border-red-400/50" : "border-white/20"
+              } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent`}
+            >
+              {serviceOptions.map((option) => (
+                <option key={option.value} value={option.value} className="bg-gray-800 text-white">
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {errors.service && (
+              <p className="mt-1 text-sm text-red-400">{errors.service}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="budget" className="block text-sm font-medium text-white mb-2">
+              Project Budget
+            </label>
+            <select
+              id="budget"
+              name="budget"
+              value={formData.budget}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent"
+            >
+              {budgetOptions.map((option) => (
+                <option key={option.value} value={option.value} className="bg-gray-800 text-white">
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Timeline */}
         <div className="mb-6">
-          <label
-            htmlFor="subject"
-            className="block text-sm font-medium text-white mb-2"
-          >
-            Subject *
+          <label htmlFor="timeline" className="block text-sm font-medium text-white mb-2">
+            Project Timeline
           </label>
-          <input
-            type="text"
-            id="subject"
-            name="subject"
-            value={formData.subject}
+          <select
+            id="timeline"
+            name="timeline"
+            value={formData.timeline}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg border ${
-              errors.subject ? "border-white/40" : "border-white/20"
-            } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
-            placeholder="How can we help you?"
-          />
-          {errors.subject && (
-            <p className="mt-1 text-sm text-white/80">{errors.subject}</p>
-          )}
+            className="w-full px-4 py-3 rounded-lg border border-white/20 bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent"
+          >
+            {timelineOptions.map((option) => (
+              <option key={option.value} value={option.value} className="bg-gray-800 text-white">
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Message field */}
@@ -396,7 +521,7 @@ const FormContent = () => {
             htmlFor="message"
             className="block text-sm font-medium text-white mb-2"
           >
-            Your Message *
+            Project Details *
           </label>
           <textarea
             id="message"
@@ -405,12 +530,12 @@ const FormContent = () => {
             onChange={handleChange}
             rows="5"
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.message ? "border-white/40" : "border-white/20"
-            } bg-white/5 text-white focus:outline-none focus:ring-2 focus:ring-white/30`}
-            placeholder="Please describe what you need help with..."
+              errors.message ? "border-red-400/50" : "border-white/20"
+            } bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-transparent resize-none`}
+            placeholder="Please describe your project requirements, goals, and any specific needs..."
           ></textarea>
           {errors.message && (
-            <p className="mt-1 text-sm text-white/80">{errors.message}</p>
+            <p className="mt-1 text-sm text-red-400">{errors.message}</p>
           )}
         </div>
 
