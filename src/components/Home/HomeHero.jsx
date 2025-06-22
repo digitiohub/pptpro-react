@@ -207,7 +207,7 @@ const HomeHero = () => {
 
       {/* Animated Gray Square Element - Different for mobile/desktop */}
       <motion.div
-        className="absolute bottom-4 md:bottom-16 left-1/2 -translate-x-1/2 md:left-42 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:right-auto md:translate-x-0 z-5"
+        className="absolute bottom-4  left-1/2 -translate-x-1/2 md:left-42 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:right-auto md:translate-x-0 z-5"
         variants={isMobile ? mobileSquareVariants : squareVariants}
         initial="initial"
         animate={isVisible ? "animate" : "initial"}
