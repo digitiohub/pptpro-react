@@ -6,8 +6,14 @@ import {
   Building,
   PieChart,
   BarChart4,
+  GraduationCap,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import StarBorder from "../../ui/StarBorder/StarBorder";
+import { projects, projectCategories } from "../../data/projects";
 
 // Animation variants following the codebase pattern
 const titleVariants = {
@@ -92,14 +98,6 @@ const projectVariants = {
       delay: 0.2 + index * 0.1,
     },
   }),
-  hover: {
-    transform: "translate3d(0px, -5px, 0px)",
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 20,
-    },
-  },
 };
 
 const buttonVariants = {
@@ -132,12 +130,16 @@ const pillButtonVariants = {
 };
 
 const HomeProjects = () => {
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [playingVideos, setPlayingVideos] = useState(new Set());
+  const [hoveredProject, setHoveredProject] = useState(null);
+  const [mutedVideos, setMutedVideos] = useState(new Set());
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const pillsRef = useRef(null);
   const subtitleRef = useRef(null);
   const gridRef = useRef(null);
+  const videoRefs = useRef({});
 
   // Use inView to detect when elements enter viewport
   const isSectionInView = useInView(sectionRef, {
@@ -165,56 +167,72 @@ const HomeProjects = () => {
     amount: 0.1,
   });
 
-  const pills = [
-    { id: "All", label: "All Projects", icon: Layers },
-    { id: "Corporate", label: "Corporate", icon: Building },
-    { id: "Pitch", label: "Pitch Decks", icon: PieChart },
-    { id: "Sales", label: "Sales Decks", icon: BarChart4 },
-  ];
+  // Icon mapping for categories
+  const iconMap = {
+    Layers,
+    Building,
+    PieChart,
+    BarChart4,
+    GraduationCap,
+  };
 
-  const projects = [
-    {
-      id: 1,
-      title: "Corporate Annual Report",
-      type: "Corporate",
-      image: "/images/projects/project1.jpg",
-    },
-    {
-      id: 2,
-      title: "Investor Pitch Deck",
-      type: "Pitch",
-      image: "/images/projects/project2.jpg",
-    },
-    {
-      id: 3,
-      title: "Sales Enablement Slides",
-      type: "Sales",
-      image: "/images/projects/project3.jpg",
-    },
-    {
-      id: 4,
-      title: "Company Overview",
-      type: "Corporate",
-      image: "/images/projects/project4.jpg",
-    },
-    {
-      id: 5,
-      title: "Startup Funding Deck",
-      type: "Pitch",
-      image: "/images/projects/project5.jpg",
-    },
-    {
-      id: 6,
-      title: "Product Sales Presentation",
-      type: "Sales",
-      image: "/images/projects/project6.jpg",
-    },
-  ];
+  const pills = projectCategories.map((category) => ({
+    ...category,
+    icon: iconMap[category.icon],
+  }));
 
-  const filteredProjects =
-    activeFilter === "All"
-      ? projects
-      : projects.filter((project) => project.type === activeFilter);
+  // Get filtered projects and limit to 2 projects for all filters
+  const getFilteredProjects = () => {
+    if (activeFilter === "all") {
+      return projects.slice(0, 2);
+    } else {
+      return projects
+        .filter(
+          (project) =>
+            project.category.toLowerCase() === activeFilter.toLowerCase()
+        )
+        .slice(0, 2);
+    }
+  };
+
+  const filteredProjects = getFilteredProjects();
+
+  const handlePlayPause = (projectId, e) => {
+    e.stopPropagation();
+    const video = videoRefs.current[projectId];
+    if (video) {
+      const newPlayingState = new Set(playingVideos);
+
+      if (playingVideos.has(projectId)) {
+        // Pause video
+        video.pause();
+        newPlayingState.delete(projectId);
+      } else {
+        // Play video
+        video.currentTime = 0; // Reset to beginning
+        video.play().catch(console.error);
+        newPlayingState.add(projectId);
+      }
+
+      setPlayingVideos(newPlayingState);
+    }
+  };
+
+  const toggleMute = (projectId, e) => {
+    e.stopPropagation();
+    const video = videoRefs.current[projectId];
+    if (video) {
+      const newMutedState = new Set(mutedVideos);
+      if (mutedVideos.has(projectId)) {
+        newMutedState.delete(projectId);
+        video.muted = false;
+      } else {
+        newMutedState.add(projectId);
+        video.muted = true;
+      }
+      setMutedVideos(newMutedState);
+    }
+  };
 
   return (
     <section
@@ -264,7 +282,7 @@ const HomeProjects = () => {
                 return (
                   <motion.button
                     key={pill.id}
-                    className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1.5 ${
+                    className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1.5 cursor-pointer ${
                       activeFilter === pill.id
                         ? "bg-yellow-500 text-black border border-transparent"
                         : "bg-transparent border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:border-gray-400 dark:hover:border-gray-600"
@@ -276,6 +294,7 @@ const HomeProjects = () => {
                       willChange: "transform, box-shadow",
                       transform: "translate3d(0, 0, 0)",
                       backfaceVisibility: "hidden",
+                      cursor: "pointer",
                     }}
                   >
                     <Icon className="h-3.5 w-3.5" />
@@ -327,125 +346,147 @@ const HomeProjects = () => {
             perspective: 1000,
           }}
         >
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              className="group relative overflow-hidden rounded-2xl bg-black cursor-pointer"
-              variants={projectVariants}
-              custom={index}
-              initial="initial"
-              animate={isGridInView ? "animate" : "initial"}
-              whileHover="hover"
-              style={{
-                willChange: "transform, opacity",
-                aspectRatio: "660/450",
-                transform: "translate3d(0, 0, 0)",
-                backfaceVisibility: "hidden",
-              }}
-            >
-              {/* Project image */}
-              <div
-                className="w-full h-full overflow-hidden"
+          {filteredProjects.map((project, index) => {
+            const hasVideo = project.video;
+            const isPlaying = playingVideos.has(project.id);
+            const isHovered = hoveredProject === project.id;
+            const isMuted = mutedVideos.has(project.id);
+
+            return (
+              <motion.div
+                key={project.id}
+                className="group relative overflow-hidden rounded-2xl bg-black"
+                variants={projectVariants}
+                custom={index}
+                initial="initial"
+                animate={isGridInView ? "animate" : "initial"}
+                onMouseEnter={() => setHoveredProject(project.id)}
+                onMouseLeave={() => setHoveredProject(null)}
                 style={{
+                  willChange: "transform, opacity",
+                  aspectRatio: "660/450",
                   transform: "translate3d(0, 0, 0)",
                   backfaceVisibility: "hidden",
                 }}
               >
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{
-                    scale: 1.05,
-                    transition: {
-                      type: "spring",
-                      stiffness: 150,
-                      damping: 30,
-                    },
-                  }}
+                {/* Media container - Video only */}
+                <div
+                  className="w-full h-full overflow-hidden relative"
                   style={{
-                    willChange: "transform",
                     transform: "translate3d(0, 0, 0)",
-                  }}
-                />
-              </div>
-
-              {/* Overlay */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
-                style={{ willChange: "opacity" }}
-              />
-
-              {/* Project title */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 flex justify-between items-end">
-                <div>
-                  <motion.h3
-                    className="text-white text-xl font-medium mb-1"
-                    initial={{
-                      transform: "translate3d(0px, 10px, 0px)",
-                      opacity: 0.8,
-                    }}
-                    whileHover={{
-                      transform: "translate3d(0px, 0px, 0px)",
-                      opacity: 1,
-                      transition: {
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                      },
-                    }}
-                    style={{
-                      willChange: "transform, opacity",
-                      transform: "translate3d(0, 0, 0)",
-                    }}
-                  >
-                    {project.title}
-                  </motion.h3>
-                  <motion.span
-                    className="inline-block text-yellow-400 text-sm"
-                    initial={{
-                      transform: "translate3d(0px, 10px, 0px)",
-                      opacity: 0.6,
-                    }}
-                    whileHover={{
-                      transform: "translate3d(0px, 0px, 0px)",
-                      opacity: 1,
-                      transition: {
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                        delay: 0.05,
-                      },
-                    }}
-                    style={{
-                      willChange: "transform, opacity",
-                      transform: "translate3d(0, 0, 0)",
-                    }}
-                  >
-                    {project.type}
-                  </motion.span>
-                </div>
-                <motion.div
-                  className="bg-yellow-500 p-2 rounded-full opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-                  whileHover={{
-                    rotate: 45,
-                    scale: 1.1,
-                    transition: {
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 10,
-                    },
-                  }}
-                  style={{
-                    willChange: "transform, opacity",
-                    transform: "translate3d(0, 0, 0)",
+                    backfaceVisibility: "hidden",
                   }}
                 >
-                  <ArrowRight className="h-5 w-5 text-black" />
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
+                  {hasVideo ? (
+                    <>
+                      {/* Video element */}
+                      <video
+                        ref={(el) => {
+                          if (el) videoRefs.current[project.id] = el;
+                        }}
+                        className="w-full h-full object-cover"
+                        loop
+                        muted={!mutedVideos.has(project.id)}
+                        playsInline
+                        preload="metadata"
+                        style={{
+                          willChange: "transform",
+                          transform: "translate3d(0, 0, 0)",
+                        }}
+                        onError={() => {
+                          console.error(
+                            `Failed to load video for project ${project.id}`
+                          );
+                        }}
+                        onEnded={() => {
+                          const newPlayingState = new Set(playingVideos);
+                          newPlayingState.delete(project.id);
+                          setPlayingVideos(newPlayingState);
+                        }}
+                      >
+                        <source src={hasVideo} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+
+                      {/* Video controls overlay (always visible in top-right) */}
+                      <motion.div
+                        className="absolute top-4 right-4 flex gap-2"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                      >
+                        {/* Play/Pause button */}
+                        <motion.button
+                          className="bg-black/50 backdrop-blur-sm rounded-full p-2 text-white hover:bg-black/70 transition-colors cursor-pointer"
+                          onClick={(e) => handlePlayPause(project.id, e)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {isPlaying ? (
+                            <Pause className="h-4 w-4" fill="currentColor" />
+                          ) : (
+                            <Play className="h-4 w-4" fill="currentColor" />
+                          )}
+                        </motion.button>
+
+                        {/* Mute/Unmute button */}
+                        <motion.button
+                          className="bg-black/50 backdrop-blur-sm rounded-full p-2 text-white hover:bg-black/70 transition-colors cursor-pointer"
+                          onClick={(e) => toggleMute(project.id, e)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {isMuted ? (
+                            <VolumeX className="h-4 w-4" />
+                          ) : (
+                            <Volume2 className="h-4 w-4" />
+                          )}
+                        </motion.button>
+                      </motion.div>
+                    </>
+                  ) : (
+                    // Fallback for projects without video
+                    <div className="w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                      <p className="text-gray-500 dark:text-gray-400">
+                        No video available
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom shadow gradient for text visibility */}
+                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+
+                {/* Project info */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                  <div>
+                    <motion.h3
+                      className="text-white text-xl font-medium mb-1 drop-shadow-lg"
+                      style={{
+                        willChange: "transform, opacity",
+                        transform: "translate3d(0, 0, 0)",
+                        textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+                      }}
+                    >
+                      {project.title}
+                    </motion.h3>
+                    <motion.span
+                      className="inline-block text-yellow-400 text-sm drop-shadow-lg"
+                      style={{
+                        willChange: "transform, opacity",
+                        transform: "translate3d(0, 0, 0)",
+                        textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+                      }}
+                    >
+                      {project.category}
+                    </motion.span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* View all projects button with StarBorder */}
