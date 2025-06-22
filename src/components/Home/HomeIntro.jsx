@@ -168,10 +168,30 @@ const HomeIntro = () => {
   });
 
   const stats = [
-    { name: "Projects", value: 2500, suffix: "+" },
-    { name: "Clients", value: 750, suffix: "+" },
-    { name: "Design Hours", value: 45000, suffix: "+" },
-    { name: "Countries", value: 35, suffix: "+" },
+    {
+      name: ["Years of", "Experience"],
+      value: 5,
+      suffix: "+",
+      isPercentage: false,
+    },
+    {
+      name: ["Slides", "delivered"],
+      value: 800,
+      suffix: "+",
+      isPercentage: false,
+    },
+    {
+      name: ["Consultation", "Completed"],
+      value: 50,
+      suffix: "+",
+      isPercentage: false,
+    },
+    {
+      name: ["Job", "Satisfaction"],
+      value: 100,
+      suffix: "%",
+      isPercentage: true,
+    },
   ];
 
   return (
@@ -228,7 +248,7 @@ const HomeIntro = () => {
                 backfaceVisibility: "hidden",
               }}
             >
-              Award 2024
+              Since 2020
             </motion.div>
 
             {/* Center decoration */}
@@ -289,7 +309,7 @@ const HomeIntro = () => {
           }}
         >
           {stats.map((stat, index) => (
-            <React.Fragment key={stat.name}>
+            <React.Fragment key={stat.name.join(" ")}>
               {/* Stat item */}
               <motion.div
                 className="text-center px-2 sm:px-4 md:px-6 py-2 md:py-4"
@@ -338,7 +358,12 @@ const HomeIntro = () => {
                     backfaceVisibility: "hidden",
                   }}
                 >
-                  {stat.name}
+                  {stat.name.map((line, lineIndex) => (
+                    <span key={lineIndex}>
+                      {line}
+                      {lineIndex < stat.name.length - 1 && <br />}
+                    </span>
+                  ))}
                 </motion.p>
               </motion.div>
 
