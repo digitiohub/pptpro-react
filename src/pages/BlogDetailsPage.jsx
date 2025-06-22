@@ -22,7 +22,7 @@ const BlogDetailsPage = () => {
   }
 
   return (
-    <div className="blog-details-page">
+    <div className="blog-details-page pt-20">
       <Navbar />
       {loading ? (
         <div className="container mx-auto px-4 py-32 text-center">

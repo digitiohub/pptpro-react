@@ -5,16 +5,10 @@ import { formatDate } from "../../utils/dateUtils";
 
 const BlogDetails = ({ post }) => {
   const contentRef = useRef(null);
-  const authorRef = useRef(null);
 
   const isContentInView = useInView(contentRef, {
     once: true,
     amount: 0.1,
-  });
-
-  const isAuthorInView = useInView(authorRef, {
-    once: true,
-    amount: 0.5,
   });
 
   if (!post)
@@ -51,19 +45,6 @@ const BlogDetails = ({ post }) => {
           </h1>
 
           <div className="flex items-center text-gray-600 dark:text-gray-400 mb-8">
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-                <img
-                  src={post.author.avatar}
-                  alt={post.author.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <span className="font-medium text-gray-800 dark:text-gray-200">
-                {post.author.name}
-              </span>
-            </div>
-            <span className="mx-3">•</span>
             <span>{formatDate(post.date)}</span>
             <span className="mx-3">•</span>
             <span>{post.readTime} min read</span>
@@ -97,33 +78,6 @@ const BlogDetails = ({ post }) => {
             ))}
           </div>
         </div>
-
-        {/* Author Bio */}
-        <motion.div
-          ref={authorRef}
-          className="max-w-3xl mx-auto border-t border-gray-200 dark:border-gray-800 pt-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isAuthorInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
-        >
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
-            <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
-              <img
-                src={post.author.avatar}
-                alt={post.author.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="text-center md:text-left">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                {post.author.name}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {post.author.bio}
-              </p>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Back to Blog */}
         <div className="max-w-3xl mx-auto text-center mt-12">

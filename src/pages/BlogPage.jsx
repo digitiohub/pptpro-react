@@ -31,7 +31,7 @@ const BlogPage = () => {
   }, [activeCategory]);
 
   return (
-    <div className="blog-page">
+    <div className="blog-page ">
       <Navbar />
 
       <BlogHero

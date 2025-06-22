@@ -100,19 +100,6 @@ const BlogCard = ({ post, index }) => {
             <p className="text-gray-600 dark:text-gray-400 line-clamp-3 mb-4">
               {post.excerpt}
             </p>
-
-            <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full overflow-hidden mr-3">
-                <img
-                  src={post.author.avatar}
-                  alt={post.author.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {post.author.name}
-              </span>
-            </div>
           </div>
         </div>
       </Link>
