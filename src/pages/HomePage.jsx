@@ -6,11 +6,15 @@ import HomeCards from "../components/Home/HomeCards";
 import HomeAccordion from "../components/Home/HomeAccordion";
 import AnimatedTestimonialsDemo from "../components/animated-testimonials-demo";
 import HomeProjects from "../components/Home/HomeProjects";
+import HomeHero from "../components/Home/HomeHero";
+import Navbar from "../components/ui/menus/Navbar";
+
 const HomePage = () => {
   return (
     <div className="home-page">
-      {/* Hero Section with Navbar */}
-      <ThreeDMarqueeDemo />
+      {/* Hero Section with Navbar */}  
+      <Navbar/>
+      <HomeHero />
       <HomeIntro />
       <HomeMarquee />
       <HomeCards />

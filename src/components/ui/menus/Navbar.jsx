@@ -10,19 +10,10 @@ import { ChevronDown } from "lucide-react";
 const navbarVariants = {
   visible: (customProps) => ({
     transform: "translate3d(0px, 0px, 0px)",
-    // Use different backgrounds based on page and scroll position
-    background: customProps.isHomePage
-      ? customProps.scrolled
-        ? "rgba(0, 0, 0, 0.8)"
-        : "linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0) 95%)"
-      : customProps.scrolled
+    background: customProps.scrolled
       ? "rgba(255, 255, 255, 1)"
       : "rgba(255, 255, 255, 1)",
-    boxShadow: customProps.scrolled
-      ? customProps.isHomePage
-        ? "0 4px 6px -1px rgba(0, 0, 0, 0.3)"
-        : "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
-      : "none",
+    boxShadow: customProps.scrolled ? "0 1px 3px 0 rgba(0, 0, 0, 0.1)" : "none",
     transition: {
       type: "spring",
       stiffness: 300,
@@ -132,9 +123,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
-
-  // Check if we're on home page
-  const isHomePage = location.pathname === "/" || location.pathname === "";
 
   // Reference to track if we're programmatically scrolling
   const scrollingRef = useRef(false);
@@ -252,57 +240,8 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Get text color based on page and scroll position
-  const getTextColor = () => {
-    if (isHomePage) {
-      return "text-white"; // Home page always has white text
-    } else {
-      return scrolled ? "text-black" : "text-black"; // Non-home pages have black text
-    }
-  };
-
-  // Get dropdown background and text color based on page
-  const getDropdownStyles = () => {
-    if (isHomePage) {
-      return {
-        background: "bg-black/90",
-        text: "text-white",
-        hover: "hover:bg-black/70",
-        border: "border-gray-800",
-      };
-    } else {
-      return {
-        background: "bg-white",
-        text: "text-black",
-        hover: "hover:bg-gray-100",
-        border: "border-gray-200",
-      };
-    }
-  };
-
-  // Get logo based on page and scroll position
-  const getLogoSrc = () => {
-    if (isHomePage) {
-      return "/logos/logo-light.jpg"; // Home page always has light logo
-    } else {
-      return "/logos/logo-dark.jpg"; // Non-home pages have dark logo
-    }
-  };
-
-  // Get hamburger color based on page and scroll position
-  const getHamburgerColor = () => {
-    if (isHomePage) {
-      return "bg-yellow"; // Home page always has yellow hamburger
-    } else {
-      return "bg-black"; // Non-home pages have black hamburger
-    }
-  };
-
   // Check if current page is a service page
   const isServicePage = location.pathname.includes("/services");
-
-  // Style variables for dropdown
-  const dropdownStyles = getDropdownStyles();
 
   return (
     <>
@@ -379,28 +318,19 @@ const Navbar = () => {
           color: black;
           font-weight: 500;
         }
-        
-        /* Add padding to ensure content doesn't peek through transparent gradient */
-        .gradient-nav-padding {
-          padding-bottom: 20px;
-        }
       `}</style>
 
       <motion.header
         className="fixed top-0 left-0 w-full z-40"
         initial="hidden"
         animate={visible || isMobileMenuOpen ? "visible" : "hidden"}
-        custom={{ scrolled, isHomePage }}
+        custom={{ scrolled }}
         variants={navbarVariants}
         style={{ willChange: "transform, background, box-shadow" }}
       >
-        <div
-          className={`container mx-auto px-4 lg:px-8 ${
-            !scrolled && isHomePage ? "gradient-nav-padding" : ""
-          }`}
-        >
+        <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between py-4">
-            {/* Logo - Dynamic based on page */}
+            {/* Logo */}
             <motion.div
               className="flex-shrink-0"
               initial="initial"
@@ -410,14 +340,14 @@ const Navbar = () => {
             >
               <Link to="/" className="block">
                 <img
-                  src={getLogoSrc()}
+                  src="/logos/logo-dark.jpg"
                   alt="PPTPRO Logo"
                   className="h-10 md:h-12"
                 />
               </Link>
             </motion.div>
 
-            {/* Desktop Navigation - Dynamic text color */}
+            {/* Desktop Navigation */}
             <motion.nav
               className="hidden md:flex flex-grow mx-8"
               initial="initial"
@@ -437,7 +367,7 @@ const Navbar = () => {
                         onMouseLeave={handleMouseLeave}
                       >
                         <div
-                          className={`nav-link text-base uppercase font-medium transition-colors flex items-center ${getTextColor()} ${
+                          className={`nav-link text-base uppercase font-medium transition-colors flex items-center text-black ${
                             isServicePage ? "active" : ""
                           } cursor-pointer`}
                           style={{ transform: "translate3d(0, 0, 0)" }}
@@ -462,7 +392,7 @@ const Navbar = () => {
                         <AnimatePresence>
                           {servicesDropdownOpen && (
                             <motion.div
-                              className={`absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg ${dropdownStyles.background} border ${dropdownStyles.border} overflow-hidden`}
+                              className="absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg bg-white border border-gray-200 overflow-hidden"
                               variants={dropdownVariants}
                               initial="hidden"
                               animate="visible"
@@ -489,7 +419,7 @@ const Navbar = () => {
                                   >
                                     <Link
                                       to={service.path}
-                                      className={`block px-4 py-3 ${dropdownStyles.text} ${dropdownStyles.hover} dropdown-link`}
+                                      className="block px-4 py-3 text-black hover:bg-gray-100 dropdown-link"
                                     >
                                       {service.name}
                                     </Link>
@@ -504,7 +434,7 @@ const Navbar = () => {
                       // Regular nav links
                       <Link
                         to={link.path}
-                        className={`nav-link text-base uppercase font-medium transition-colors ${getTextColor()} ${
+                        className={`nav-link text-base uppercase font-medium transition-colors text-black ${
                           location.pathname === link.path ? "active" : ""
                         }`}
                       >
@@ -516,7 +446,7 @@ const Navbar = () => {
               </ul>
             </motion.nav>
 
-            {/* CTA Button - Same on all pages */}
+            {/* CTA Button */}
             <div className="hidden md:block">
               <motion.div
                 initial="initial"
@@ -536,7 +466,7 @@ const Navbar = () => {
               </motion.div>
             </div>
 
-            {/* Mobile Hamburger Button - Dynamic color */}
+            {/* Mobile Hamburger Button */}
             <motion.button
               className="md:hidden z-50 p-2 cursor-pointer"
               initial="initial"
@@ -548,15 +478,9 @@ const Navbar = () => {
                 willChange: "transform, opacity",
               }}
             >
-              <div
-                className={`w-6 h-0.5 ${getHamburgerColor()} mb-1.5 rounded-full`}
-              ></div>
-              <div
-                className={`w-6 h-0.5 ${getHamburgerColor()} mb-1.5 rounded-full`}
-              ></div>
-              <div
-                className={`w-6 h-0.5 ${getHamburgerColor()} rounded-full`}
-              ></div>
+              <div className="w-6 h-0.5 bg-black mb-1.5 rounded-full"></div>
+              <div className="w-6 h-0.5 bg-black mb-1.5 rounded-full"></div>
+              <div className="w-6 h-0.5 bg-black rounded-full"></div>
             </motion.button>
           </div>
         </div>

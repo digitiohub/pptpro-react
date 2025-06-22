@@ -217,19 +217,19 @@ const HomeCards = () => {
 
   const cards = [
     {
-      title: "Strategy",
+      title: "Research",
       description:
-        "We transform complex ideas into compelling visual narratives that resonate with your audience and drive results.",
+        "We begin every project with thorough research and understanding of your business goals, target audience, and market context to create presentations that truly resonate.",
     },
     {
       title: "Design",
       description:
-        "Our expert designers create visually stunning presentations that elevate your brand and captivate your audience.",
+        "Our team crafts visually compelling presentations using modern design principles, ensuring your message is delivered with clarity and professional impact.",
     },
     {
-      title: "Delivery",
+      title: "Refine",
       description:
-        "From executive summaries to detailed pitch decks, we ensure your message is delivered with maximum impact.",
+        "Through collaborative feedback and iterative improvements, we perfect every slide until your presentation achieves maximum effectiveness and audience engagement.",
     },
   ];
 
@@ -266,10 +266,11 @@ const HomeCards = () => {
               wordSpacing: "-0.05em",
             }}
           >
-            At PPT Pro, we believe that presentations are more than just slides
-            – they're powerful tools for communication and persuasion. We help
-            businesses and professionals craft compelling visual stories that
-            engage audiences, inspire action, and drive results.
+            Our proven three-step methodology ensures every presentation we
+            create delivers exceptional results. From initial research to final
+            refinement, we work closely with you to transform your ideas into
+            powerful visual narratives that engage, persuade, and inspire
+            action.
           </p>
         </motion.div>
 
