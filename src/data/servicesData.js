@@ -542,6 +542,24 @@ export const servicesData = {
           "Build customized financial models aligned with specific industry standards and business needs, optimized for scaling operations and supporting mergers, acquisitions, and expansion strategies.",
         icon: "Target",
       },
+      {
+        title: "Valuation & Investment Analysis Models",
+        description:
+          "Determine accurate business valuations and investment opportunities with DCF models, comparable company analysis, asset-based valuations, and ROI calculations to support strategic financial decisions and investor negotiations.",
+        icon: "Calculator",
+      },
+      {
+        title: "Budget Planning & Financial Forecasting",
+        description:
+          "Create comprehensive annual budgets and multi-year financial forecasts with variance analysis, department-wise budget allocation, expense tracking systems, and performance monitoring dashboards for effective financial management.",
+        icon: "BarChart3",
+      },
+      {
+        title: "Risk Assessment & Sensitivity Analysis",
+        description:
+          "Identify and quantify financial risks with Monte Carlo simulations, stress testing scenarios, sensitivity analysis on key variables, and risk mitigation strategies to ensure financial stability and informed decision-making.",
+        icon: "Shield",
+      },
     ],
     steps: [
       {
