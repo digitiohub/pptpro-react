@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import Button from "../../ui/Buttons/Button";
 
 // Animation variants following the codebase pattern
 const titleVariants = {
@@ -19,7 +21,7 @@ const titleVariants = {
   },
 };
 
-const subtitleVariants = {
+const buttonsVariants = {
   initial: {
     opacity: 0,
     transform: "translate3d(0px, 30px, 0px)",
@@ -31,73 +33,94 @@ const subtitleVariants = {
       type: "spring",
       stiffness: 300,
       damping: 20,
-      delay: 0.4,
+      delay: 0.5,
     },
   },
 };
 
-const buttonVariants = {
-  initial: {
-    opacity: 0,
-    transform: "translate3d(0px, 20px, 0px)",
-  },
-  animate: {
-    opacity: 1,
-    transform: "translate3d(0px, 0px, 0px)",
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 20,
-      delay: 0.6,
-    },
-  },
-  hover: {
-    transform: "translate3d(0px, -2px, 0px)",
-    boxShadow: "0 10px 20px rgba(255, 107, 0, 0.3)",
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 10,
-    },
-  },
-};
-
-const decorativeElementVariants = {
+const ellipseVariants = {
   initial: {
     opacity: 0,
     scale: 0.8,
-    rotate: -10,
+    transform: "translate3d(-100px, 0px, 0px)",
   },
   animate: {
     opacity: 1,
     scale: 1,
-    rotate: 0,
+    transform: "translate3d(0px, 0px, 0px)",
     transition: {
       type: "spring",
       stiffness: 200,
-      damping: 20,
-      delay: 0.8,
+      damping: 25,
+      delay: 0.1,
     },
   },
 };
 
-const progressVariants = {
+const squareVariants = {
   initial: {
-    width: "0%",
+    opacity: 0,
+    scale: 0.5,
+    transform: "translate3d(-50px, 0px, 0px) rotate3d(0, 0, 1, -8deg)",
   },
   animate: {
-    width: "60%",
+    opacity: 1,
+    scale: 1,
+    transform: "translate3d(0px, 0px, 0px) rotate3d(0, 0, 1, -8deg)",
     transition: {
-      duration: 2,
-      delay: 1,
-      ease: "easeOut",
+      type: "spring",
+      stiffness: 250,
+      damping: 20,
+      delay: 0.3,
     },
+  },
+};
+
+// Mobile square variants without rotation - swapped dimensions
+const mobileSquareVariants = {
+  initial: {
+    opacity: 0,
+    scale: 0.5,
+    transform: "translate3d(0px, 50px, 0px)",
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transform: "translate3d(0px, 0px, 0px)",
+    transition: {
+      type: "spring",
+      stiffness: 250,
+      damping: 20,
+      delay: 0.3,
+    },
+  },
+};
+
+// Floating animation for the desktop square
+const floatingAnimation = {
+  y: [0, -15, 0],
+  transition: {
+    duration: 3,
+    repeat: Infinity,
+    ease: "easeInOut",
+  },
+};
+
+// Mobile floating animation (more pronounced)
+const mobileFloatingAnimation = {
+  y: [0, -20, 0],
+  transition: {
+    duration: 2.5,
+    repeat: Infinity,
+    ease: "easeInOut",
   },
 };
 
 const HomeHero = () => {
   const heroRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
   const isInView = useInView(heroRef, {
     once: true,
@@ -110,83 +133,116 @@ const HomeHero = () => {
     }
   }, [isInView]);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Handle scroll to next section
+  const scrollToNextSection = () => {
+    const nextSection = document.querySelector(
+      "#next-section, .next-section, section:nth-of-type(2)"
+    );
+    if (nextSection) {
+      nextSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } else {
+      // Fallback: scroll down by viewport height
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Handle navigation to contact page
+  const handleCollaborate = () => {
+    navigate("/contact");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section
       ref={heroRef}
-      className="min-h-screen bg-[#f8f9fa] relative overflow-hidden flex items-center justify-center"
+      className="h-screen pt-20 md:pt-22 px-2  md:px-0 relative overflow-hidden flex items-center md:items-start justify-center md:justify-end"
       style={{
         transform: "translate3d(0, 0, 0)",
         backfaceVisibility: "hidden",
       }}
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Top right decorative elements */}
+      {/* Decorative Ellipse Element - Different images for mobile/desktop */}
+      <motion.div
+        className="absolute -bottom-16 left-0 right-0 md:inset-0 md:mt-12 z-0"
+        variants={ellipseVariants}
+        initial="initial"
+        animate={isVisible ? "animate" : "initial"}
+        style={{
+          willChange: "transform, opacity, scale",
+          transform: "translate3d(0, 0, 0)",
+          backfaceVisibility: "hidden",
+        }}
+      >
+        <img
+          src={
+            isMobile ? "/graphics/mobileellipse.svg" : "/graphics/ellipse.svg"
+          }
+          alt="Decorative element"
+          className="w-[1800px] h-auto md:w-auto md:h-[90vh] object-cover md:object-contain"
+          style={{
+            transformOrigin: "center",
+          }}
+        />
+      </motion.div>
+
+      {/* Animated Gray Square Element - Different for mobile/desktop */}
+      <motion.div
+        className="absolute bottom-4 md:bottom-16 left-1/2 -translate-x-1/2 md:left-42 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:right-auto md:translate-x-0 z-5"
+        variants={isMobile ? mobileSquareVariants : squareVariants}
+        initial="initial"
+        animate={isVisible ? "animate" : "initial"}
+        style={{
+          willChange: "transform, opacity, scale",
+          transform: "translate3d(0, 0, 0)",
+          backfaceVisibility: "hidden",
+        }}
+      >
         <motion.div
-          className="absolute top-16 right-20"
-          variants={decorativeElementVariants}
-          initial="initial"
-          animate={isVisible ? "animate" : "initial"}
-        >
-          <div className="bg-white rounded-lg p-4 shadow-lg">
-            <div className="text-xs text-gray-600 mb-2">125K+</div>
-            <div className="text-xs text-gray-500">Projects Created</div>
-            <div className="flex space-x-1 mt-2">
-              <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-              <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-              <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-            </div>
-            {/* Progress bar */}
-            <div className="mt-3 bg-gray-200 rounded-full h-1">
-              <motion.div
-                className="bg-purple-500 h-1 rounded-full"
-                variants={progressVariants}
-                initial="initial"
-                animate={isVisible ? "animate" : "initial"}
-              />
-            </div>
-          </div>
-        </motion.div>
+          className={
+            isMobile
+              ? "w-32 h-24 rounded-lg bg-gray-300" // Mobile: smaller dimensions (128px x 96px)
+              : "w-40 h-52 rounded-lg bg-gray-300" // Desktop: original dimensions (160px x 208px)
+          }
+          animate={
+            isVisible
+              ? isMobile
+                ? mobileFloatingAnimation
+                : floatingAnimation
+              : {}
+          }
+          style={{
+            willChange: "transform",
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
+            transformOrigin: "center",
+          }}
+        />
+      </motion.div>
 
-        {/* Tagline box top right */}
-        <motion.div
-          className="absolute top-20 right-12"
-          variants={decorativeElementVariants}
-          initial="initial"
-          animate={isVisible ? "animate" : "initial"}
-          style={{ transform: "translateY(80px)" }}
-        >
-          <div className="bg-white rounded-lg p-3 shadow-lg text-right">
-            <div className="text-sm font-semibold text-gray-800">
-              Imagination
-            </div>
-            <div className="text-sm font-semibold text-gray-800">
-              Meets Execution.
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Main content - Centered Container with Left-Aligned Text */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Small text above */}
-          <motion.p
-            className="text-lg md:text-xl text-gray-600 mb-6 text-left"
-            variants={subtitleVariants}
-            initial="initial"
-            animate={isVisible ? "animate" : "initial"}
-            style={{
-              willChange: "transform, opacity",
-              transform: "translate3d(0, 0, 0)",
-              backfaceVisibility: "hidden",
-            }}
-          >
-            Your brand's journey to creativity begins with us
-          </motion.p>
-
-          {/* Main headline - left aligned within centered container */}
+      {/* Main content - Responsive positioning */}
+      <div className="relative z-10 -mt-8 md:mt-12 lg:mt-8 mx-auto md:mx-0 md:mr-8 lg:mr-16 xl:mr-24 px-6 md:px-0 w-full md:w-auto">
+        <div className="max-w-full md:max-w-3xl lg:max-w-4xl">
+          {/* Main headline */}
           <motion.div
             variants={titleVariants}
             initial="initial"
@@ -197,106 +253,57 @@ const HomeHero = () => {
               backfaceVisibility: "hidden",
             }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight mb-6 text-left">
-              Innovation
-              <br />
-              Starts{" "}
-              <span className="relative inline-block">
-                <span className="text-purple-600">Here</span>
-                <span className="text-purple-600">.</span>
-                {/* Bounding box decoration */}
-                <div className="absolute inset-0 border-2 border-dashed border-purple-400 rounded -m-2 pointer-events-none">
-                  {/* Corner handles */}
-                  <div className="absolute -top-1 -left-1 w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></div>
-                </div>
-              </span>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal text-black leading-tight tracking-tight mb-8 text-left">
+              TURN YOUR IDEA
+              <br className="hidden md:block" />
+              {" "}INTO
+              <br className="md:hidden" />
+              <span className="md:ml-2">A DECK</span>
+              <span className="text-yellow-500">.</span>
             </h1>
           </motion.div>
 
-          {/* Small text below */}
-          <motion.p
-            className="text-base md:text-lg text-gray-500 mb-8 max-w-2xl text-left"
-            variants={subtitleVariants}
-            initial="initial"
-            animate={isVisible ? "animate" : "initial"}
-            style={{
-              willChange: "transform, opacity",
-              transform: "translate3d(0, 0, 0)",
-              backfaceVisibility: "hidden",
-            }}
-          >
-            We transform your vision into compelling presentations that
-            captivate audiences and drive results. From concept to completion,
-            every project is crafted with precision and creativity.
-          </motion.p>
-
-          {/* CTA Button - Left aligned within centered container */}
+          {/* Action Buttons */}
           <motion.div
-            variants={buttonVariants}
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-20 md:mb-0 justify-center md:justify-start items-center md:items-start"
+            variants={buttonsVariants}
             initial="initial"
             animate={isVisible ? "animate" : "initial"}
-            whileHover="hover"
-            className="flex items-center space-x-4"
             style={{
               willChange: "transform, opacity",
               transform: "translate3d(0, 0, 0)",
               backfaceVisibility: "hidden",
             }}
           >
-            <button className="bg-[#ff6b00] hover:bg-[#e55a00] text-white px-8 py-3 rounded-full font-medium text-lg shadow-lg transition-colors duration-200">
-              Let's Collaborate!
-            </button>
-            <div className="w-12 h-12 bg-[#ff6b00] rounded-full flex items-center justify-center shadow-lg">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
+            {/* Collaborate Button */}
+            <Button
+              variant="hero-primary"
+              size="md"
+              onClick={handleCollaborate}
+              className="w-48 md:w-auto"
+              motionProps={{
+                initial: { opacity: 1, scale: 1 }, // Skip entrance animation
+                animate: { opacity: 1, scale: 1 }, // Skip entrance animation
+              }}
+            >
+              Let's Collaborate
+            </Button>
+
+            {/* Explore Button */}
+            <Button
+              variant="hero-outline"
+              size="md"
+              onClick={scrollToNextSection}
+              className="w-48 md:w-auto"
+              motionProps={{
+                initial: { opacity: 1, scale: 1 }, // Skip entrance animation
+                animate: { opacity: 1, scale: 1 }, // Skip entrance animation
+              }}
+            >
+              Explore Now
+            </Button>
           </motion.div>
         </div>
-      </div>
-
-      {/* Bottom decorative curved line */}
-      <div className="absolute bottom-10 right-20">
-        <motion.div
-          variants={decorativeElementVariants}
-          initial="initial"
-          animate={isVisible ? "animate" : "initial"}
-        >
-          <svg viewBox="0 0 100 50" className="w-32 h-16">
-            <path
-              d="M10,40 Q50,10 90,30"
-              stroke="url(#gradient2)"
-              strokeWidth="3"
-              fill="none"
-              strokeLinecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="gradient2"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="100%"
-              >
-                <stop offset="0%" stopColor="#06b6d4" />
-                <stop offset="100%" stopColor="#3b82f6" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </motion.div>
       </div>
     </section>
   );
