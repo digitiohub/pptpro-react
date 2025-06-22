@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Buttons/Button";
+import { ChevronRight } from "lucide-react";
 
 // Animation variants following the codebase pattern
 const titleVariants = {
@@ -96,6 +97,24 @@ const mobileSquareVariants = {
   },
 };
 
+// Hexagonal background variants
+const hexaBgVariants = {
+  initial: {
+    opacity: 0,
+    scale: 1.1,
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 30,
+      delay: 0.1,
+    },
+  },
+};
+
 // Floating animation for the desktop square
 const floatingAnimation = {
   y: [0, -15, 0],
@@ -172,15 +191,41 @@ const HomeHero = () => {
     });
   };
 
+  // Testimonial data
+  const testimonialImages = [
+    {
+      src: "https://pptpro.netlify.app/assets/testimonials/taher.jpg",
+      alt: "Taher Golwalaa - ZOTAG Founder",
+    },
+    {
+      src: "https://pptpro.netlify.app/assets/testimonials/shamshaad.jpg",
+      alt: "Shamshaad - ACE HR SOLUTION Founder",
+    },
+    {
+      src: "https://pptpro.netlify.app/assets/testimonials/dhwani.jpg",
+      alt: "Dhwani - O' MIND YOUR BODY Founder",
+    },
+  ];
+
   return (
     <section
       ref={heroRef}
-      className="h-screen pt-20 md:pt-22 px-2 md:px-0 relative overflow-hidden flex items-center justify-center md:justify-center"
+      className="h-screen bg-gray-50 pt-20 md:pt-22 px-2 md:px-0 relative overflow-hidden flex items-center justify-center md:justify-center"
       style={{
         transform: "translate3d(0, 0, 0)",
         backfaceVisibility: "hidden",
       }}
     >
+      {/* Decorative hexagon pattern on the right side - following HomeAccordion approach */}
+      <div
+        className="absolute right-0 top-10 w-1/2 h-full pointer-events-none"
+        style={{
+          backgroundImage: "url('/backgrounds/hexa3.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "right center",
+        }}
+      ></div>
+
       {/* Decorative Ellipse Element - Different images for mobile/desktop */}
       <motion.div
         className="absolute -bottom-16 left-0 right-0 md:inset-0 md:mt-12 z-0"
@@ -205,7 +250,54 @@ const HomeHero = () => {
         />
       </motion.div>
 
-      {/* Animated Gray Square Element - Different for mobile/desktop */}
+      {/* Client Card - Top Right (Desktop only) - Static & Compact */}
+      {!isMobile && (
+        <div
+          className="absolute top-24 right-8 lg:right-16 xl:right-24 z-20"
+          style={{
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
+          }}
+        >
+          <div className="bg-white rounded-xl p-3 shadow-md border border-gray-100 w-fit">
+            {/* Header with count and text in one line */}
+            <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-1">
+                <div className="text-lg font-bold text-yellow-500">30+</div>
+                <div className="text-sm text-gray-600">Clients</div>
+              </div>
+              <div className="bg-yellow-100 rounded-full p-1">
+                <ChevronRight className="h-3 w-3 text-yellow-600" />
+              </div>
+            </div>
+
+            {/* Profile Images - Smaller */}
+            <div className="flex items-center">
+              {testimonialImages.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="relative"
+                  style={{ marginLeft: index > 0 ? "-6px" : "0" }}
+                >
+                  <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                    <img
+                      src={testimonial.src}
+                      alt={testimonial.alt}
+                      className="w-full h-full object-cover"
+                      style={{
+                        willChange: "transform",
+                        transform: "translate3d(0, 0, 0)",
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Animated Image Square Element - Different for mobile/desktop */}
       <motion.div
         className="absolute bottom-4 left-1/2 -translate-x-1/2 md:left-32 lg:left-42 md:top-1/2 md:-translate-y-1/2 md:bottom-auto md:right-auto md:translate-x-0 z-5"
         variants={isMobile ? mobileSquareVariants : squareVariants}
@@ -220,8 +312,8 @@ const HomeHero = () => {
         <motion.div
           className={
             isMobile
-              ? "w-32 h-24 rounded-lg bg-gray-300" // Mobile: smaller dimensions (128px x 96px)
-              : "w-40 h-52 rounded-lg bg-gray-300" // Desktop: original dimensions (160px x 208px)
+              ? "w-32 h-24 rounded-lg overflow-hidden" // Mobile: smaller dimensions (128px x 96px)
+              : "w-40 h-52 rounded-lg overflow-hidden" // Desktop: original dimensions (160px x 208px)
           }
           animate={
             isVisible
@@ -236,7 +328,22 @@ const HomeHero = () => {
             backfaceVisibility: "hidden",
             transformOrigin: "center",
           }}
-        />
+        >
+          <img
+            src={
+              isMobile
+                ? "https://images.unsplash.com/photo-1652265540589-46f91535337b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                : "https://images.unsplash.com/photo-1649920442906-3c8ef428fb6e?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            }
+            alt="Presentation design showcase"
+            className="w-full h-full object-cover"
+            style={{
+              willChange: "transform",
+              transform: "translate3d(0, 0, 0)",
+              backfaceVisibility: "hidden",
+            }}
+          />
+        </motion.div>
       </motion.div>
 
       {/* Main content - Responsive positioning with right adjustment for lg */}
