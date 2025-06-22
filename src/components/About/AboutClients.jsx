@@ -96,9 +96,9 @@ const LogoMarquee = ({ logos, direction = "left", speed = 25 }) => {
             }}
           >
             <motion.img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Generic_Logo.svg/240px-Generic_Logo.svg.png"
+              src={logo.url}
               alt={logo.name}
-              className="h-12 md:h-16 w-auto opacity-70"
+              className="h-16 md:h-20 lg:h-24 w-auto opacity-70"
               whileHover={{
                 opacity: 1,
                 filter: "grayscale(0%)",
@@ -111,14 +111,16 @@ const LogoMarquee = ({ logos, direction = "left", speed = 25 }) => {
               style={{
                 transform: "translate3d(0, 0, 0)", // Force GPU rendering
                 filter: "grayscale(100%)",
-                minWidth: "80px", // Ensure minimum width
+                minWidth: "100px", // Increased minimum width
                 objectFit: "contain",
                 willChange: "opacity, filter",
               }}
               onError={(e) => {
                 // Fallback if the image fails to load
                 e.target.onerror = null;
-                e.target.src = "https://via.placeholder.com/150x50?text=Logo";
+                e.target.src =
+                  "https://via.placeholder.com/150x50?text=" +
+                  encodeURIComponent(logo.name);
               }}
             />
           </div>
@@ -143,24 +145,146 @@ const AboutClients = () => {
     amount: 0.5,
   });
 
-  // Client logos data (keeping names for alt text, but using generic logo for all)
+  // Real client logos data
   const clientLogos = [
-    { name: "Microsoft" },
-    { name: "Google" },
-    { name: "Apple" },
-    { name: "Amazon" },
-    { name: "Netflix" },
-    { name: "Meta" },
-    { name: "Tesla" },
-    { name: "IBM" },
-    { name: "Spotify" },
-    { name: "Adobe" },
+    {
+      name: "Company 1",
+      url: "https://media.licdn.com/dms/image/v2/D4D0BAQHzxZLD1dcI7A/company-logo_200_200/company-logo_200_200/0/1715068380091?e=2147483647&v=beta&t=zd4rOSDrTkTwlZSh9L6uTdvn0yBOM9MviKBpfj7jZw4",
+    },
+    {
+      name: "Creative Finserve",
+      url: "https://pptpro.netlify.app/assets/logo/Creative%20Finserve.jfif.jpg",
+    },
+    {
+      name: "Tata Consultancy Services",
+      url: "https://brandlogos.net/wp-content/uploads/2022/04/tata_consultancy_services-logo-brandlogos.net_.png",
+    },
+    {
+      name: "Carrier",
+      url: "https://brandlogos.net/wp-content/uploads/2014/12/carrier-logo_brandlogos.net_mqpac.png",
+    },
+    {
+      name: "Cricket",
+      url: "https://pptpro.netlify.app/assets/logo/cricket.png",
+    },
+    {
+      name: "Mamta Milk",
+      url: "https://5.imimg.com/data5/UT/EN/MY-26104965/mamta-milk-120x120.jpeg",
+    },
+    {
+      name: "Tata AIA Life",
+      url: "https://images.seeklogo.com/logo-png/30/2/tata-aia-life-logo-png_seeklogo-304926.png",
+    },
+    {
+      name: "Prakash Steel Age",
+      url: "https://www.prakashsteelage.com/Backend/images/footer_setting/Logo1699158363.png",
+    },
+    {
+      name: "10x Task",
+      url: "https://pptpro.netlify.app/assets/logo/10x_task%20(1).png",
+    },
+    {
+      name: "AB24",
+      url: "https://pptpro.netlify.app/assets/logo/ab24_logo_font-1.png",
+    },
+    {
+      name: "Advocate Suverna Govil",
+      url: "https://pptpro.netlify.app/assets/logo/Advocate%20suverna%20govil.png",
+    },
+    {
+      name: "Aquamax",
+      url: "https://pptpro.netlify.app/assets/logo/Aquamax.jpg",
+    },
+    {
+      name: "Company Logo",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRypgbbLg0opvp0UdhhY3Megt_-amSQO7FJQg&s",
+    },
+    {
+      name: "Balanced Chemistry",
+      url: "https://pptpro.netlify.app/assets/logo/balanced-chemistry-logo-full-color-rgb-1280px@72ppi.png",
+    },
+    {
+      name: "CIS",
+      url: "https://pptpro.netlify.app/assets/logo/cis_transparent%20(1).png",
+    },
+    {
+      name: "DTC",
+      url: "https://pptpro.netlify.app/assets/logo/dtclogo.png",
+    },
+    {
+      name: "Cyphersol",
+      url: "https://pptpro.netlify.app/assets/logo/final%20logo%20cyphersol.png",
+    },
+    {
+      name: "Hitech",
+      url: "https://pptpro.netlify.app/assets/logo/Hitech.png",
+    },
+    {
+      name: "HM Travels",
+      url: "https://pptpro.netlify.app/assets/logo/Hm%20Travels%20.png",
+    },
+    {
+      name: "Inofinity",
+      url: "https://pptpro.netlify.app/assets/logo/Inofinity.png",
+    },
+    {
+      name: "Jai Sai Jeweller",
+      url: "https://pptpro.netlify.app/assets/logo/Jai%20sai%20jeweller.jpeg",
+    },
+    {
+      name: "Januss Real Estate",
+      url: "https://pptpro.netlify.app/assets/logo/Januss%20real%20estate.png",
+    },
+    {
+      name: "Mantro",
+      url: "https://pptpro.netlify.app/assets/logo/Mantro_logo_240x120px.png",
+    },
+    {
+      name: "Natures Alm",
+      url: "https://pptpro.netlify.app/assets/logo/Natures%20alm.png",
+    },
+    {
+      name: "NFN",
+      url: "https://pptpro.netlify.app/assets/logo/nfn-logo.jpg",
+    },
+    {
+      name: "Propvenue",
+      url: "https://pptpro.netlify.app/assets/logo/Propvenue.jpeg",
+    },
+    {
+      name: "RA",
+      url: "https://pptpro.netlify.app/assets/logo/ra.png",
+    },
+    {
+      name: "Royal Computers",
+      url: "https://pptpro.netlify.app/assets/logo/Royal%20Computers.jpg",
+    },
+    {
+      name: "Tumble Dry",
+      url: "https://pptpro.netlify.app/assets/logo/tumble%20dry.png",
+    },
+    {
+      name: "Vigours",
+      url: "https://pptpro.netlify.app/assets/logo/Vigours.png",
+    },
+    {
+      name: "VUB",
+      url: "https://pptpro.netlify.app/assets/logo/VUB.png",
+    },
+    {
+      name: "West India Company",
+      url: "https://pptpro.netlify.app/assets/logo/West%20India%20company%20.png",
+    },
+    {
+      name: "ACE HR",
+      url: "https://pptpro.netlify.app/assets/logo/ACE%20HR.png",
+    },
   ];
 
   return (
     <section
       ref={sectionRef}
-      className="py-4 md:py-8 dark:bg-gray-900 overflow-hidden"
+      className="py-4 md:py-8 bg-white dark:bg-gray-900 overflow-hidden relative"
       style={{
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
@@ -204,11 +328,11 @@ const AboutClients = () => {
       {/* Single Logo Marquee */}
       <div className="relative w-full">
         <LogoMarquee logos={clientLogos} direction="left" speed={18} />
-      </div>
 
-      {/* Make sure fade gradients are positioned correctly */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 h-full w-16 bg-gradient-to-r from-white to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 h-full w-16 bg-gradient-to-l from-white to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
+        {/* Fade gradients */}
+        <div className="absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
+        <div className="absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white to-transparent dark:from-gray-900 pointer-events-none z-10"></div>
+      </div>
     </section>
   );
 };

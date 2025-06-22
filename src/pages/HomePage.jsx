@@ -6,6 +6,7 @@ import HomeCards from "../components/Home/HomeCards";
 import HomeAccordion from "../components/Home/HomeAccordion";
 import AnimatedTestimonialsDemo from "../components/animated-testimonials-demo";
 import HomeProjects from "../components/Home/HomeProjects";
+import AboutClients from "../components/About/AboutClients";
 import HomeHero from "../components/Home/HomeHero";
 import Navbar from "../components/ui/menus/Navbar";
 
@@ -19,6 +20,7 @@ const HomePage = () => {
       <HomeMarquee />
       <HomeCards />
       <HomeAccordion />
+      <AboutClients />
       <AnimatedTestimonialsDemo />
       <HomeProjects />
     </div>

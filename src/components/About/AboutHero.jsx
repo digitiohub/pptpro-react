@@ -105,16 +105,16 @@ const paragraphVariants = {
     opacity: 0,
     transform: "translate3d(0px, 15px, 0px)",
   },
-  animate: {
+  animate: (delay = 0) => ({
     opacity: 1,
     transform: "translate3d(0px, 0px, 0px)",
     transition: {
       type: "spring",
       stiffness: 300,
       damping: 20,
-      delay: 0.5,
+      delay: 0.5 + delay,
     },
-  },
+  }),
 };
 
 const statVariants = {
@@ -182,31 +182,31 @@ const AboutHero = () => {
     amount: 0.6,
   });
 
-  // Stats data
+  // Updated stats data from HomeIntro component
   const stats = [
     {
-      value: 520,
-      label: "Projects Completed",
+      value: 5,
+      label: "Years of Experience",
       prefix: "",
       suffix: "+",
     },
     {
-      value: 96,
-      label: "Client Satisfaction",
+      value: 800,
+      label: "Slides Delivered",
+      prefix: "",
+      suffix: "+",
+    },
+    {
+      value: 50,
+      label: "Consultations Completed",
+      prefix: "",
+      suffix: "+",
+    },
+    {
+      value: 100,
+      label: "Job Satisfaction",
       prefix: "",
       suffix: "%",
-    },
-    {
-      value: 12,
-      label: "Years Experience",
-      prefix: "",
-      suffix: "+",
-    },
-    {
-      value: 48,
-      label: "Industry Awards",
-      prefix: "",
-      suffix: "",
     },
   ];
 
@@ -242,7 +242,7 @@ const AboutHero = () => {
             animate={isSubtitleInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
-            Creating impactful presentations since 2012
+            Transforming ideas into compelling visual narratives since 2020
           </motion.p>
         </div>
 
@@ -297,10 +297,10 @@ const AboutHero = () => {
             animate={isContentInView ? "animate" : "initial"}
             style={{ willChange: "transform, opacity" }}
           >
-            {/* Text content - Simplified */}
+            {/* Enhanced text content */}
             <div className="mb-8 md:mb-10">
               <motion.p
-                className="text-gray-600 dark:text-gray-400"
+                className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6"
                 style={{
                   textAlign: "justify",
                   willChange: "transform, opacity",
@@ -308,13 +308,37 @@ const AboutHero = () => {
                 variants={paragraphVariants}
                 initial="initial"
                 animate={isContentInView ? "animate" : "initial"}
+                custom={0}
               >
-                At PPT Pro, we transform ideas into compelling visual stories.
-                Our team of experts combines design excellence with strategic
-                thinking to create presentations that captivate audiences and
-                drive results. We're dedicated to helping businesses communicate
-                their message effectively through powerful visuals and clear
-                narratives.
+                At{" "}
+                <strong className="text-gray-800 dark:text-gray-200">
+                  PPTPRO
+                </strong>
+                , we have designed more than{" "}
+                <strong className="text-yellow-500">6000+ slides</strong> for
+                SMEs, MSMEs, Corporates, Start-ups, and a diverse range of
+                industries. Our expert team understands the transformative power
+                of compelling presentations and how they can dramatically shape
+                business outcomes.
+              </motion.p>
+
+              <motion.p
+                className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed"
+                style={{
+                  textAlign: "justify",
+                  willChange: "transform, opacity",
+                }}
+                variants={paragraphVariants}
+                initial="initial"
+                animate={isContentInView ? "animate" : "initial"}
+                custom={0.1}
+              >
+                Whether it's a high-stakes <em>sales pitch</em>, critical{" "}
+                <em>investor deck</em>, or comprehensive{" "}
+                <em>training presentation</em>, we deliver exceptional results
+                that leave a lasting impression. We combine strategic thinking
+                with design excellence to create visual narratives that
+                captivate audiences and drive meaningful business impact.
               </motion.p>
             </div>
 
