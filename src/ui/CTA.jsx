@@ -115,15 +115,17 @@ const CTA = () => {
           <div className="flex-1 text-center lg:text-left">
             {/* Main heading with yellow period */}
             <motion.h2
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal text-black leading-tight tracking-tight"
+              className="font-normal text-black tracking-tight leading-tight text-center lg:text-left"
+              style={{
+                fontSize: "clamp(1.75rem, 6vw, 4.5rem)", // scales nicely from small to large screens
+                lineHeight: "1.15",
+                maxWidth: "32ch", // optimal character width per line
+                margin: "0 auto", // centers it on small devices
+                wordBreak: "break-word",
+              }}
               variants={textVariants}
               initial="initial"
               animate={isInView ? "animate" : "initial"}
-              style={{
-                willChange: "transform, opacity",
-                transform: "translate3d(0, 0, 0)",
-                backfaceVisibility: "hidden",
-              }}
             >
               LET'S START YOUR NEXT
               <br />

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import StarBorder from "../../ui/StarBorder/StarBorder";
 import { projects, projectCategories } from "../../data/projects";
+import Button from "../../ui/Buttons/Button";
 
 // Animation variants following the codebase pattern
 const titleVariants = {
@@ -501,12 +502,16 @@ const HomeProjects = () => {
             backfaceVisibility: "hidden",
           }}
         >
-          <StarBorder as="a" href="/projects" color="#000" speed="8s">
-            <span className="flex items-center gap-2">
-              View All Projects
-              <ArrowRight className="h-5 w-5 group-hover:transform group-hover:translate-x-1 transition-transform" />
-            </span>
-          </StarBorder>
+          <Button
+            variant="hero-primary"
+            size="md"
+            onClick={() => {
+              window.location.href = "/projects";
+            }}
+            animate={true}
+          >
+            Get in Touch
+          </Button>
         </motion.div>
       </div>
     </section>
